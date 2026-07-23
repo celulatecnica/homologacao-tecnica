@@ -65,41 +65,6 @@
 <div id="resultado"></div>
 
 <script>
-function analisar() {
-    const texto = document.getElementById('comando').value.trim();
-    const resultado = document.getElementById('resultado');
-
-    if (!texto) {
-        resultado.textContent = "Informe uma string.";
-        return;
-    }
-
-    const inicio = texto.indexOf("AA");
-
-    if (inicio === -1) {
-        resultado.textContent = "Nenhum 'AA' encontrado.";
-        return;
-    }
-
-    const dados = texto.substring(inicio);
-
-    let pos = 0;
-    let linhas = [];
-
-    while (pos + 14 <= dados.length) {
-
-        const bloco = dados.substring(pos, pos + 14);
-
-        linhas.push(bloco);
-
-        pos += 13;
-
-        if (dados[pos] !== 'A') {
-            break;
-        }
-    }
-
-    resultado.textContent = linhas.join('\n');
 }
 </script>
 
