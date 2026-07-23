@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Analisador de Comando</title>
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        max-width: 1200px;
+        margin: 30px auto;
+        padding: 20px;
+        background: #f4f4f4;
+    }
+
+    h1 {
+        color: #333;
+    }
+
+    textarea {
+        width: 100%;
+        height: 250px;
+        padding: 10px;
+        font-family: Consolas, monospace;
+        font-size: 14px;
+        resize: vertical;
+    }
+
+    button {
+        margin-top: 15px;
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+        background: #0078d7;
+        color: white;
+        border: none;
+        border-radius: 5px;
+    }
+
+    button:hover {
+        background: #005fa3;
+    }
+
+    #resultado {
+        margin-top: 20px;
+        padding: 15px;
+        background: white;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        white-space: pre-wrap;
+        font-family: Consolas, monospace;
+    }
+</style>
+</head>
+<body>
+
+<h1>Analisador de String</h1>
+
+<textarea id="comando" placeholder="Cole a string aqui..."></textarea>
+<br>
+
+<button onclick="analisar()">Analisar</button>
+
+<div id="resultado"></div>
+
+<script>
+function analisar() {
+
+    const texto = document.getElementById('comando').value.trim();
+    const resultado = document.getElementById('resultado');
+
+    if (!texto) {
+        resultado.textContent = "Informe uma string.";
+        return;
+    }
+
+    // Localiza a primeira ocorrência de AA
+    const posAA = texto.indexOf("AA");
+
+    if (posAA === -1) {
+        resultado.textContent = "Nenhuma sequência 'AA' encontrada.";
+        return;
+    }
+
+    let posicao = posAA; // começa no primeiro A encontrado
+    let linhas = [];
+
+    while (posicao + 14 <= texto.length) {
+
+        const bloco = texto.substring(posicao, posicao + 14);
+
+        // O agrupamento deve terminar com A
+        if (!bloco.endsWith("A")) {
+            break;
+        }
+
+        linhas.push(bloco);
+
+        // Avança 13 caracteres para que o último A
+        // vire o primeiro A do próximo bloco
+        posicao += 13;
+    }
+
+    resultado.textContent = linhas.join("\n");
+}
+</script>
+
+</body>
+</html>
