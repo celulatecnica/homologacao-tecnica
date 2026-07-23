@@ -70,62 +70,80 @@
 
 <script>
 function analisar() {
-    const textoOriginal = document.getElementById("comando").value;
-    const resultado = document.getElementById("resultado");
+    const campoComando = document.getElementById("comando");
+    const campoResultado = document.getElementById("resultado");
 
-    const texto = textoOriginal
+    let texto = campoComando.value;
+
+    texto = texto
         .replace(/\s/g, "")
         .trim()
         .toUpperCase();
 
     if (texto === "") {
-        resultado.value = "Informe uma string para analisar.";
+        campoResultado.value = "Informe uma string para analisar.";
         return;
     }
 
     const posAA = texto.indexOf("AA");
 
     if (posAA === -1) {
-        resultado.value = "Nenhuma sequência AA foi encontrada.";
+        campoResultado.value = "Nenhuma sequência AA foi encontrada.";
         return;
     }
 
-    let posicaoInicial = posAA - 13;
+    /*
+        Regra:
+        Localiza o primeiro AA.
+        A partir do primeiro A desse AA, volta 13 caracteres.
+        Assim é formado o primeiro bloco:
+        A00A100000000A
+    */
+    let posicao = posAA - 13;
 
-    if (posicaoInicial < 0) {
-        resultado.value = "Não existem 13 caracteres antes da primeira sequência AA encontrada.";
+    if (posicao < 0) {
+        campoResultado.value = "Não foi possível localizar o início do primeiro bloco.";
         return;
     }
 
-    let posicao = posicaoInicial;
-    let linhas = [];
+    let blocos = [];
 
     while (posicao + 14 <= texto.length) {
         const bloco = texto.substring(posicao, posicao + 14);
 
-        if (bloco.length < 14) {
+        /*
+            Cada bloco válido precisa:
+            - ter 14 caracteres
+            - começar com A
+            - terminar com A
+        */
+        if (bloco.length !== 14) {
             break;
         }
 
-        if (!bloco.startsWith("A")) {
+        if (bloco.charAt(0) !== "A") {
             break;
         }
 
-        if (!bloco.endsWith("A")) {
+        if (bloco.charAt(13) !== "A") {
             break;
         }
 
-        linhas.push(bloco);
+        blocos.push(bloco);
 
+        /*
+            Avança 13 posições.
+            O último A do bloco atual vira o primeiro A do próximo bloco.
+        */
         posicao += 13;
     }
 
-    if (linhas.length === 0) {
-        resultado.value = "Nenhum agrupamento válido foi encontrado.";
+    if (blocos.length === 0) {
+        campoResultado.value = "Nenhum bloco válido foi encontrado.";
         return;
     }
 
-    resultado.value = linhas.join("\n");
+    campoResultado.value = blocos.join("\n");
 }
 </script>
 
