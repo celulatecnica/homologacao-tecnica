@@ -32,7 +32,7 @@
     }
 
     #resultado {
-        height: 450px;
+        height: 250px;
         margin-top: 20px;
         background: white;
         border: 1px solid #ccc;
@@ -83,57 +83,54 @@ function analisar() {
         return;
     }
 
-    /*
-        Procuramos o início real dos blocos:
-        AA00A1
+    const posAA = texto.indexOf("AA");
 
-        Exemplo:
-        AA00A100000000AA039C...
-
-        O resultado precisa começar no segundo A:
-        A00A100000000A
-    */
-    const marcadorInicio = "AA00A1";
-    const posMarcador = texto.indexOf(marcadorInicio);
-
-    if (posMarcador === -1) {
-        campoResultado.value = "Não foi encontrado o marcador inicial AA00A1.";
+    if (posAA === -1) {
+        campoResultado.value = "Nenhuma sequência AA foi encontrada.";
         return;
     }
 
     /*
-        Começa no segundo A do AA.
+        Exemplo:
+        ...A00A100000000AA039C...
+
+        A primeira sequência AA está aqui:
+                         AA
+
+        O primeiro bloco precisa começar 13 caracteres antes
+        do primeiro A desse AA:
+
+        A00A100000000A
+
+        Depois os próximos blocos seguem de 14 em 14 caracteres.
     */
-    let posicao = posMarcador + 1;
+    let posicao = posAA - 13;
+
+    if (posicao < 0) {
+        campoResultado.value = "Não existem 13 caracteres antes da primeira sequência AA.";
+        return;
+    }
 
     let blocos = [];
 
     while (posicao + 14 <= texto.length) {
         const bloco = texto.substring(posicao, posicao + 14);
 
-        /*
-            O bloco precisa ter 14 caracteres,
-            começar com A e terminar com A.
-        */
         if (bloco.length !== 14) {
             break;
         }
 
-        if (bloco.charAt(0) !== "A") {
-            break;
-        }
-
-        if (bloco.charAt(13) !== "A") {
+        if (!bloco.endsWith("A")) {
             break;
         }
 
         blocos.push(bloco);
 
         /*
-            Avança 13 posições para que o último A do bloco atual
-            também seja o primeiro A do próximo bloco.
+            Avança exatamente 14 caracteres,
+            conforme a regra solicitada.
         */
-        posicao += 13;
+        posicao += 14;
     }
 
     if (blocos.length === 0) {
@@ -141,7 +138,12 @@ function analisar() {
         return;
     }
 
-    campoResultado.value = blocos.join("\n");
+    /*
+        Resultado separado por espaço.
+        Exemplo:
+        A00A100000000A A039C00000000A A039100000000A
+    */
+    campoResultado.value = blocos.join(" ");
 }
 </script>
 
