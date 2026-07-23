@@ -32,7 +32,7 @@
     }
 
     #resultado {
-        height: 250px;
+        height: 350px;
         margin-top: 20px;
         background: white;
         border: 1px solid #ccc;
@@ -91,18 +91,10 @@ function analisar() {
     }
 
     /*
+        Localiza a primeira sequência AA.
+        Volta 13 caracteres para formar o primeiro bloco.
         Exemplo:
-        ...A00A100000000AA039C...
-
-        A primeira sequência AA está aqui:
-                         AA
-
-        O primeiro bloco precisa começar 13 caracteres antes
-        do primeiro A desse AA:
-
         A00A100000000A
-
-        Depois os próximos blocos seguem de 14 em 14 caracteres.
     */
     let posicao = posAA - 13;
 
@@ -111,7 +103,7 @@ function analisar() {
         return;
     }
 
-    let blocos = [];
+    let resultados = [];
 
     while (posicao + 14 <= texto.length) {
         const bloco = texto.substring(posicao, posicao + 14);
@@ -124,26 +116,35 @@ function analisar() {
             break;
         }
 
-        blocos.push(bloco);
+        /*
+            Pega os 4 primeiros dígitos após o A.
+            Exemplo:
+            A00A100000000A
+             ^^^^
+             00A1
+        */
+        const hexadecimal = bloco.substring(1, 5);
 
         /*
-            Avança exatamente 14 caracteres,
-            conforme a regra solicitada.
+            Converte hexadecimal para decimal.
+            Equivalente ao HEXADEC do Excel.
+        */
+        const decimal = parseInt(hexadecimal, 16);
+
+        resultados.push(bloco + " = " + decimal);
+
+        /*
+            Avança de 14 em 14 caracteres.
         */
         posicao += 14;
     }
 
-    if (blocos.length === 0) {
+    if (resultados.length === 0) {
         campoResultado.value = "Nenhum bloco válido foi encontrado.";
         return;
     }
 
-    /*
-        Resultado separado por espaço.
-        Exemplo:
-        A00A100000000A A039C00000000A A039100000000A
-    */
-    campoResultado.value = blocos.join(" ");
+    campoResultado.value = resultados.join("\n");
 }
 </script>
 
