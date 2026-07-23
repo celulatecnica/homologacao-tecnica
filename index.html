@@ -73,9 +73,7 @@ function analisar() {
     const campoComando = document.getElementById("comando");
     const campoResultado = document.getElementById("resultado");
 
-    let texto = campoComando.value;
-
-    texto = texto
+    let texto = campoComando.value
         .replace(/\s/g, "")
         .trim()
         .toUpperCase();
@@ -85,26 +83,28 @@ function analisar() {
         return;
     }
 
-    const posAA = texto.indexOf("AA");
+    /*
+        Procuramos o início real dos blocos:
+        AA00A1
 
-    if (posAA === -1) {
-        campoResultado.value = "Nenhuma sequência AA foi encontrada.";
+        Exemplo:
+        AA00A100000000AA039C...
+
+        O resultado precisa começar no segundo A:
+        A00A100000000A
+    */
+    const marcadorInicio = "AA00A1";
+    const posMarcador = texto.indexOf(marcadorInicio);
+
+    if (posMarcador === -1) {
+        campoResultado.value = "Não foi encontrado o marcador inicial AA00A1.";
         return;
     }
 
     /*
-        Regra:
-        Localiza o primeiro AA.
-        A partir do primeiro A desse AA, volta 13 caracteres.
-        Assim é formado o primeiro bloco:
-        A00A100000000A
+        Começa no segundo A do AA.
     */
-    let posicao = posAA - 13;
-
-    if (posicao < 0) {
-        campoResultado.value = "Não foi possível localizar o início do primeiro bloco.";
-        return;
-    }
+    let posicao = posMarcador + 1;
 
     let blocos = [];
 
@@ -112,10 +112,8 @@ function analisar() {
         const bloco = texto.substring(posicao, posicao + 14);
 
         /*
-            Cada bloco válido precisa:
-            - ter 14 caracteres
-            - começar com A
-            - terminar com A
+            O bloco precisa ter 14 caracteres,
+            começar com A e terminar com A.
         */
         if (bloco.length !== 14) {
             break;
@@ -132,8 +130,8 @@ function analisar() {
         blocos.push(bloco);
 
         /*
-            Avança 13 posições.
-            O último A do bloco atual vira o primeiro A do próximo bloco.
+            Avança 13 posições para que o último A do bloco atual
+            também seja o primeiro A do próximo bloco.
         */
         posicao += 13;
     }
