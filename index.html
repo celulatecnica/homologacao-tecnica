@@ -20,11 +20,23 @@
 
     textarea {
         width: 100%;
-        height: 250px;
         padding: 10px;
         font-family: Consolas, monospace;
         font-size: 14px;
         resize: vertical;
+        box-sizing: border-box;
+    }
+
+    #comando {
+        height: 250px;
+    }
+
+    #resultado {
+        height: 450px;
+        margin-top: 20px;
+        background: white;
+        border: 1px solid #ccc;
+        border-radius: 5px;
     }
 
     button {
@@ -41,30 +53,79 @@
     button:hover {
         background: #005fa3;
     }
-
-    #resultado {
-        margin-top: 20px;
-        padding: 15px;
-        background: white;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        white-space: pre-wrap;
-        font-family: Consolas, monospace;
-    }
 </style>
 </head>
+
 <body>
 
 <h1>Analisador de String</h1>
 
 <textarea id="comando" placeholder="Cole a string aqui..."></textarea>
+
 <br>
 
-<button onclick="analisar()">Analisar</button>
+<button type="button" onclick="analisar()">Analisar</button>
 
-<div id="resultado"></div>
+<textarea id="resultado" readonly placeholder="O resultado aparecerá aqui..."></textarea>
 
 <script>
+function analisar() {
+    const textoOriginal = document.getElementById("comando").value;
+    const resultado = document.getElementById("resultado");
+
+    const texto = textoOriginal
+        .replace(/\s/g, "")
+        .trim()
+        .toUpperCase();
+
+    if (texto === "") {
+        resultado.value = "Informe uma string para analisar.";
+        return;
+    }
+
+    const posAA = texto.indexOf("AA");
+
+    if (posAA === -1) {
+        resultado.value = "Nenhuma sequência AA foi encontrada.";
+        return;
+    }
+
+    let posicaoInicial = posAA - 13;
+
+    if (posicaoInicial < 0) {
+        resultado.value = "Não existem 13 caracteres antes da primeira sequência AA encontrada.";
+        return;
+    }
+
+    let posicao = posicaoInicial;
+    let linhas = [];
+
+    while (posicao + 14 <= texto.length) {
+        const bloco = texto.substring(posicao, posicao + 14);
+
+        if (bloco.length < 14) {
+            break;
+        }
+
+        if (!bloco.startsWith("A")) {
+            break;
+        }
+
+        if (!bloco.endsWith("A")) {
+            break;
+        }
+
+        linhas.push(bloco);
+
+        posicao += 13;
+    }
+
+    if (linhas.length === 0) {
+        resultado.value = "Nenhum agrupamento válido foi encontrado.";
+        return;
+    }
+
+    resultado.value = linhas.join("\n");
 }
 </script>
 
