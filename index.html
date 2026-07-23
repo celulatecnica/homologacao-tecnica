@@ -66,7 +66,6 @@
 
 <script>
 function analisar() {
-
     const texto = document.getElementById('comando').value.trim();
     const resultado = document.getElementById('resultado');
 
@@ -75,34 +74,32 @@ function analisar() {
         return;
     }
 
-    // Localiza a primeira ocorrência de AA
-    const posAA = texto.indexOf("AA");
+    const inicio = texto.indexOf("AA");
 
-    if (posAA === -1) {
-        resultado.textContent = "Nenhuma sequência 'AA' encontrada.";
+    if (inicio === -1) {
+        resultado.textContent = "Nenhum 'AA' encontrado.";
         return;
     }
 
-    let posicao = posAA; // começa no primeiro A encontrado
+    const dados = texto.substring(inicio);
+
+    let pos = 0;
     let linhas = [];
 
-    while (posicao + 14 <= texto.length) {
+    while (pos + 14 <= dados.length) {
 
-        const bloco = texto.substring(posicao, posicao + 14);
-
-        // O agrupamento deve terminar com A
-        if (!bloco.endsWith("A")) {
-            break;
-        }
+        const bloco = dados.substring(pos, pos + 14);
 
         linhas.push(bloco);
 
-        // Avança 13 caracteres para que o último A
-        // vire o primeiro A do próximo bloco
-        posicao += 13;
+        pos += 13;
+
+        if (dados[pos] !== 'A') {
+            break;
+        }
     }
 
-    resultado.textContent = linhas.join("\n");
+    resultado.textContent = linhas.join('\n');
 }
 </script>
 
