@@ -69,9 +69,60 @@
 <textarea id="resultado" readonly placeholder="O resultado aparecerá aqui..."></textarea>
 
 <script>
-function analisar() {
+async function carregarCanais() {
+    const resposta = await fetch("CA_Services.csv");
+
+    if (!resposta.ok) {
+        throw new Error("Não foi possível carregar o arquivo CA_Services.csv");
+    }
+
+    const conteudo = await resposta.text();
+
+    const linhas = conteudo
+        .split(/\r?\n/)
+        .map(linha => linha.trim())
+        .filter(linha => linha !== "");
+
+    const mapaServicos = {};
+
+    /*
+        Estrutura esperada:
+        Canal;SI;CA_Service
+
+        Exemplo:
+        A&E HD ;5168;59,161,442,467,611
+    */
+    for (let i = 1; i < linh*s.length; i++) {
+        const par*es = linhas[i].split(";");
+
+      * if (partes.length < 3) {
+        *   continue;
+        }
+
+        co*st canal = partes[0].trim();
+     *  const caService = partes.slice(2*.join(";").trim();
+
+        const *ervicos = caService
+            .s*lit(",")
+            .map(servico *> servico.trim())
+            .fil*er(servico => servico !== "");
+
+  *     servicos.forEach(servico => {*            if (!mapaServicos[servico]) {
+                mapaServico*[servico] = [];
+            }
+
+   *        mapaServicos[servico].push*canal);
+        });
+    }
+
+    ret*rn mapaServicos;
+}
+
+async function*analisar() {
     const campoComando = document.getElementById("comando");
     const campoResultado = document.getElementById("resultado");
+
+    campoResultado.value = "Analisando...";
 
     let texto = campoComando.value
         .replace(/\s/g, "")
@@ -90,11 +141,23 @@ function analisar() {
         return;
     }
 
+    let mapaServicos = {};
+
+    try {
+        mapaServicos = await carregarCanais();
+    } catch (erro) {
+        campoResultado.value = "Erro ao carregar CA_Services.csv: " + erro.message;
+        return;
+    }
+
     /*
         Localiza a primeira sequência AA.
-        Volta 13 caracteres para formar o primeiro bloco.
+        Volta 13 caracteres para montar o primeiro bloco.
+
         Exemplo:
         A00A100000000A
+
+        Depois avança de 14 em 14 caracteres.
     */
     let posicao = posAA - 13;
 
@@ -117,25 +180,30 @@ function analisar() {
         }
 
         /*
-            Pega os 4 primeiros dígitos após o A.
+            Pega os 4 primeiros caracteres após o A.
             Exemplo:
             A00A100000000A
-             ^^^^
              00A1
         */
         const hexadecimal = bloco.substring(1, 5);
 
         /*
             Converte hexadecimal para decimal.
-            Equivalente ao HEXADEC do Excel.
+            Exemplo:
+            00A1 = 161
         */
         const decimal = parseInt(hexadecimal, 16);
 
-        resultados.push(bloco + " = " + decimal);
+        const decimalTexto = String(decimal);
 
-        /*
-            Avança de 14 em 14 caracteres.
-        */
+        let nomeCanal = "Canal não encontrado";
+
+        if (mapaServicos[decimalTexto]) {
+            nomeCanal = mapaServicos[decimalTexto].join(" / ");
+        }
+
+        resultados.push(bloco + " = " + decimal + " - " + nomeCanal);
+
         posicao += 14;
     }
 
