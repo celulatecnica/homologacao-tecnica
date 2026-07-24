@@ -231,7 +231,7 @@ textarea {
   border-radius: 12px;
   background: #2A2A2A;
   color: #f5f5f7;
-  font-size: 18px;
+  font-size: 16px;
   transition: all 0.2s ease;
 }
 
@@ -320,6 +320,7 @@ textarea:focus {
   font-family: Consolas, monospace;
   white-space: normal;
   word-break: break-all;
+  font-size: 16px;
 }
 
 .resultado-lista {
@@ -968,10 +969,16 @@ canaisOutros.sort(
       <div class="resultado-titulo">Resultado da Homologação</div>
 
       <div class="resultado-subtitulo">String de serviços em hexadecimal</div>
-      <div class="resultado-box">${listaHexadecimal.join("")}</div>
+      <div class="resultado-box">${listaHexadecimal.join("  ")}</div>
 
-      <div class="resultado-subtitulo">String de serviços em decimal</div>
-      <div class="resultado-box">${listaDecimal.join(", ")}</div>
+<div class="resultado-subtitulo">String de serviços em decimal</div>
+<div class="resultado-box">
+
+${[...new Set(listaDecimal)]
+  .sort((a, b) => a - b)
+  .join(", ")}
+
+</div>
 
      <div class="resultado-subtitulo">
 Resumo da análise entre pacote e string
