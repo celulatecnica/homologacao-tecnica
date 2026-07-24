@@ -283,8 +283,25 @@ textarea:focus {
 /* ===== RESULTADO OCULTO INICIALMENTE ===== */
 #resultadoGrupo {
   display: none;
+  margin-top: 40px;
+  background: #F5F5F7;
+  padding: 60px 0;
 }
-
+  
+.resultado-wrapper {
+  width: 950px;
+  max-width: calc(100% - 32px);
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+  
+.painel-resultado {
+  background: transparent;
+  color: #1d1d1f;
+  padding: 0 16px;
+  text-align: left;
+}
+  
 .painel-resultado {
   background: #ffffff;
   min-height: 250px;
@@ -296,9 +313,9 @@ textarea:focus {
 }
 
 .resultado-titulo {
-  font-size: 24px;
+  font-size: 36px;
   font-weight: 700;
-  margin-bottom: 20px;
+  margin-bottom: 28px;
 }
 
 .resultado-subtitulo {
@@ -315,7 +332,8 @@ textarea:focus {
   margin-bottom: 20px;
   background: #F5F5F7;
   font-family: Consolas, monospace;
-  white-space: pre-wrap;
+white-space: normal;
+word-break: break-all;
 }
 
 .resultado-lista {
