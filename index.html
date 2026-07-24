@@ -280,18 +280,6 @@ textarea:focus {
   min-height: 250px;
 }
 
-#resultado {
-  min-height: 350px;
-  margin-top: 0;
-  background: #ffffff;
-  color: #1d1d1f;
-  border: none;
-}
-
-#resultado::placeholder {
-  color: #8e8e93;
-}
-
 /* ===== RESULTADO OCULTO INICIALMENTE ===== */
 #resultadoGrupo {
   display: none;
@@ -299,6 +287,7 @@ textarea:focus {
 
 .painel-resultado {
   background: #ffffff;
+  min-height: 250px;
   color: #1d1d1f;
   border-radius: 12px;
   padding: 24px;
@@ -639,8 +628,8 @@ async function carregarPacotesHomologacao() {
   try {
 
     const resposta = await fetch(
-      "https://api.github.com/repos/celulatecnica/homologacao-tecnica/contents/pacotes"
-    );
+  "https://api.github.com/repos/celulatecnica/homologacao-tecnica/contents/pacotes"
+);
 
     if (!resposta.ok) {
       throw new Error("Erro ao consultar GitHub");
@@ -806,7 +795,11 @@ for (let i = 1; i < linhas.length; i++) {
       mapaServicos[servico] = [];
     }
 
-    mapaServicos[servico].push(canal);
+mapaServicos[servico].push({
+  canal: canal,
+  vc: partes[3].trim(),
+  tipo: partes[5].trim()
+});
 
   });
 
@@ -829,13 +822,13 @@ async function analisar() {
     resultadoGrupo.style.display = "block";
   }
 
-  campoResultado.value = "Analisando...";
+  painelResultado.innerHTML = "Analisando...";
   statusInfo.textContent = "";
 
   const pacoteSelecionado = campoPacote ? campoPacote.value : "";
 
   if (!pacoteSelecionado) {
-    campoResultado.value = "Selecione o pacote que será homologado antes de analisar.";
+    painelResultado.innerHTML = "Selecione o pacote que será homologado antes de analisar.";
     return;
   }
 
@@ -845,7 +838,7 @@ async function analisar() {
     .toUpperCase();
 
   if (texto === "") {
-    campoResultado.value = "Informe uma string para analisar.";
+    painelResultado.innerHTML = "Informe uma string para analisar.";
     return;
   }
 
@@ -854,21 +847,21 @@ async function analisar() {
   try {
     mapaServicos = await carregarCanais();
   } catch (erro) {
-    campoResultado.value = "Erro ao carregar os serviços." + erro.message;
+    painelResultado.innerHTML = "Erro ao carregar os serviços." + erro.message;
     return;
   }
 
   const posAA = texto.indexOf("AA");
 
   if (posAA === -1) {
-    campoResultado.value = "Nenhuma sequência AA foi encontrada.";
+    painelResultado.innerHTML = "Nenhuma sequência AA foi encontrada.";
     return;
   }
 
   let posicao = posAA - 13;
 
   if (posicao < 0) {
-    campoResultado.value = "Não existem 13 caracteres antes da primeira sequência AA.";
+    painelResultado.innerHTML = "Não existem 13 caracteres antes da primeira sequência AA.";
     return;
   }
 
@@ -908,9 +901,11 @@ const listaDecimal = [];
     
     let nomeCanal = "Canal não encontrado";
 
-    if (mapaServicos[decimalTexto]) {
-      nomeCanal = mapaServicos[decimalTexto].join(" / ");
-    }
+if (mapaServicos[decimalTexto]) {
+  nomeCanal = mapaServicos[decimalTexto]
+    .map(item => item.canal)
+    .join(" / ");
+}
 
     resultados.push(bloco + " = " + decimal + " - " + nomeCanal);
 
@@ -918,7 +913,7 @@ const listaDecimal = [];
   }
 
   if (resultados.length === 0) {
-    campoResultado.value = "Nenhum bloco válido foi encontrado.";
+    painelResultado.innerHTML = "Nenhum bloco válido foi encontrado.";
     return;
   }
 
@@ -933,7 +928,7 @@ String de serviços em hexadecimal
 </div>
 
 <div class="resultado-box">
-${listaHexadecimal.join("<br>")}
+${listaHexadecimal.join("")}
 </div>
 
 <div class="resultado-subtitulo">
@@ -956,7 +951,8 @@ Resumo da análise entre pacote e string
 /* ===== LIMPAR CAMPOS ===== */
 function limparCampos() {
   const campoComando = document.getElementById("comando");
-  const campoResultado = document.getElementById("resultado");
+  const painelResultado =
+document.getElementById("painelResultado");
   const statusInfo = document.getElementById("statusInfo");
   const resultadoGrupo = document.getElementById("resultadoGrupo");
 
@@ -964,9 +960,9 @@ function limparCampos() {
     campoComando.value = "";
   }
 
-  if (campoResultado) {
-    campoResultado.value = "";
-  }
+if (painelResultado) {
+  painelResultado.innerHTML = "";
+}
 
   if (statusInfo) {
     statusInfo.textContent = "";
