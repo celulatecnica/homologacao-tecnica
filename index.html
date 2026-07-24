@@ -912,17 +912,17 @@ async function analisar() {
     }
 
     if (String(registro.tipo).trim().toUpperCase() === "CANAL ABERTO") {
-      continue;
-    }
+  continue;
+}
 
-    const presente = String(registro.vcSky).trim() === String(canalPacote.vcSky).trim();
+const presente = String(registro.vcSky).trim() === String(canalPacote.vcSky).trim();
 
-    homologacao.push({
-      canal: registro.canal,
-      vcSky: registro.vcSky,
-      tipo: registro.tipo,
-      presente
-    });
+homologacao.push({
+  canal: registro.canal,
+  vcSky: registro.vcSky,
+  tipo: registro.tipo,
+  presente
+});
   }
 
   const canaisVideo = homologacao
