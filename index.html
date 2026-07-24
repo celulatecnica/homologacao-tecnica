@@ -656,7 +656,6 @@ async function carregarPacotesHomologacao() {
           .replace(/\b4k\b/gi, "4K")
           .replace(/\bUhd\b/g, "UHD")
           .replace(/\bHdr\b/g, "HDR");
-
         return `<option value="${item.name}">${texto}</option>`;
       });
 
@@ -936,7 +935,7 @@ for (const canalPacote of canaisPacote) {
     }
   }
 
- if (!registro) {
+if (!registro) {
   homologacao.push({
     canal: canalPacote.canal,
     vcSky: canalPacote.vcSky,
@@ -945,8 +944,6 @@ for (const canalPacote of canaisPacote) {
   });
   continue;
 }
-
-const nomePacoteNormalizado = normalizarNomeCanal(canalPacote.canal);
 
 const presente = canaisLiberadosNaString.some(item =>
   normalizarNomeCanal(item.canal) === nomePacoteNormalizado
@@ -992,7 +989,11 @@ homologacao.push({
     `).join("");
   }
 
-  const totalCanais = homologacao.length;
+  const totalCanais = [...new Set(
+  canaisPacote
+    .filter(item => !canaisIgnorados.includes(normalizarNomeCanal(item.canal)))
+    .map(item => normalizarNomeCanal(item.canal))
+)].length;
 const canaisEncontradosQtd = homologacao.filter(item => item.presente).length;
 const canaisAusentesQtd = homologacao.filter(item => !item.presente).length;
 const totalCanaisString = canaisLiberadosNaString.length;
