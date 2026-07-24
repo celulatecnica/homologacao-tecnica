@@ -722,14 +722,7 @@ async function carregarCanais() {
 
   const mapaServicos = {};
 
-  for (let i = 1; i < linhas.length; i++) {
-    const partes = linhas[i].split(";");
-
-    if (partes.length < 3) {
-      continue;
-    }
-
-    for (let i = 1; i < linhas.length; i++) {
+for (let i = 1; i < linhas.length; i++) {
 
   const partes = linhas[i].split(";");
 
@@ -752,7 +745,7 @@ async function carregarCanais() {
     .map(servico => servico.trim())
     .filter(servico => servico !== "");
 
-  servicos.forEach(function(servico) {
+  servicos.forEach(servico => {
 
     if (!mapaServicos[servico]) {
       mapaServicos[servico] = [];
@@ -763,24 +756,6 @@ async function carregarCanais() {
   });
 
 }
-
-    const servicos = caService
-      .split(",")
-      .map(function(servico) {
-        return servico.trim();
-      })
-      .filter(function(servico) {
-        return servico !== "";
-      });
-
-    servicos.forEach(function(servico) {
-      if (!mapaServicos[servico]) {
-        mapaServicos[servico] = [];
-      }
-
-      mapaServicos[servico].push(canal);
-    });
-  }
 
   mapaServicosCache = mapaServicos;
 
