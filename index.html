@@ -884,7 +884,17 @@ async function analisar() {
   const canaisPacote = await carregarPacote(pacoteSelecionado);
 
   const homologacao = [];
-
+const canaisIgnorados = [
+  "BAND",
+  "BAND HD",
+  "GLOBO",
+  "GLOBO HD",
+  "RECORD",
+  "RECORD HD",
+  "SBT",
+  "SBT HD"
+].map(normalizarNomeCanal);
+  
   for (const canalPacote of canaisPacote) {
     const nomePacoteNormalizado = normalizarNomeCanal(canalPacote.canal);
 
@@ -911,7 +921,7 @@ async function analisar() {
       continue;
     }
 
-    if (String(registro.tipo).trim().toUpperCase() === "CANAL ABERTO") {
+    if (canaisIgnorados.includes(normalizarNomeCanal(registro.canal))) {
   continue;
 }
 
