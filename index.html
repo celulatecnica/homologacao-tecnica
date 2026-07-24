@@ -34,7 +34,7 @@ body {
   backdrop-filter: blur(30px);
   -webkit-backdrop-filter: blur(30px);
 
-  transition: all 0.3s ease;
+  transition: transform 0.3s ease, background 0.3s ease, border-color 0.3s ease;
 }
 
 .top-bar-inner {
@@ -53,13 +53,11 @@ body {
 
 /* ===== BARRA 1 - LOGO ===== */
 .top-bar-main {
-  position: fixed;
   top: 0;
-  width: 100%;
   height: 45px;
 }
 
-/* Camada de blur separada igual ao código base */
+/* Primeira barra mais sólida */
 .blur-layer {
   position: absolute;
   inset: 0;
@@ -67,7 +65,7 @@ body {
   backdrop-filter: blur(30px);
   -webkit-backdrop-filter: blur(30px);
 
-  background: rgba(15,15,15,0.55);
+  background: rgba(15,15,15,0.95);
   z-index: 1;
 }
 
@@ -75,8 +73,12 @@ body {
 .top-bar-sub {
   top: 45px;
   height: 55px;
+
   background: rgba(0,0,0,0.20);
   border-bottom: 1px solid #4D4D4D;
+
+  backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(30px);
 }
 
 /* ===== LOGO ===== */
@@ -124,35 +126,39 @@ body {
   background: #ffffff;
 }
 
-/* ===== HEADER CLARO AO SCROLL ===== */
+/* ===== HEADER ESCURO AO SCROLL ===== */
+/* Mantém o visual escuro/transparente e evita ficar branco */
 .top-bar.scrolled {
-  background: rgba(255,255,255,0.60);
-  backdrop-filter: blur(30px);
-  -webkit-backdrop-filter: blur(30px);
-  border-bottom: 1px solid rgba(0,0,0,0.08);
+  background: transparent;
+  border-bottom: none;
 }
 
 .top-bar.scrolled .blur-layer {
-  background: rgba(255,255,255,0.40);
+  background: rgba(15,15,15,0.95);
+}
+
+.top-bar-sub.scrolled {
+  background: rgba(0,0,0,0.20);
+  border-bottom: 1px solid #4D4D4D;
 }
 
 .top-bar.scrolled .titulo-pequeno {
-  color: #1d1d1f;
+  color: #f5f5f7;
 }
 
 .top-bar.scrolled .menu-item {
-  color: #6e6e73;
+  color: #b5b5b8;
 }
 
 .top-bar.scrolled .menu-item.ativo {
-  color: #000000;
+  color: #ffffff;
 }
 
 .top-bar.scrolled .menu-item.ativo::after {
-  background: #000000;
+  background: #ffffff;
 }
 
-/* ===== BANNER IGUAL AO CÓDIGO BASE ===== */
+/* ===== BANNER ===== */
 #banner {
   width: 100%;
   display: block;
@@ -285,6 +291,11 @@ textarea:focus {
   color: #8e8e93;
 }
 
+/* ===== RESULTADO OCULTO INICIALMENTE ===== */
+#resultadoGrupo {
+  display: none;
+}
+
 /* ===== BOTÕES ===== */
 .acoes {
   display: flex;
@@ -335,12 +346,8 @@ button:active {
   font-size: 14px;
   color: #8e8e93;
 }
-/* ===== RESULTADO OCULTO INICIALMENTE ===== */
-#resultadoGrupo {
-  display:*none;
-}
-  
-/* ===== ESPAÇO FINAL E RODAPÉ IGUAL AO BASE ===== */
+
+/* ===== ESPAÇO FINAL E RODAPÉ ===== */
 .fake-content {
   height: 280px;
   background: #0F0F0F;
@@ -436,7 +443,6 @@ button:active {
     width: 100%;
   }
 }
-  
 </style>
 </head>
 
@@ -445,6 +451,7 @@ button:active {
 <!-- ===== BARRA 1 ===== -->
 <div class="top-bar top-bar-main" id="topbarMain">
   <div class="blur-layer"></div>
+
   <div class="top-bar-inner">
     arquivos/icon_gpt_branco.png
   </div>
@@ -462,8 +469,8 @@ button:active {
   </div>
 </div>
 
-<!-- ===== BANNER IGUAL AO CÓDIGO BASE ===== -->
-<img id="banner" src="arquivos/banner.png" alt="Banner Homologação Técnica">
+<!-- ===== BANNER ===== -->
+arquivos/banner.png
 
 <div class="container">
 
@@ -506,15 +513,15 @@ button:active {
       <button type="button" class="botao-secundario" onclick="limparCampos()">Limpar</button>
     </div>
 
-   <div class="campo-grupo" id="resultadoGrupo">
-  <label class="campo-label" for="resultado">
-    Resultado:
-  </label>
+    <div class="campo-grupo" id="resultadoGrupo">
+      <label class="campo-label" for="resultado">
+        Resultado:
+      </label>
 
-  <textarea id="resultado" readonly placeholder="O resultado aparecerá aqui..."></textarea>
+      <textarea id="resultado" readonly placeholder="O resultado aparecerá aqui..."></textarea>
 
-  <div class="status-info" id="statusInfo"></div>
-</div>
+      <div class="status-info" id="statusInfo"></div>
+    </div>
 
   </div>
 
@@ -715,9 +722,9 @@ async function analisar() {
   const resultadoGrupo = document.getElementById("resultadoGrupo");
 
   if (resultadoGrupo) {
-  resultadoGrupo.style.display = "block";
-}
-  
+    resultadoGrupo.style.display = "block";
+  }
+
   campoResultado.value = "Analisando...";
   statusInfo.textContent = "";
 
