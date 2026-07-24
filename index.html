@@ -632,6 +632,8 @@ async function carregarPacotesHomologacao() {
   if (!select) return;
 
   try {
+    select.innerHTML = '<option value="">Carregando...</option>';
+
     const resposta = await fetch(
       "https://api.github.com/repos/celulatecnica/homologacao-tecnica/contents/pacotes"
     );
@@ -642,14 +644,10 @@ async function carregarPacotesHomologacao() {
 
     const arquivos = await resposta.json();
 
-    select.innerHTML = '<option value="">Selecione</option>';
-
-    arquivos
+    const opcoes = arquivos
       .filter(item => item.type === "file" && item.name.toLowerCase().endsWith(".csv"))
-      .forEach(item => {
-        const option = document.createElement("option");
-        option.value = item.name;
-        option.textContent = item.name
+      .map(item => {
+        const texto = item.name
           .replace(/\.csv$/i, "")
           .replace(/_/g, " ")
           .replace(/\b\w/g, letra => letra.toUpperCase())
@@ -658,8 +656,11 @@ async function carregarPacotesHomologacao() {
           .replace(/\b4k\b/gi, "4K")
           .replace(/\bUhd\b/g, "UHD")
           .replace(/\bHdr\b/g, "HDR");
-        select.appendChild(option);
+
+        return `<option value="${item.name}">${texto}</option>`;
       });
+
+    select.innerHTML = '<option value="">Selecione o pacote</option>' + opcoes.join("");
 
     select.addEventListener("change", function () {
       this.classList.toggle("ativo", this.value !== "");
