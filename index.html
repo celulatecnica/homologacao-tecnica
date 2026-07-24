@@ -297,6 +297,61 @@ textarea:focus {
   display: none;
 }
 
+.painel-resultado {
+  background: #ffffff;
+  color: #1d1d1f;
+  border-radius: 12px;
+  padding: 24px;
+  margin-top: 10px;
+  text-align: left;
+}
+
+.resultado-titulo {
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.resultado-subtitulo {
+  font-size: 20px;
+  font-weight: 600;
+  margin-top: 25px;
+  margin-bottom: 10px;
+}
+
+.resultado-box {
+  border: 1px solid #D2D2D7;
+  border-radius: 10px;
+  padding: 12px;
+  margin-bottom: 20px;
+  background: #F5F5F7;
+  font-family: Consolas, monospace;
+  white-space: pre-wrap;
+}
+
+.resultado-lista {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.resultado-item {
+  width: calc(50% - 5px);
+  background: #F5F5F7;
+  border-radius: 8px;
+  padding: 10px 12px;
+}
+
+.bolinha-verde {
+  color: #22C55E;
+  font-weight: bold;
+}
+
+.bolinha-vermelha {
+  color: #EF4444;
+  font-weight: bold;
+}
+
 /* ===== BOTÕES ===== */
 .acoes {
   display: flex;
@@ -529,15 +584,15 @@ button:active {
       <button type="button" class="botao-secundario" onclick="limparCampos()">Limpar</button>
     </div>
 
-    <div class="campo-grupo" id="resultadoGrupo">
-      <label class="campo-label" for="resultado">
-        Resultado:
-      </label>
+    <div id="resultadoGrupo" style="display:none;">
 
-      <textarea id="resultado" readonly placeholder="O resultado aparecerá aqui..."></textarea>
+  <div id="painelResultado" class="painel-resultado">
 
-      <div class="status-info" id="statusInfo"></div>
-    </div>
+  </div>
+
+  <div class="status-info" id="statusInfo"></div>
+
+</div>
 
   </div>
 
@@ -765,7 +820,7 @@ for (let i = 1; i < linhas.length; i++) {
 /* ===== ANALISAR STRING ===== */
 async function analisar() {
   const campoComando = document.getElementById("comando");
-  const campoResultado = document.getElementById("resultado");
+  const painelResultado = document.getElementById("painelResultado");;
   const campoPacote = document.getElementById("pacoteHomologado");
   const statusInfo = document.getElementById("statusInfo");
   const resultadoGrupo = document.getElementById("resultadoGrupo");
@@ -817,7 +872,10 @@ async function analisar() {
     return;
   }
 
-  const resultados = [];
+const resultados = [];
+
+const listaHexadecimal = [];
+const listaDecimal = [];
 
   while (posicao + 14 <= texto.length) {
     const bloco = texto.substring(posicao, posicao + 14);
@@ -844,7 +902,10 @@ async function analisar() {
 
     const decimal = parseInt(hexadecimal, 16);
     const decimalTexto = String(decimal);
-
+    
+    listaHexadecimal.push(bloco);
+    listaDecimal.push(decimal);
+    
     let nomeCanal = "Canal não encontrado";
 
     if (mapaServicos[decimalTexto]) {
@@ -861,13 +922,33 @@ async function analisar() {
     return;
   }
 
-  const cabecalho = [
-    "Pacote homologado: " + pacoteSelecionado,
-    "Total de blocos encontrados: " + resultados.length,
-    "----------------------------------------"
-  ];
+  painelResultado.innerHTML = `
 
-  campoResultado.value = cabecalho.concat(resultados).join("\n");
+<div class="resultado-titulo">
+Resultado da Homologação
+</div>
+
+<div class="resultado-subtitulo">
+String de serviços em hexadecimal
+</div>
+
+<div class="resultado-box">
+${listaHexadecimal.join("<br>")}
+</div>
+
+<div class="resultado-subtitulo">
+String de serviços em decimal
+</div>
+
+<div class="resultado-box">
+${listaDecimal.join(", ")}
+</div>
+
+<div class="resultado-subtitulo">
+Resumo da análise entre pacote e string
+</div>
+
+`;
 
   statusInfo.textContent = "Análise concluída para o pacote: " + pacoteSelecionado + ".";
 }
