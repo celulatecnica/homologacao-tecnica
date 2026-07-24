@@ -797,7 +797,9 @@ for (let i = 1; i < linhas.length; i++) {
 
 mapaServicos[servico].push({
   canal: canal,
-  vc: partes[3].trim(),
+  caService: servico,
+  vcSky: partes[3].trim(),
+  vcTvro: partes[4].trim(),
   tipo: partes[5].trim()
 });
 
@@ -902,9 +904,11 @@ const listaDecimal = [];
     let nomeCanal = "Canal não encontrado";
 
 if (mapaServicos[decimalTexto]) {
+
   nomeCanal = mapaServicos[decimalTexto]
     .map(item => item.canal)
     .join(" / ");
+
 }
 
     resultados.push(bloco + " = " + decimal + " - " + nomeCanal);
