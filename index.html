@@ -603,6 +603,179 @@ button:active {
 </body>
 
 <script>
+let mapaServicosCache = null;
+let pacoteCache = {};
+
+/* =========================
+   FUNÇÕES AUXILIARES
+========================= */
+function normalizarNomeCanal(texto) {
+  return String(texto || "")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/&/g, "")
+    .replace(/\s+/g, "")
+    .replace(/[^A-Z0-9]/gi, "")
+    .toUpperCase()
+    .trim();
+}
+
+function extrairCamposCSV(linha, separador = ";") {
+  return linha.split(separador).map(campo => campo.trim());
+}
+
+/* =========================
+   LISTA DE PACOTES
+========================= */
+async function carregarPacotesHomologacao() {
+  const select = document.getElementById("pacoteHomologado");
+  if (!select) return;
+
+  try {
+    const resposta = await fetch(
+      "https://api.github.com/repos/celulatecnica/homologacao-tecnica/contents/pacotes"
+    );
+
+    if (!resposta.ok) {
+      throw new Error("Erro ao consultar GitHub");
+    }
+
+    const arquivos = await resposta.json();
+
+    select.innerHTML = '<option value="">Selecione</option>';
+
+    arquivos
+      .filter(item => item.type === "file" && item.name.toLowerCase().endsWith(".csv"))
+      .forEach(item => {
+        const option = document.createElement("option");
+        option.value = item.name;
+        option.textContent = item.name
+          .replace(/\.csv$/i, "")
+          .replace(/_/g, " ")
+          .replace(/\b\w/g, letra => letra.toUpperCase())
+          .replace(/\bHd\b/g, "HD")
+          .replace(/\bSd\b/g, "SD")
+          .replace(/\b4k\b/gi, "4K")
+          .replace(/\bUhd\b/g, "UHD")
+          .replace(/\bHdr\b/g, "HDR");
+        select.appendChild(option);
+      });
+
+    select.addEventListener("change", function () {
+      this.classList.toggle("ativo", this.value !== "");
+    });
+  } catch (erro) {
+    console.error("Erro ao carregar pacotes:", erro);
+    select.innerHTML = '<option value="">Erro ao carregar pacotes</option>';
+  }
+}
+
+/* =========================
+   CARREGAR CA_SERVICES.CSV
+   Estrutura esperada:
+   CANAL;ST;CA_SERVICE;VC_SKY;VC_TVRO;TIPO
+========================= */
+async function carregarCanais() {
+  if (mapaServicosCache) return mapaServicosCache;
+
+  const resposta = await fetch("arquivos/ca_services.csv?v=" + Date.now());
+  if (!resposta.ok) {
+    throw new Error("Não foi possível carregar o arquivo ca_services.csv");
+  }
+
+  const conteudo = await resposta.text();
+  const conteudoLimpo = conteudo.replace(/^\uFEFF/, "");
+
+  const linhas = conteudoLimpo
+    .split(/\r?\n/)
+    .map(linha => linha.trim())
+    .filter(linha => linha !== "");
+
+  const mapaServicos = {};
+
+  for (let i = 1; i < linhas.length; i++) {
+    const partes = extrairCamposCSV(linhas[i], ";");
+    if (partes.length < 6) continue;
+
+    const canal = partes[0];
+    const caService = partes[2];
+    const vcSky = partes[3];
+    const vcTvro = partes[4];
+    const tipo = partes[5];
+
+    if (String(tipo).trim().toUpperCase() === "CANAL ABERTO") {
+      continue;
+    }
+
+    const servicos = String(caService)
+      .split(",")
+      .map(s => s.trim())
+      .filter(Boolean);
+
+    servicos.forEach(servico => {
+      const chave = String(servico).trim();
+      if (!mapaServicos[chave]) {
+        mapaServicos[chave] = [];
+      }
+
+      mapaServicos[chave].push({
+        canal,
+        caService,
+        servicos,
+        vcSky,
+        vcTvro,
+        tipo
+      });
+    });
+  }
+
+  mapaServicosCache = mapaServicos;
+  return mapaServicos;
+}
+
+/* =========================
+   CARREGAR PACOTE
+   Estrutura esperada:
+   CANAL;VC_SKY
+========================= */
+async function carregarPacote(nomeArquivo) {
+  if (pacoteCache[nomeArquivo]) return pacoteCache[nomeArquivo];
+
+  const url =
+    "https://raw.githubusercontent.com/celulatecnica/homologacao-tecnica/main/pacotes/" +
+    nomeArquivo;
+
+  const resposta = await fetch(url);
+  if (!resposta.ok) {
+    throw new Error("Erro ao carregar o pacote");
+  }
+
+  const texto = await resposta.text();
+  const linhas = texto
+    .replace(/^\uFEFF/, "")
+    .split(/\r?\n/)
+    .map(linha => linha.trim())
+    .filter(linha => linha !== "");
+
+  const canais = [];
+
+  for (let i = 1; i < linhas.length; i++) {
+    const partes = extrairCamposCSV(linhas[i], ";");
+    if (partes.length < 2) continue;
+
+    canais.push({
+      canal: partes[0],
+      vcSky: partes[1]
+    });
+  }
+
+  pacoteCache[nomeArquivo] = canais;
+  return canais;
+}
+
+/* =========================
+   ANÁLISE DA STRING
+========================= */
 async function analisar() {
   const campoComando = document.getElementById("comando");
   const painelResultado = document.getElementById("painelResultado");
@@ -709,26 +882,21 @@ async function analisar() {
   }
 
   const canaisPacote = await carregarPacote(pacoteSelecionado);
+
   const homologacao = [];
-
-  const canaisIgnorados = [
-    "BAND",
-    "BAND HD",
-    "GLOBO",
-    "GLOBO HD",
-    "RECORD",
-    "RECORD HD",
-    "SBT",
-    "SBT HD"
-  ].map(normalizarNomeCanal);
-
+const canaisIgnorados = [
+  "BAND",
+  "BAND HD",
+  "GLOBO",
+  "GLOBO HD",
+  "RECORD",
+  "RECORD HD",
+  "SBT",
+  "SBT HD"
+].map(normalizarNomeCanal);
+  
   for (const canalPacote of canaisPacote) {
     const nomePacoteNormalizado = normalizarNomeCanal(canalPacote.canal);
-
-    // ignora canais da lista antes de qualquer processamento
-    if (canaisIgnorados.includes(nomePacoteNormalizado)) {
-      continue;
-    }
 
     let registro = null;
 
@@ -753,14 +921,18 @@ async function analisar() {
       continue;
     }
 
-    const presente = String(registro.vcSky).trim() === String(canalPacote.vcSky).trim();
+    if (canaisIgnorados.includes(normalizarNomeCanal(registro.canal))) {
+  continue;
+}
 
-    homologacao.push({
-      canal: registro.canal,
-      vcSky: registro.vcSky,
-      tipo: registro.tipo,
-      presente
-    });
+const presente = String(registro.vcSky).trim() === String(canalPacote.vcSky).trim();
+
+homologacao.push({
+  canal: registro.canal,
+  vcSky: registro.vcSky,
+  tipo: registro.tipo,
+  presente
+});
   }
 
   const canaisVideo = homologacao
@@ -802,30 +974,37 @@ async function analisar() {
   if (painelResultado) {
     painelResultado.innerHTML = `
       <div class="resultado-titulo">Resultado da Homologação</div>
+
       <div class="resultado-subtitulo">String de serviços em hexadecimal</div>
       <div class="resultado-box">${listaHexadecimal.join("  ")}</div>
+
       <div class="resultado-subtitulo">String de serviços em decimal</div>
       <div class="resultado-box">
         ${[...new Set(listaDecimal)].sort((a, b) => a - b).join(", ")}
       </div>
+
       <div class="resultado-subtitulo">Resumo da análise entre pacote e string</div>
       <div class="resultado-box">
         Total de canais do pacote: ${totalCanais}<br>
         Canais encontrados na string: ${canaisEncontradosQtd}<br>
         Canais ausentes na string: ${canaisAusentesQtd}
       </div>
+
       <div class="resultado-subtitulo">▼ Canais de vídeo</div>
       <div class="resultado-lista">
         ${renderizarLista(canaisVideo)}
       </div>
+
       <div class="resultado-subtitulo">▼ Canais de áudio</div>
       <div class="resultado-lista">
         ${renderizarLista(canaisAudio)}
       </div>
+
       <div class="resultado-subtitulo">▼ Canais de rádio</div>
       <div class="resultado-lista">
         ${renderizarLista(canaisRadio)}
       </div>
+
       <div class="resultado-subtitulo">▼ Outros</div>
       <div class="resultado-lista">
         ${renderizarLista(canaisOutros)}
@@ -837,6 +1016,26 @@ async function analisar() {
     statusInfo.textContent = "Análise concluída para o pacote: " + pacoteSelecionado + ".";
   }
 }
+
+/* =========================
+   LIMPAR CAMPOS
+========================= */
+function limparCampos() {
+  const campoComando = document.getElementById("comando");
+  const painelResultado = document.getElementById("painelResultado");
+  const statusInfo = document.getElementById("statusInfo");
+  const resultadoGrupo = document.getElementById("resultadoGrupo");
+
+  if (campoComando) campoComando.value = "";
+  if (painelResultado) painelResultado.innerHTML = "";
+  if (statusInfo) statusInfo.textContent = "";
+  if (resultadoGrupo) resultadoGrupo.style.display = "none";
+}
+
+/* =========================
+   INICIALIZAÇÃO
+========================= */
+carregarPacotesHomologacao();
 </script>
 
 </body>
