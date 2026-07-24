@@ -702,11 +702,6 @@ async function carregarCanais() {
     const vcSky = partes[3];
     const vcTvro = partes[4];
     const tipo = partes[5];
-
-    if (String(tipo).trim().toUpperCase() === "CANAL ABERTO") {
-      continue;
-    }
-
     const servicos = String(caService)
       .split(",")
       .map(s => s.trim())
@@ -884,6 +879,7 @@ async function analisar() {
   const canaisPacote = await carregarPacote(pacoteSelecionado);
 
   const homologacao = [];
+
 const canaisIgnorados = [
   "BAND",
   "BAND HD",
@@ -895,34 +891,41 @@ const canaisIgnorados = [
   "SBT HD"
 ].map(normalizarNomeCanal);
   
-  for (const canalPacote of canaisPacote) {
-    const nomePacoteNormalizado = normalizarNomeCanal(canalPacote.canal);
+for (const canalPacote of canaisPacote) {
+  const nomePacoteNormalizado = normalizarNomeCanal(canalPacote.canal);
 
-    let registro = null;
+  if (canaisIgnorados.includes(nomePacoteNormalizado)) {
+    continue;
+  }
 
-    for (const chave in mapaServicos) {
-      const encontrado = mapaServicos[chave].find(item =>
-        normalizarNomeCanal(item.canal) === nomePacoteNormalizado
-      );
-
-      if (encontrado) {
-        registro = encontrado;
-        break;
-      }
+  let registro = null;
+  for (const chave in mapaServicos) {
+    const encontrado = mapaServicos[chave].find(item =>
+      normalizarNomeCanal(item.canal) === nomePacoteNormalizado
+    );
+    if (encontrado) {
+      registro = encontrado;
+      break;
     }
+  }
 
-    if (!registro) {
-      homologacao.push({
-        canal: canalPacote.canal,
-        vcSky: canalPacote.vcSky,
-        tipo: "NAO ENCONTRADO",
-        presente: false
-      });
-      continue;
-    }
+  if (!registro) {
+    homologacao.push({
+      canal: canalPacote.canal,
+      vcSky: canalPacote.vcSky,
+      tipo: "NAO ENCONTRADO",
+      presente: false
+    });
+    continue;
+  }
 
-    if (canaisIgnorados.includes(normalizarNomeCanal(registro.canal))) {
-  continue;
+  const presente = String(registro.vcSky).trim() === String(canalPacote.vcSky).trim();
+  homologacao.push({
+    canal: registro.canal,
+    vcSky: registro.vcSky,
+    tipo: registro.tipo,
+    presente
+  });
 }
 
 const presente = String(registro.vcSky).trim() === String(canalPacote.vcSky).trim();
