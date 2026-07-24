@@ -891,19 +891,16 @@ const canaisIgnorados = [
   "SBT HD"
 ].map(normalizarNomeCanal);
 
-const servicosEncontrados = [...new Set(listaDecimal.map(String))];
+const servicosEncontrados = new Set(listaDecimal.map(String));
 
 const canaisLiberadosNaStringMap = new Map();
 
 for (const chave in mapaServicos) {
   const registros = mapaServicos[chave];
-
   for (const item of registros) {
     const vcSkyItem = String(item.vcSky).trim();
-
-    if (servicosEncontrados.includes(vcSkyItem)) {
+    if (servicosEncontrados.has(vcSkyItem)) {
       const nomeCanalNormalizado = normalizarNomeCanal(item.canal);
-
       if (!canaisLiberadosNaStringMap.has(nomeCanalNormalizado)) {
         canaisLiberadosNaStringMap.set(nomeCanalNormalizado, {
           canal: item.canal,
@@ -916,6 +913,10 @@ for (const chave in mapaServicos) {
 }
 
 const canaisLiberadosNaString = [...canaisLiberadosNaStringMap.values()];
+
+  const canaisLiberadosNaStringNomes = new Set(
+  canaisLiberadosNaString.map(item => normalizarNomeCanal(item.canal))
+);
   
 for (const canalPacote of canaisPacote) {
   const nomePacoteNormalizado = normalizarNomeCanal(canalPacote.canal);
@@ -945,9 +946,7 @@ if (!registro) {
   continue;
 }
 
-const presente = canaisLiberadosNaString.some(item =>
-  normalizarNomeCanal(item.canal) === nomePacoteNormalizado
-);
+const presente = canaisLiberadosNaStringNomes.has(nomePacoteNormalizado);
 
 homologacao.push({
   canal: registro.canal,
@@ -989,14 +988,23 @@ homologacao.push({
     `).join("");
   }
 
-  const totalCanais = [...new Set(
+  const canaisPacoteUnicos = [...new Set(
   canaisPacote
     .filter(item => !canaisIgnorados.includes(normalizarNomeCanal(item.canal)))
     .map(item => normalizarNomeCanal(item.canal))
-)].length;
-const canaisEncontradosQtd = homologacao.filter(item => item.presente).length;
-const canaisAusentesQtd = homologacao.filter(item => !item.presente).length;
-const totalCanaisString = canaisLiberadosNaString.length;
+)];
+
+const totalCanais = canaisPacoteUnicos.length;
+
+const canaisEncontradosQtd = canaisPacoteUnicos.filter(nome =>
+  canaisLiberadosNaStringNomes.has(nome)
+).length;
+
+const canaisAusentesQtd = canaisPacoteUnicos.filter(nome =>
+  !canaisLiberadosNaStringNomes.has(nome)
+).length;
+
+const totalCanaisString = canaisLiberadosNaStringNomes.size;
 
   if (painelResultado) {
     painelResultado.innerHTML = `
