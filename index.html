@@ -604,11 +604,29 @@ button:active {
 
 <script>
 let mapaServicosCache = null;
+let pacoteCache = {};
 
-/*
-  ===== LISTA DE PACOTES =====
-  Carrega os arquivos CSV da pasta /pacotes no GitHub
-*/
+/* =========================
+   FUNÇÕES AUXILIARES
+========================= */
+function normalizarNomeCanal(texto) {
+  return String(texto || "")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/&/g, "")
+    .replace(/\s+/g, "")
+    .replace(/[^A-Z0-9]/gi, "")
+    .toUpperCase()
+    .trim();
+}
+
+function extrairCamposCSV(linha, separador = ";") {
+  return linha.split(separador).map(campo => campo.trim());
+}
+
+/* =========================
+   LISTA DE PACOTES
+========================= */
 async function carregarPacotesHomologacao() {
   const select = document.getElementById("pacoteHomologado");
   if (!select) return;
@@ -624,11 +642,10 @@ async function carregarPacotesHomologacao() {
 
     const arquivos = await resposta.json();
 
+    select.innerHTML = '<option value="">Selecione</option>';
+
     arquivos
-      .filter(item =>
-        item.type === "file" &&
-        item.name.toLowerCase().endsWith(".csv")
-      )
+      .filter(item => item.type === "file" && item.name.toLowerCase().endsWith(".csv"))
       .forEach(item => {
         const option = document.createElement("option");
         option.value = item.name;
@@ -641,7 +658,6 @@ async function carregarPacotesHomologacao() {
           .replace(/\b4k\b/gi, "4K")
           .replace(/\bUhd\b/g, "UHD")
           .replace(/\bHdr\b/g, "HDR");
-
         select.appendChild(option);
       });
 
@@ -650,73 +666,19 @@ async function carregarPacotesHomologacao() {
     });
   } catch (erro) {
     console.error("Erro ao carregar pacotes:", erro);
-    const option = document.createElement("option");
-    option.textContent = "Erro ao carregar pacotes";
-    select.appendChild(option);
-  }
-}
-function calcularLimiteInicial() {
-  const banner = document.getElementById('banner');
-  if (!banner) return;
-  limiteInicial = Math.max(0, banner.offsetHeight - HEADER_TOTAL);
-}
-/* ===== HEADER / SCROLL ===== */
-function atualizarEstadoCabecalho() {
-  const topbars = document.querySelectorAll(".top-bar");
-  const y = window.scrollY ||
-            window.pageYOffset ||
-            document.documentElement.scrollTop ||
-            0;
-
-  if (y >= 120) {
-    topbars.forEach(function (el) {
-      el.classList.add("scrolled");
-    });
-  } else {
-    topbars.forEach(function (el) {
-      el.classList.remove("scrolled");
-    });
+    select.innerHTML = '<option value="">Erro ao carregar pacotes</option>';
   }
 }
 
-window.addEventListener("scroll", function () {
-  const scrollY = window.scrollY ||
-                  window.pageYOffset ||
-                  document.documentElement.scrollTop ||
-                  0;
-
-  const topMain = document.getElementById("topbarMain");
-  const topSub = document.getElementById("topbarSub");
-
-  let progresso = scrollY / 70;
-  if (progresso > 1) {
-    progresso = 1;
-  }
-
-  const movimento = -50 * progresso;
-
-  if (topMain) {
-    topMain.style.transform = "translateY(" + movimento + "px)";
-  }
-
-  if (topSub) {
-    topSub.style.transform = "translateY(" + movimento + "px)";
-  }
-
-  atualizarEstadoCabecalho();
-}, { passive: true });
-
-window.addEventListener("load", atualizarEstadoCabecalho);
-window.addEventListener("resize", atualizarEstadoCabecalho);
-
-/* ===== CARREGAR CSV ===== */
+/* =========================
+   CARREGAR CA_SERVICES.CSV
+   Estrutura esperada:
+   CANAL;ST;CA_SERVICE;VC_SKY;VC_TVRO;TIPO
+========================= */
 async function carregarCanais() {
-  if (mapaServicosCache) {
-    return mapaServicosCache;
-  }
+  if (mapaServicosCache) return mapaServicosCache;
 
   const resposta = await fetch("arquivos/ca_services.csv?v=" + Date.now());
-
   if (!resposta.ok) {
     throw new Error("Não foi possível carregar o arquivo ca_services.csv");
   }
@@ -726,101 +688,94 @@ async function carregarCanais() {
 
   const linhas = conteudoLimpo
     .split(/\r?\n/)
-    .map(function (linha) {
-      return linha.trim();
-    })
-    .filter(function (linha) {
-      return linha !== "";
-    });
+    .map(linha => linha.trim())
+    .filter(linha => linha !== "");
 
   const mapaServicos = {};
 
   for (let i = 1; i < linhas.length; i++) {
-    const partes = linhas[i].split(";");
+    const partes = extrairCamposCSV(linhas[i], ";");
+    if (partes.length < 6) continue;
 
-    if (partes.length < 6) {
+    const canal = partes[0];
+    const caService = partes[2];
+    const vcSky = partes[3];
+    const vcTvro = partes[4];
+    const tipo = partes[5];
+
+    if (String(tipo).trim().toUpperCase() === "CANAL ABERTO") {
       continue;
     }
 
-    const canal = partes[0].trim();
-    const caService = partes[2].trim();
-    const tipo = partes[5].trim().toUpperCase();
+    const servicos = String(caService)
+      .split(",")
+      .map(s => s.trim())
+      .filter(Boolean);
 
-    if (tipo === "CANAL ABERTO") {
-      continue;
-    }
+    servicos.forEach(servico => {
+      const chave = String(servico).trim();
+      if (!mapaServicos[chave]) {
+        mapaServicos[chave] = [];
+      }
 
-const servicos = caService
-  .split(",")
-  .map(function (servico) {
-    return servico.trim();
-  })
-  .filter(function (servico) {
-    return servico !== "";
-  });
-
-servicos.forEach(function (servico) {
-
-  if (!mapaServicos[servico]) {
-    mapaServicos[servico] = [];
-  }
-
-  mapaServicos[servico].push({
-    canal: canal,
-    caService: caService,
-    servicos: servicos,
-    vcSky: partes[3].trim(),
-    vcTvro: partes[4].trim(),
-    tipo: partes[5].trim()
-  });
-
-});
+      mapaServicos[chave].push({
+        canal,
+        caService,
+        servicos,
+        vcSky,
+        vcTvro,
+        tipo
+      });
+    });
   }
 
   mapaServicosCache = mapaServicos;
   return mapaServicos;
 }
 
+/* =========================
+   CARREGAR PACOTE
+   Estrutura esperada:
+   CANAL;VC_SKY
+========================= */
 async function carregarPacote(nomeArquivo) {
+  if (pacoteCache[nomeArquivo]) return pacoteCache[nomeArquivo];
 
   const url =
     "https://raw.githubusercontent.com/celulatecnica/homologacao-tecnica/main/pacotes/" +
     nomeArquivo;
 
   const resposta = await fetch(url);
-
   if (!resposta.ok) {
     throw new Error("Erro ao carregar o pacote");
   }
 
   const texto = await resposta.text();
-
   const linhas = texto
+    .replace(/^\uFEFF/, "")
     .split(/\r?\n/)
-    .filter(linha => linha.trim() !== "");
+    .map(linha => linha.trim())
+    .filter(linha => linha !== "");
 
   const canais = [];
 
   for (let i = 1; i < linhas.length; i++) {
-
-    const partes = linhas[i].split(";");
-
-    if (partes.length < 2) {
-      continue;
-    }
+    const partes = extrairCamposCSV(linhas[i], ";");
+    if (partes.length < 2) continue;
 
     canais.push({
-      vcSky: partes[0].trim(),
-      canal: partes[1].trim()
+      canal: partes[0],
+      vcSky: partes[1]
     });
-
   }
 
+  pacoteCache[nomeArquivo] = canais;
   return canais;
-
 }
 
-/* ===== ANALISAR STRING ===== */
+/* =========================
+   ANÁLISE DA STRING
+========================= */
 async function analisar() {
   const campoComando = document.getElementById("comando");
   const painelResultado = document.getElementById("painelResultado");
@@ -828,17 +783,9 @@ async function analisar() {
   const statusInfo = document.getElementById("statusInfo");
   const resultadoGrupo = document.getElementById("resultadoGrupo");
 
-  if (resultadoGrupo) {
-    resultadoGrupo.style.display = "block";
-  }
-
-  if (painelResultado) {
-    painelResultado.innerHTML = "Analisando...";
-  }
-
-  if (statusInfo) {
-    statusInfo.textContent = "";
-  }
+  if (resultadoGrupo) resultadoGrupo.style.display = "block";
+  if (painelResultado) painelResultado.innerHTML = "Analisando...";
+  if (statusInfo) statusInfo.textContent = "";
 
   const pacoteSelecionado = campoPacote ? campoPacote.value : "";
   if (!pacoteSelecionado) {
@@ -848,12 +795,12 @@ async function analisar() {
     return;
   }
 
-  let texto = campoComando.value
+  let texto = String(campoComando?.value || "")
     .replace(/\s/g, "")
     .trim()
     .toUpperCase();
 
-  if (texto === "") {
+  if (!texto) {
     if (painelResultado) {
       painelResultado.innerHTML = "Informe uma string para analisar.";
     }
@@ -886,56 +833,45 @@ async function analisar() {
     return;
   }
 
-const resultados = [];
-
-const listaHexadecimal = [];
-const listaDecimal = [];
-const canaisEncontrados = [];
+  const resultados = [];
+  const listaHexadecimal = [];
+  const listaDecimal = [];
 
   while (posicao + 14 <= texto.length) {
     const bloco = texto.substring(posicao, posicao + 14);
 
-    if (bloco.length !== 14) {
-      break;
-    }
+    if (bloco.length !== 14) break;
 
-    if (!bloco.startsWith("A")) {
-      posicao = posicao + 14;
+    if (!bloco.startsWith("A") || !bloco.endsWith("A")) {
+      posicao += 14;
       continue;
-    }
-
-    if (!bloco.endsWith("A")) {
-      break;
     }
 
     const hexadecimal = bloco.substring(1, 5);
 
     if (!/^[0-9A-F]{4}$/.test(hexadecimal)) {
-      posicao = posicao + 14;
+      posicao += 14;
       continue;
     }
 
     const decimal = parseInt(hexadecimal, 16);
-    const decimalTexto = String(decimal);
-
     listaHexadecimal.push(bloco);
     listaDecimal.push(decimal);
 
     let nomeCanal = "Canal não encontrado";
-    if (mapaServicos[decimalTexto]) {
+    const registroServico = mapaServicos[String(decimal)];
 
-  nomeCanal = mapaServicos[decimalTexto]
-    .map(item => item.canal)
-    .join(" / ");
+    if (registroServico && registroServico.length > 0) {
+      nomeCanal = registroServico.map(item => item.canal).join(" / ");
+    }
 
-  mapaServicos[decimalTexto].forEach(item => {
-    canaisEncontrados.push(item);
-  });
+    resultados.push({
+      bloco,
+      decimal,
+      nomeCanal
+    });
 
-}
-
-    resultados.push(bloco + " = " + decimal + " - " + nomeCanal);
-    posicao = posicao + 14;
+    posicao += 14;
   }
 
   if (resultados.length === 0) {
@@ -944,195 +880,125 @@ const canaisEncontrados = [];
     }
     return;
   }
-  const servicosEncontrados =
-  [...new Set(listaDecimal.map(String))];
 
-const canaisPacote =
-  await carregarPacote(pacoteSelecionado);
+  const canaisPacote = await carregarPacote(pacoteSelecionado);
 
-const homologacao = [];
+  const homologacao = [];
 
-for (const canalPacote of canaisPacote) {
+  for (const canalPacote of canaisPacote) {
+    const nomePacoteNormalizado = normalizarNomeCanal(canalPacote.canal);
 
-  let registro = null;
+    let registro = null;
 
-  for (const chave in mapaServicos) {
+    for (const chave in mapaServicos) {
+      const encontrado = mapaServicos[chave].find(item =>
+        normalizarNomeCanal(item.canal) === nomePacoteNormalizado
+      );
 
-    const encontrado = mapaServicos[chave].find(item =>
-      item.canal.trim().toUpperCase() ===
-      canalPacote.canal.trim().toUpperCase()
-    );
-
-    if (encontrado) {
-      registro = encontrado;
-      break;
+      if (encontrado) {
+        registro = encontrado;
+        break;
+      }
     }
 
+    if (!registro) {
+      homologacao.push({
+        canal: canalPacote.canal,
+        vcSky: canalPacote.vcSky,
+        tipo: "NAO ENCONTRADO",
+        presente: false
+      });
+      continue;
+    }
+
+    if (String(registro.tipo).trim().toUpperCase() === "CANAL ABERTO") {
+      continue;
+    }
+
+    const presente = String(registro.vcSky).trim() === String(canalPacote.vcSky).trim();
+
+    homologacao.push({
+      canal: registro.canal,
+      vcSky: registro.vcSky,
+      tipo: registro.tipo,
+      presente
+    });
   }
 
-  if (!registro) {
-    continue;
+  const canaisVideo = homologacao
+    .filter(item => String(item.tipo).toUpperCase() === "PACOTE")
+    .sort((a, b) => Number(a.vcSky) - Number(b.vcSky));
+
+  const canaisAudio = homologacao
+    .filter(item => String(item.tipo).toUpperCase() === "AUDIO")
+    .sort((a, b) => Number(a.vcSky) - Number(b.vcSky));
+
+  const canaisRadio = homologacao
+    .filter(item => String(item.tipo).toUpperCase() === "RADIO")
+    .sort((a, b) => Number(a.vcSky) - Number(b.vcSky));
+
+  const canaisOutros = homologacao
+    .filter(item => {
+      const tipo = String(item.tipo).toUpperCase();
+      return tipo === "CARTELA/MOSAICO" || tipo === "SKY+" || tipo === "NAO ENCONTRADO";
+    })
+    .sort((a, b) => Number(a.vcSky) - Number(b.vcSky));
+
+  function renderizarLista(lista) {
+    if (lista.length === 0) {
+      return `<div class="resultado-item">Nenhum canal encontrado</div>`;
+    }
+
+    return lista.map(item => `
+      <div class="resultado-item">
+        <span class="${item.presente ? "bolinha-verde" : "bolinha-vermelha"}">●</span>
+        VC ${item.vcSky} - ${item.canal}
+      </div>
+    `).join("");
   }
 
-  if (
-    registro.tipo.toUpperCase() ===
-    "CANAL ABERTO"
-  ) {
-    continue;
-  }
-
-  const presente =
-    registro.servicos.some(servico =>
-      servicosEncontrados.includes(servico)
-    );
-
-  homologacao.push({
-    canal: registro.canal,
-    vcSky: registro.vcSky,
-    tipo: registro.tipo,
-    presente: presente
-  });
-
-}
-
-  const canaisVideo = homologacao.filter(item =>
-  item.tipo.toUpperCase() === "PACOTE"
-);
-
-const canaisAudio = homologacao.filter(item =>
-  item.tipo.toUpperCase() === "AUDIO"
-);
-
-const canaisRadio = homologacao.filter(item =>
-  item.tipo.toUpperCase() === "RADIO"
-);
-
-const canaisOutros = homologacao.filter(item => {
-
-  const tipo = item.tipo.toUpperCase();
-
-  return (
-    tipo === "CARTELA/MOSAICO" ||
-    tipo === "SKY+"
-  );
-
-});
-
-  canaisVideo.sort(
-  (a, b) => Number(a.vcSky) - Number(b.vcSky)
-);
-
-canaisAudio.sort(
-  (a, b) => Number(a.vcSky) - Number(b.vcSky)
-);
-
-canaisRadio.sort(
-  (a, b) => Number(a.vcSky) - Number(b.vcSky)
-);
-
-canaisOutros.sort(
-  (a, b) => Number(a.vcSky) - Number(b.vcSky)
-);
+  const totalCanais = homologacao.length;
+  const canaisEncontradosQtd = homologacao.filter(item => item.presente).length;
+  const canaisAusentesQtd = homologacao.filter(item => !item.presente).length;
 
   if (painelResultado) {
-    function renderizarLista(lista) {
-
-  if (lista.length === 0) {
-
-    return `
-      <div class="resultado-item">
-        Nenhum canal encontrado
-      </div>
-    `;
-
-  }
-
-  return lista.map(item => `
-
-    <div class="resultado-item">
-
-      <span class="${
-        item.presente
-          ? "bolinha-verde"
-          : "bolinha-vermelha"
-      }">
-        ●
-      </span>
-
-      VC ${item.vcSky} - ${item.canal}
-
-    </div>
-
-  `).join("");
-
-}
-    const totalCanais = homologacao.length;
-
-const canaisEncontradosQtd =
-  homologacao.filter(
-    item => item.presente
-  ).length;
-
-const canaisAusentesQtd =
-  homologacao.filter(
-    item => !item.presente
-  ).length;
     painelResultado.innerHTML = `
       <div class="resultado-titulo">Resultado da Homologação</div>
 
       <div class="resultado-subtitulo">String de serviços em hexadecimal</div>
       <div class="resultado-box">${listaHexadecimal.join("  ")}</div>
 
-<div class="resultado-subtitulo">String de serviços em decimal</div>
-<div class="resultado-box">
+      <div class="resultado-subtitulo">String de serviços em decimal</div>
+      <div class="resultado-box">
+        ${[...new Set(listaDecimal)].sort((a, b) => a - b).join(", ")}
+      </div>
 
-${[...new Set(listaDecimal)]
-  .sort((a, b) => a - b)
-  .join(", ")}
+      <div class="resultado-subtitulo">Resumo da análise entre pacote e string</div>
+      <div class="resultado-box">
+        Total de canais do pacote: ${totalCanais}<br>
+        Canais encontrados na string: ${canaisEncontradosQtd}<br>
+        Canais ausentes na string: ${canaisAusentesQtd}
+      </div>
 
-</div>
+      <div class="resultado-subtitulo">▼ Canais de vídeo</div>
+      <div class="resultado-lista">
+        ${renderizarLista(canaisVideo)}
+      </div>
 
-    <div class="resultado-subtitulo">
-Resumo da análise entre pacote e string
-</div>
+      <div class="resultado-subtitulo">▼ Canais de áudio</div>
+      <div class="resultado-lista">
+        ${renderizarLista(canaisAudio)}
+      </div>
 
-<div class="resultado-box">
-Total de canais do pacote: ${totalCanais}<br>
-Canais encontrados na string: ${canaisEncontradosQtd}<br>
-Canais ausentes na string: ${canaisAusentesQtd}
-</div>
+      <div class="resultado-subtitulo">▼ Canais de rádio</div>
+      <div class="resultado-lista">
+        ${renderizarLista(canaisRadio)}
+      </div>
 
-<div class="resultado-subtitulo">
-▼ Canais de vídeo
-</div>
-
-<div class="resultado-lista">
-${renderizarLista(canaisVideo)}
-</div>
-
-<div class="resultado-subtitulo">
-▼ Canais de áudio
-</div>
-
-<div class="resultado-lista">
-${renderizarLista(canaisAudio)}
-</div>
-
-<div class="resultado-subtitulo">
-▼ Canais de rádio
-</div>
-
-<div class="resultado-lista">
-${renderizarLista(canaisRadio)}
-</div>
-
-<div class="resultado-subtitulo">
-▼ Outros
-</div>
-
-<div class="resultado-lista">
-${renderizarLista(canaisOutros)}
-</div>
+      <div class="resultado-subtitulo">▼ Outros</div>
+      <div class="resultado-lista">
+        ${renderizarLista(canaisOutros)}
+      </div>
     `;
   }
 
@@ -1141,31 +1007,24 @@ ${renderizarLista(canaisOutros)}
   }
 }
 
-/* ===== LIMPAR CAMPOS ===== */
+/* =========================
+   LIMPAR CAMPOS
+========================= */
 function limparCampos() {
   const campoComando = document.getElementById("comando");
   const painelResultado = document.getElementById("painelResultado");
   const statusInfo = document.getElementById("statusInfo");
   const resultadoGrupo = document.getElementById("resultadoGrupo");
 
-  if (campoComando) {
-    campoComando.value = "";
-  }
-
-  if (painelResultado) {
-    painelResultado.innerHTML = "";
-  }
-
-  if (statusInfo) {
-    statusInfo.textContent = "";
-  }
-
-  if (resultadoGrupo) {
-    resultadoGrupo.style.display = "none";
-  }
+  if (campoComando) campoComando.value = "";
+  if (painelResultado) painelResultado.innerHTML = "";
+  if (statusInfo) statusInfo.textContent = "";
+  if (resultadoGrupo) resultadoGrupo.style.display = "none";
 }
 
-/* ===== INICIALIZAÇÃO ===== */
+/* =========================
+   INICIALIZAÇÃO
+========================= */
 carregarPacotesHomologacao();
 </script>
 
