@@ -523,7 +523,7 @@ button:active {
   </div>
 
   <!-- ===== BANNER ===== -->
-  <img id="banner" src="arquivos/banner.png" alt="Banner">
+  <img id="banner" src="arquivos/banner.png">
 
   <!-- ======================================================= -->
   <!-- FORMULÁRIO -->
@@ -652,7 +652,11 @@ async function carregarPacotesHomologacao() {
     select.appendChild(option);
   }
 }
-
+function calcularLimiteInicial() {
+  const banner = document.getElementById('banner');
+  if (!banner) return;
+  limiteInicial = Math.max(0, banner.offsetHeight - HEADER_TOTAL);
+}
 /* ===== HEADER / SCROLL ===== */
 function atualizarEstadoCabecalho() {
   const topbars = document.querySelectorAll(".top-bar");
