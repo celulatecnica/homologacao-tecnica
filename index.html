@@ -729,13 +729,40 @@ async function carregarCanais() {
       continue;
     }
 
-    const canal = partes[0].trim();
+    for (let i = 1; i < linhas.length; i++) {
 
-    const caService = partes
-      .slice(2)
-      .join(";")
-      .replace(/"/g, "")
-      .trim();
+  const partes = linhas[i].split(";");
+
+  if (partes.length < 6) {
+    continue;
+  }
+
+  const canal = partes[0].trim();
+
+  const caService = partes[2].trim();
+
+  const tipo = partes[5].trim().toUpperCase();
+
+  if (tipo === "CANAL ABERTO") {
+    continue;
+  }
+
+  const servicos = caService
+    .split(",")
+    .map(servico => servico.trim())
+    .filter(servico => servico !== "");
+
+  servicos.forEach(function(servico) {
+
+    if (!mapaServicos[servico]) {
+      mapaServicos[servico] = [];
+    }
+
+    mapaServicos[servico].push(canal);
+
+  });
+
+}
 
     const servicos = caService
       .split(",")
