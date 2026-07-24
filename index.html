@@ -750,32 +750,74 @@ async function carregarCanais() {
       continue;
     }
 
-    const servicos = caService
-      .split(",")
-      .map(function (servico) {
-        return servico.trim();
-      })
-      .filter(function (servico) {
-        return servico !== "";
-      });
+const servicos = caService
+  .split(",")
+  .map(function (servico) {
+    return servico.trim();
+  })
+  .filter(function (servico) {
+    return servico !== "";
+  });
 
-    servicos.forEach(function (servico) {
-      if (!mapaServicos[servico]) {
-        mapaServicos[servico] = [];
-      }
+servicos.forEach(function (servico) {
 
-      mapaServicos[servico].push({
-        canal: canal,
-        caService: servico,
-        vcSky: partes[3].trim(),
-        vcTvro: partes[4].trim(),
-        tipo: partes[5].trim()
-      });
-    });
+  if (!mapaServicos[servico]) {
+    mapaServicos[servico] = [];
+  }
+
+  mapaServicos[servico].push({
+    canal: canal,
+    caService: caService,
+    servicos: servicos,
+    vcSky: partes[3].trim(),
+    vcTvro: partes[4].trim(),
+    tipo: partes[5].trim()
+  });
+
+});
   }
 
   mapaServicosCache = mapaServicos;
   return mapaServicos;
+}
+
+async function carregarPacote(nomeArquivo) {
+
+  const url =
+    "https://raw.githubusercontent.com/celulatecnica/homologacao-tecnica/main/pacotes/" +
+    nomeArquivo;
+
+  const resposta = await fetch(url);
+
+  if (!resposta.ok) {
+    throw new Error("Erro ao carregar o pacote");
+  }
+
+  const texto = await resposta.text();
+
+  const linhas = texto
+    .split(/\r?\n/)
+    .filter(linha => linha.trim() !== "");
+
+  const canais = [];
+
+  for (let i = 1; i < linhas.length; i++) {
+
+    const partes = linhas[i].split(";");
+
+    if (partes.length < 2) {
+      continue;
+    }
+
+    canais.push({
+      vcSky: partes[0].trim(),
+      canal: partes[1].trim()
+    });
+
+  }
+
+  return canais;
+
 }
 
 /* ===== ANALISAR STRING ===== */
@@ -902,19 +944,70 @@ const canaisEncontrados = [];
     }
     return;
   }
-  const canaisVideo = canaisEncontrados.filter(item =>
+  const servicosEncontrados =
+  [...new Set(listaDecimal.map(String))];
+
+const canaisPacote =
+  await carregarPacote(pacoteSelecionado);
+
+const homologacao = [];
+
+for (const canalPacote of canaisPacote) {
+
+  let registro = null;
+
+  for (const chave in mapaServicos) {
+
+    const encontrado = mapaServicos[chave].find(item =>
+      item.canal.trim().toUpperCase() ===
+      canalPacote.canal.trim().toUpperCase()
+    );
+
+    if (encontrado) {
+      registro = encontrado;
+      break;
+    }
+
+  }
+
+  if (!registro) {
+    continue;
+  }
+
+  if (
+    registro.tipo.toUpperCase() ===
+    "CANAL ABERTO"
+  ) {
+    continue;
+  }
+
+  const presente =
+    registro.servicos.some(servico =>
+      servicosEncontrados.includes(servico)
+    );
+
+  homologacao.push({
+    canal: registro.canal,
+    vcSky: registro.vcSky,
+    tipo: registro.tipo,
+    presente: presente
+  });
+
+}
+
+  const canaisVideo = homologacao.filter(item =>
   item.tipo.toUpperCase() === "PACOTE"
 );
 
-const canaisAudio = canaisEncontrados.filter(item =>
+const canaisAudio = homologacao.filter(item =>
   item.tipo.toUpperCase() === "AUDIO"
 );
 
-const canaisRadio = canaisEncontrados.filter(item =>
+const canaisRadio = homologacao.filter(item =>
   item.tipo.toUpperCase() === "RADIO"
 );
 
-const canaisOutros = canaisEncontrados.filter(item => {
+const canaisOutros = homologacao.filter(item => {
 
   const tipo = item.tipo.toUpperCase();
 
@@ -945,18 +1038,26 @@ canaisOutros.sort(
     function renderizarLista(lista) {
 
   if (lista.length === 0) {
+
     return `
       <div class="resultado-item">
         Nenhum canal encontrado
       </div>
     `;
+
   }
 
   return lista.map(item => `
 
     <div class="resultado-item">
 
-      <span class="bolinha-verde">●</span>
+      <span class="${
+        item.presente
+          ? "bolinha-verde"
+          : "bolinha-vermelha"
+      }">
+        ●
+      </span>
 
       VC ${item.vcSky} - ${item.canal}
 
@@ -965,6 +1066,17 @@ canaisOutros.sort(
   `).join("");
 
 }
+    const totalCanais = homologacao.length;
+
+const canaisEncontradosQtd =
+  homologacao.filter(
+    item => item.presente
+  ).length;
+
+const canaisAusentesQtd =
+  homologacao.filter(
+    item => !item.presente
+  ).length;
     painelResultado.innerHTML = `
       <div class="resultado-titulo">Resultado da Homologação</div>
 
@@ -980,8 +1092,14 @@ ${[...new Set(listaDecimal)]
 
 </div>
 
-     <div class="resultado-subtitulo">
+    <div class="resultado-subtitulo">
 Resumo da análise entre pacote e string
+</div>
+
+<div class="resultado-box">
+Total de canais do pacote: ${totalCanais}<br>
+Canais encontrados na string: ${canaisEncontradosQtd}<br>
+Canais ausentes na string: ${canaisAusentesQtd}
 </div>
 
 <div class="resultado-subtitulo">
