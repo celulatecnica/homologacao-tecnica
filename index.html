@@ -552,7 +552,7 @@ button:active {
         Em caso de erros, comunique-se com nosso time
         <span class="footer-nowrap">
           através de
-          <a href="mailto:celulatecnica@directvla.com.co">celulatecnica@directvla.com.co</a>
+          <a href="mailto:celulatecnica@sky.com.br">celulatecnica@directvla.com.co</a>
         </span>.
       </p>
 
@@ -701,10 +701,10 @@ async function carregarCanais() {
     return mapaServicosCache;
   }
 
-  const resposta = await fetch("arquivos/CA_Services.csv?v=" + Date.now());
+  const resposta = await fetch("arquivos/ca_services.csv?v=" + Date.now());
 
   if (!resposta.ok) {
-    throw new Error("Não foi possível carregar o arquivo CA_Services.csv");
+    throw new Error("Não foi possível carregar o arquivo ca_services.csv");
   }
 
   const conteudo = await resposta.text();
@@ -797,7 +797,7 @@ async function analisar() {
   try {
     mapaServicos = await carregarCanais();
   } catch (erro) {
-    campoResultado.value = "Erro ao carregar CA_Services.csv: " + erro.message;
+    campoResultado.value = "Erro ao carregar os serviços." + erro.message;
     return;
   }
 
