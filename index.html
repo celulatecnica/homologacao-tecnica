@@ -328,10 +328,11 @@ textarea:focus {
 }
 
 .resultado-item {
-  width: calc(50% - 5px);
-  background: #F5F5F7;
-  border-radius: 8px;
-  padding: 10px 12px;
+  width: 100%;
+  background: #EAEAEA;
+  border-radius: 10px;
+  padding: 14px 16px;
+  font-size: 16px;
 }
 
 .bolinha-verde {
@@ -841,9 +842,11 @@ async function analisar() {
     return;
   }
 
-  const resultados = [];
-  const listaHexadecimal = [];
-  const listaDecimal = [];
+const resultados = [];
+
+const listaHexadecimal = [];
+const listaDecimal = [];
+const canaisEncontrados = [];
 
   while (posicao + 14 <= texto.length) {
     const bloco = texto.substring(posicao, posicao + 14);
@@ -876,12 +879,16 @@ async function analisar() {
 
     let nomeCanal = "Canal não encontrado";
     if (mapaServicos[decimalTexto]) {
-      nomeCanal = mapaServicos[decimalTexto]
-        .map(function (item) {
-          return item.canal;
-        })
-        .join(" / ");
-    }
+
+  nomeCanal = mapaServicos[decimalTexto]
+    .map(item => item.canal)
+    .join(" / ");
+
+  mapaServicos[decimalTexto].forEach(item => {
+    canaisEncontrados.push(item);
+  });
+
+}
 
     resultados.push(bloco + " = " + decimal + " - " + nomeCanal);
     posicao = posicao + 14;
@@ -893,8 +900,69 @@ async function analisar() {
     }
     return;
   }
+  const canaisVideo = canaisEncontrados.filter(item =>
+  item.tipo.toUpperCase() === "PACOTE"
+);
+
+const canaisAudio = canaisEncontrados.filter(item =>
+  item.tipo.toUpperCase() === "AUDIO"
+);
+
+const canaisRadio = canaisEncontrados.filter(item =>
+  item.tipo.toUpperCase() === "RADIO"
+);
+
+const canaisOutros = canaisEncontrados.filter(item => {
+
+  const tipo = item.tipo.toUpperCase();
+
+  return (
+    tipo === "CARTELA/MOSAICO" ||
+    tipo === "SKY+"
+  );
+
+});
+
+  canaisVideo.sort(
+  (a, b) => Number(a.vcSky) - Number(b.vcSky)
+);
+
+canaisAudio.sort(
+  (a, b) => Number(a.vcSky) - Number(b.vcSky)
+);
+
+canaisRadio.sort(
+  (a, b) => Number(a.vcSky) - Number(b.vcSky)
+);
+
+canaisOutros.sort(
+  (a, b) => Number(a.vcSky) - Number(b.vcSky)
+);
 
   if (painelResultado) {
+    function renderizarLista(lista) {
+
+  if (lista.length === 0) {
+    return `
+      <div class="resultado-item">
+        Nenhum canal encontrado
+      </div>
+    `;
+  }
+
+  return lista.map(item => `
+
+    <div class="resultado-item">
+
+      <span class="bolinha-verde">●</span>
+
+      VC ${item.vcSky} - ${item.canal}
+
+    </div>
+
+  `).join("");
+
+}
     painelResultado.innerHTML = `
       <div class="resultado-titulo">Resultado da Homologação</div>
 
@@ -904,7 +972,41 @@ async function analisar() {
       <div class="resultado-subtitulo">String de serviços em decimal</div>
       <div class="resultado-box">${listaDecimal.join(", ")}</div>
 
-      <div class="resultado-subtitulo">Resumo da análise entre pacote e string</div>
+     <div class="resultado-subtitulo">
+Resumo da análise entre pacote e string
+</div>
+
+<div class="resultado-subtitulo">
+▼ Canais de vídeo
+</div>
+
+<div class="resultado-lista">
+${renderizarLista(canaisVideo)}
+</div>
+
+<div class="resultado-subtitulo">
+▼ Canais de áudio
+</div>
+
+<div class="resultado-lista">
+${renderizarLista(canaisAudio)}
+</div>
+
+<div class="resultado-subtitulo">
+▼ Canais de rádio
+</div>
+
+<div class="resultado-lista">
+${renderizarLista(canaisRadio)}
+</div>
+
+<div class="resultado-subtitulo">
+▼ Outros
+</div>
+
+<div class="resultado-lista">
+${renderizarLista(canaisOutros)}
+</div>
     `;
   }
 
