@@ -575,16 +575,74 @@ let mapaServicosCache = null;
   Edite esta lista com os pacotes que você quiser exibir no campo:
   "Selecione o pacote que será homologado:"
 */
-const pacotesHomologacao = [
-  "Pacote Básico",
-  "Pacote Família",
-  "Pacote Entretenimento",
-  "Pacote Esportes",
-  "Pacote Filmes",
-  "Pacote Premium",
-  "Pacote HD",
-  "Pacote 4K"
-];
+async function carregarPacotesHomologacao() {
+
+  const select =
+    document.getElementById("pacoteHomologado");
+
+  if (!select) return;
+
+  try {
+
+    const resposta = await fetch(
+      "https://api.github.com/repos/celulatecnica/homologacao-tecnica/contents/pacotes"
+    );
+
+    if (!resposta.ok) {
+      throw new Error("Erro ao consultar GitHub");
+    }
+
+    const arquivos = await resposta.json();
+
+    arquivos
+      .filter(item =>
+        item.type === "file" &&
+        item.name.toLowerCase().endsWith(".csv")
+      )
+      .forEach(item => {
+
+        const nomeArquivo = item.name;
+
+const nomeExibicao = nomeArquivo
+  .replace(/\.csv$/i, "")
+  .replace(/_/g, " ")
+  .replace(/\b\w/g, letra => letra.toUpperCase());
+
+        const option =
+          document.createElement("option");
+
+        option.value = nomeArquivo;
+        option.textContent = nomeExibicao;
+
+        select.appendChild(option);
+
+      });
+
+    select.addEventListener("change", function() {
+
+      this.classList.toggle(
+        "ativo",
+        this.value !== ""
+      );
+
+    });
+
+  }
+  catch (erro) {
+
+    console.error(erro);
+
+    const option =
+      document.createElement("option");
+
+    option.textContent =
+      "Erro ao carregar pacotes";
+
+    select.appendChild(option);
+
+  }
+
+}
 
 /* ===== NORMALIZAR TEXTO ===== */
 function normalizarTexto(valor) {
@@ -592,21 +650,55 @@ function normalizarTexto(valor) {
 }
 
 /* ===== CARREGAR SELECT DE PACOTES ===== */
-function carregarPacotesHomologacao() {
-  const select = document.getElementById("pacoteHomologado");
+async function carregarPacotesHomologacao() {
 
-  if (!select) return;
+  const select =
+    document.getElementById("pacoteHomologado");
 
-  pacotesHomologacao.forEach(function(pacote) {
-    const option = document.createElement("option");
-    option.value = pacote;
-    option.textContent = pacote;
-    select.appendChild(option);
-  });
+  try {
+
+    const resposta = await fetch(
+      "pacotes/pacotes.json?v=" + Date.now()
+    );
+
+    const arquivos = await resposta.json();
+
+    arquivos.forEach(function(nomeArquivo) {
+
+      const nomeFormatado = nomeArquivo
+        .replace(".csv", "")
+        .replace(/_/g, " ")
+        .replace(/\b\w/g, letra => letra.toUpperCase());
+
+      const option =
+        document.createElement("option");
+
+      option.value = nomeArquivo;
+
+      option.textContent = nomeFormatado;
+
+      select.appendChild(option);
+
+    });
+
+  } catch (erro) {
+
+    console.error(
+      "Erro ao carregar lista de pacotes",
+      erro
+    );
+
+  }
 
   select.addEventListener("change", function() {
-    this.classList.toggle("ativo", this.value !== "");
+
+    this.classList.toggle(
+      "ativo",
+      this.value !== ""
+    );
+
   });
+
 }
 
 /* ===== HEADER / SCROLL ===== */
