@@ -928,16 +928,6 @@ for (const canalPacote of canaisPacote) {
   });
 }
 
-const presente = String(registro.vcSky).trim() === String(canalPacote.vcSky).trim();
-
-homologacao.push({
-  canal: registro.canal,
-  vcSky: registro.vcSky,
-  tipo: registro.tipo,
-  presente
-});
-  }
-
   const canaisVideo = homologacao
     .filter(item => String(item.tipo).toUpperCase() === "PACOTE")
     .sort((a, b) => Number(a.vcSky) - Number(b.vcSky));
