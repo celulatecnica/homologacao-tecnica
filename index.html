@@ -577,8 +577,7 @@ let mapaServicosCache = null;
 */
 async function carregarPacotesHomologacao() {
 
-  const select =
-    document.getElementById("pacoteHomologado");
+  const select = document.getElementById("pacoteHomologado");
 
   if (!select) return;
 
@@ -601,43 +600,30 @@ async function carregarPacotesHomologacao() {
       )
       .forEach(item => {
 
-        const nomeArquivo = item.name;
+        const option = document.createElement("option");
 
-const nomeExibicao = nomeArquivo
-  .replace(/\.csv$/i, "")
-  .replace(/_/g, " ")
-  .replace(/\b\w/g, letra => letra.toUpperCase());
+        option.value = item.name;
 
-        const option =
-          document.createElement("option");
-
-        option.value = nomeArquivo;
-        option.textContent = nomeExibicao;
+        option.textContent = item.name
+          .replace(/\.csv$/i, "")
+          .replace(/_/g, " ")
+          .replace(/\b\w/g, letra => letra.toUpperCase());
 
         select.appendChild(option);
 
       });
 
     select.addEventListener("change", function() {
-
-      this.classList.toggle(
-        "ativo",
-        this.value !== ""
-      );
-
+      this.classList.toggle("ativo", this.value !== "");
     });
 
   }
   catch (erro) {
 
-    console.error(erro);
+    console.error("Erro ao carregar pacotes:", erro);
 
-    const option =
-      document.createElement("option");
-
-    option.textContent =
-      "Erro ao carregar pacotes";
-
+    const option = document.createElement("option");
+    option.textContent = "Erro ao carregar pacotes";
     select.appendChild(option);
 
   }
@@ -647,58 +633,6 @@ const nomeExibicao = nomeArquivo
 /* ===== NORMALIZAR TEXTO ===== */
 function normalizarTexto(valor) {
   return String(valor || "").trim();
-}
-
-/* ===== CARREGAR SELECT DE PACOTES ===== */
-async function carregarPacotesHomologacao() {
-
-  const select =
-    document.getElementById("pacoteHomologado");
-
-  try {
-
-    const resposta = await fetch(
-      "pacotes/pacotes.json?v=" + Date.now()
-    );
-
-    const arquivos = await resposta.json();
-
-    arquivos.forEach(function(nomeArquivo) {
-
-      const nomeFormatado = nomeArquivo
-        .replace(".csv", "")
-        .replace(/_/g, " ")
-        .replace(/\b\w/g, letra => letra.toUpperCase());
-
-      const option =
-        document.createElement("option");
-
-      option.value = nomeArquivo;
-
-      option.textContent = nomeFormatado;
-
-      select.appendChild(option);
-
-    });
-
-  } catch (erro) {
-
-    console.error(
-      "Erro ao carregar lista de pacotes",
-      erro
-    );
-
-  }
-
-  select.addEventListener("change", function() {
-
-    this.classList.toggle(
-      "ativo",
-      this.value !== ""
-    );
-
-  });
-
 }
 
 /* ===== HEADER / SCROLL ===== */
