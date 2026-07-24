@@ -6,10 +6,13 @@
 
 <title>Homologação Técnica</title>
 
-<style>
 /* ===== RESET ===== */
 * {
   box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 html,
@@ -22,6 +25,7 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
   background: #0F0F0F;
   color: #f5f5f7;
+  padding-top: 100px;
 }
 
 /* ===== BASE TOP BAR ===== */
@@ -30,10 +34,8 @@ body {
   left: 0;
   width: 100%;
   z-index: 999;
-
   backdrop-filter: blur(30px);
   -webkit-backdrop-filter: blur(30px);
-
   transition: transform 0.3s ease, background 0.3s ease, border-color 0.3s ease;
 }
 
@@ -41,12 +43,10 @@ body {
   width: 950px;
   max-width: calc(100% - 32px);
   margin: auto;
-
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
-
   position: relative;
   z-index: 2;
 }
@@ -57,15 +57,12 @@ body {
   height: 45px;
 }
 
-/* Primeira barra mais sólida */
 .blur-layer {
   position: absolute;
   inset: 0;
-
   backdrop-filter: blur(30px);
   -webkit-backdrop-filter: blur(30px);
-
-  background: rgba(15,15,15,0.95);
+  background: rgba(15, 15, 15, 0.95);
   z-index: 1;
 }
 
@@ -73,10 +70,8 @@ body {
 .top-bar-sub {
   top: 45px;
   height: 55px;
-
-  background: rgba(0,0,0,0.20);
+  background: rgba(0, 0, 0, 0.2);
   border-bottom: 1px solid #4D4D4D;
-
   backdrop-filter: blur(30px);
   -webkit-backdrop-filter: blur(30px);
 }
@@ -127,18 +122,17 @@ body {
 }
 
 /* ===== HEADER ESCURO AO SCROLL ===== */
-/* Mantém o visual escuro/transparente e evita ficar branco */
 .top-bar.scrolled {
   background: transparent;
   border-bottom: none;
 }
 
 .top-bar.scrolled .blur-layer {
-  background: rgba(15,15,15,0.95);
+  background: rgba(15, 15, 15, 0.95);
 }
 
 .top-bar-sub.scrolled {
-  background: rgba(0,0,0,0.20);
+  background: rgba(0, 0, 0, 0.2);
   border-bottom: 1px solid #4D4D4D;
 }
 
@@ -234,10 +228,8 @@ textarea {
   border: none;
   outline: none;
   border-radius: 12px;
-
   background: #2A2A2A;
   color: #f5f5f7;
-
   font-size: 18px;
   transition: all 0.2s ease;
 }
@@ -273,7 +265,7 @@ textarea:hover {
 select:focus,
 textarea:focus {
   background: #333333;
-  box-shadow: 0 0 0 2px rgba(0,113,227,0.75);
+  box-shadow: 0 0 0 2px rgba(0, 113, 227, 0.75);
 }
 
 #comando {
@@ -287,21 +279,14 @@ textarea:focus {
   background: #F5F5F7;
   padding: 60px 0;
 }
-  
+
 .resultado-wrapper {
   width: 950px;
   max-width: calc(100% - 32px);
   margin: 0 auto;
   box-sizing: border-box;
 }
-  
-.painel-resultado {
-  background: transparent;
-  color: #1d1d1f;
-  padding: 0 16px;
-  text-align: left;
-}
-  
+
 .painel-resultado {
   background: #ffffff;
   min-height: 250px;
@@ -332,8 +317,8 @@ textarea:focus {
   margin-bottom: 20px;
   background: #F5F5F7;
   font-family: Consolas, monospace;
-white-space: normal;
-word-break: break-all;
+  white-space: normal;
+  word-break: break-all;
 }
 
 .resultado-lista {
@@ -375,13 +360,10 @@ button {
   font-size: 16px;
   font-weight: 600;
   cursor: pointer;
-
   background: #0071e3;
   color: white;
-
   border: none;
   border-radius: 12px;
-
   transition: all 0.2s ease;
 }
 
@@ -415,7 +397,6 @@ button:active {
   height: 280px;
   background: #0F0F0F;
   width: 100%;
-
   display: flex;
   justify-content: center;
   align-items: flex-end;
@@ -498,17 +479,17 @@ button:active {
   }
 
   .link-upload {
-  color: #f5f5f7;
-  font-weight: 600;
-  text-decoration: none;
-  transition: all 0.2s ease;
+    color: #f5f5f7;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s ease;
   }
 
   .link-upload:hover {
-  color: #2997ff;
-  text-decoration: underline;
+    color: #2997ff;
+    text-decoration: underline;
   }
-  
+
   .acoes {
     flex-direction: column;
     align-items: stretch;
@@ -518,187 +499,120 @@ button:active {
     width: 100%;
   }
 }
-</style>
 </head>
 
 <body>
-
-<!-- ===== BARRA 1 ===== -->
-<div class="top-bar top-bar-main" id="topbarMain">
-  <div class="blur-layer"></div>
-
-<div class="top-bar-inner">
-<img class="logo" src="arquivos/icon_gpt_branco.png" alt="Ícone GPT">
-</div>
-
-<!-- ===== BARRA 2 ===== -->
-<div class="top-bar top-bar-sub" id="topbarSub">
-  <div class="top-bar-inner">
-
-    <div class="titulo-pequeno">
-      Homologação Técnica
+  <!-- ===== BARRA 1 ===== -->
+  <div class="top-bar top-bar-main" id="topbarMain">
+    <div class="blur-layer"></div>
+    <div class="top-bar-inner">
+      <img class="logo" src="arquivos/icon_gpt_branco.png" alt="Ícone GPT">
     </div>
-
-    <div class="menu-header">
-      <a href="index.html" class="menu-item ativo">String</a>
-      <a href="canales.html" class="menu-item">Canais Abertos</a>
-    </div>
-
   </div>
-</div>
 
-<!-- ===== BANNER ===== -->
-<img id="banner" src="arquivos/banner.png" alt="Banner">
+  <!-- ===== BARRA 2 ===== -->
+  <div class="top-bar top-bar-sub" id="topbarSub">
+    <div class="top-bar-inner">
+      <div class="titulo-pequeno">Homologação Técnica</div>
+      <div class="menu-header">
+        <a href="index.html" class="menu-item ativo">String</a>
+        <a href="canales.html" class="menu-item">Canais Abertos</a>
+      </div>
+    </div>
+  </div>
 
-<!-- ======================================================= -->
-<!-- FORMULÁRIO -->
-<!-- ======================================================= -->
+  <!-- ===== BANNER ===== -->
+  <img id="banner" src="arquivos/banner.png" alt="Banner">
 
-<div class="container">
+  <!-- ======================================================= -->
+  <!-- FORMULÁRIO -->
+  <!-- ======================================================= -->
+  <div class="container">
+    <h1 class="titulo-principal">Analisador de String</h1>
+    <div class="linha"></div>
 
-  <h1 class="titulo-principal">
-    Analisador de String
-  </h1>
+    <div class="form-card">
+      <div class="campo-grupo">
+        <label class="campo-label" for="pacoteHomologado">
+          Selecione o pacote que será homologado:
+        </label>
 
-  <div class="linha"></div>
+        <select id="pacoteHomologado">
+          <option value="" disabled selected>Selecione o pacote</option>
+        </select>
 
-  <div class="form-card">
-
-    <div class="campo-grupo">
-
-      <label class="campo-label" for="pacoteHomologado">
-        Selecione o pacote que será homologado:
-      </label>
-
-      <select id="pacoteHomologado">
-        <option value="" disabled selected>
-          Selecione o pacote
-        </option>
-      </select>
-
-      <div class="campo-ajuda">
-        Para cadastrar um novo pacote,
-        <a
-          href="https://github.com/celulatecnica/homologacao-tecnica/upload/main/pacotes"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="link-upload">
-          clique aqui
-        </a>
-        e carregue um arquivo CSV.
+        <div class="campo-ajuda">
+          Para cadastrar um novo pacote,
+          <a
+            href="https://github.com/celulatecnica/homologacao-tecnica/upload/main/pacotes"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="link-upload"
+          >
+            clique aqui
+          </a>
+          e carregue um arquivo CSV.
+        </div>
       </div>
 
+      <div class="campo-grupo">
+        <label class="campo-label" for="comando">String para análise:</label>
+        <textarea id="comando" placeholder="Cole a string aqui..."></textarea>
+      </div>
+
+      <div class="acoes">
+        <button type="button" onclick="analisar()">Analisar</button>
+        <button type="button" class="botao-secundario" onclick="limparCampos()">Limpar</button>
+      </div>
     </div>
-
-    <div class="campo-grupo">
-
-      <label class="campo-label" for="comando">
-        String para análise:
-      </label>
-
-      <textarea
-        id="comando"
-        placeholder="Cole a string aqui...">
-      </textarea>
-
-    </div>
-
-    <div class="acoes">
-      <button type="button" onclick="analisar()">
-        Analisar
-      </button>
-
-      <button
-        type="button"
-        class="botao-secundario"
-        onclick="limparCampos()">
-        Limpar
-      </button>
-    </div>
-
   </div>
 
-</div>
-
-<!-- ======================================================= -->
-<!-- RESULTADO -->
-<!-- ======================================================= -->
-
-<div id="resultadoGrupo">
-
-  <div class="resultado-wrapper">
-
-    <div
-      id="painelResultado"
-      class="painel-resultado">
+  <!-- ======================================================= -->
+  <!-- RESULTADO -->
+  <!-- ======================================================= -->
+  <div id="resultadoGrupo">
+    <div class="resultado-wrapper">
+      <div id="painelResultado" class="painel-resultado"></div>
+      <div class="status-info" id="statusInfo"></div>
     </div>
-
-    <div
-      class="status-info"
-      id="statusInfo">
-    </div>
-
   </div>
 
-</div>
-
-<!-- ======================================================= -->
-<!-- RODAPÉ -->
-<!-- ======================================================= -->
-
-<div class="fake-content">
-
-  <footer class="footer-faixa">
-
-    <div class="footer-inner">
-
-      <p class="footer-text">
-        Esta ferramenta foi desenvolvida pela Célula Técnica com o objetivo de otimizar a análise e homologação técnica de strings de comando.
-
-        Em caso de erros, comunique-se com nosso time através de
-
-        <a href="mailto:celulatecnica@sky.com.br">
-          celulatecnica@sky.com.br
-        </a>.
-      </p>
-
-      <div class="footer-divider"></div>
-
-      <p class="footer-copy">
-        Homologação Técnica © 2026 Célula Técnica, Engenharia WAIKEN.
-        Todos os direitos reservados.
-      </p>
-
-    </div>
-
-  </footer>
-
-</div>
-
+  <!-- ======================================================= -->
+  <!-- RODAPÉ -->
+  <!-- ======================================================= -->
+  <div class="fake-content">
+    <footer class="footer-faixa">
+      <div class="footer-inner">
+        <p class="footer-text">
+          Esta ferramenta foi desenvolvida pela Célula Técnica com o objetivo de otimizar a análise e homologação técnica de strings de comando.
+          Em caso de erros, comunique-se com nosso time através de
+          <a href="mailto:celulatecnica@sky.com.br">celulatecnica@sky.com.br</a>.
+        </p>
+        <div class="footer-divider"></div>
+        <p class="footer-copy">
+          Homologação Técnica © 2026 Célula Técnica, Engenharia WAIKEN.
+          Todos os direitos reservados.
+        </p>
+      </div>
+    </footer>
+  </div>
 </body>
-  </footer>
-</div>
 
 <script>
 let mapaServicosCache = null;
 
 /*
   ===== LISTA DE PACOTES =====
-
-  Edite esta lista com os pacotes que você quiser exibir no campo:
-  "Selecione o pacote que será homologado:"
+  Carrega os arquivos CSV da pasta /pacotes no GitHub
 */
 async function carregarPacotesHomologacao() {
-
   const select = document.getElementById("pacoteHomologado");
-
   if (!select) return;
 
   try {
-
     const resposta = await fetch(
-  "https://api.github.com/repos/celulatecnica/homologacao-tecnica/contents/pacotes"
-);
+      "https://api.github.com/repos/celulatecnica/homologacao-tecnica/contents/pacotes"
+    );
 
     if (!resposta.ok) {
       throw new Error("Erro ao consultar GitHub");
@@ -712,68 +626,52 @@ async function carregarPacotesHomologacao() {
         item.name.toLowerCase().endsWith(".csv")
       )
       .forEach(item => {
-
         const option = document.createElement("option");
-
         option.value = item.name;
-
-option.textContent = item.name
-  .replace(/\.csv$/i, "")
-  .replace(/_/g, " ")
-  .replace(/\b\w/g, letra => letra.toUpperCase())
-  .replace(/\bHd\b/g, "HD")
-  .replace(/\bSd\b/g, "SD")
-  .replace(/\b4k\b/gi, "4K")
-  .replace(/\bUhd\b/g, "UHD")
-  .replace(/\bHdr\b/g, "HDR");
+        option.textContent = item.name
+          .replace(/\.csv$/i, "")
+          .replace(/_/g, " ")
+          .replace(/\b\w/g, letra => letra.toUpperCase())
+          .replace(/\bHd\b/g, "HD")
+          .replace(/\bSd\b/g, "SD")
+          .replace(/\b4k\b/gi, "4K")
+          .replace(/\bUhd\b/g, "UHD")
+          .replace(/\bHdr\b/g, "HDR");
 
         select.appendChild(option);
-
       });
 
-    select.addEventListener("change", function() {
+    select.addEventListener("change", function () {
       this.classList.toggle("ativo", this.value !== "");
     });
-
-  }
-  catch (erro) {
-
+  } catch (erro) {
     console.error("Erro ao carregar pacotes:", erro);
-
     const option = document.createElement("option");
     option.textContent = "Erro ao carregar pacotes";
     select.appendChild(option);
-
   }
-
-}
-
-/* ===== NORMALIZAR TEXTO ===== */
-function normalizarTexto(valor) {
-  return String(valor || "").trim();
 }
 
 /* ===== HEADER / SCROLL ===== */
 function atualizarEstadoCabecalho() {
   const topbars = document.querySelectorAll(".top-bar");
-
   const y = window.scrollY ||
             window.pageYOffset ||
             document.documentElement.scrollTop ||
             0;
 
   if (y >= 120) {
-    topbars.forEach(function(el) {
+    topbars.forEach(function (el) {
       el.classList.add("scrolled");
     });
   } else {
-    topbars.forEach(function(el) {
+    topbars.forEach(function (el) {
       el.classList.remove("scrolled");
     });
   }
 }
 
-window.addEventListener("scroll", function() {
+window.addEventListener("scroll", function () {
   const scrollY = window.scrollY ||
                   window.pageYOffset ||
                   document.documentElement.scrollTop ||
@@ -783,17 +681,12 @@ window.addEventListener("scroll", function() {
   const topSub = document.getElementById("topbarSub");
 
   let progresso = scrollY / 70;
-
   if (progresso > 1) {
     progresso = 1;
   }
 
   const movimento = -50 * progresso;
 
-  /*
-    Mesmo comportamento do código base:
-    a barra superior com a logo sobe e some ao descer a página.
-  */
   if (topMain) {
     topMain.style.transform = "translateY(" + movimento + "px)";
   }
@@ -821,70 +714,66 @@ async function carregarCanais() {
   }
 
   const conteudo = await resposta.text();
-
   const conteudoLimpo = conteudo.replace(/^\uFEFF/, "");
 
   const linhas = conteudoLimpo
     .split(/\r?\n/)
-    .map(function(linha) {
+    .map(function (linha) {
       return linha.trim();
     })
-    .filter(function(linha) {
+    .filter(function (linha) {
       return linha !== "";
     });
 
   const mapaServicos = {};
 
-for (let i = 1; i < linhas.length; i++) {
+  for (let i = 1; i < linhas.length; i++) {
+    const partes = linhas[i].split(";");
 
-  const partes = linhas[i].split(";");
-
-  if (partes.length < 6) {
-    continue;
-  }
-
-  const canal = partes[0].trim();
-
-  const caService = partes[2].trim();
-
-  const tipo = partes[5].trim().toUpperCase();
-
-  if (tipo === "CANAL ABERTO") {
-    continue;
-  }
-
-  const servicos = caService
-    .split(",")
-    .map(servico => servico.trim())
-    .filter(servico => servico !== "");
-
-  servicos.forEach(servico => {
-
-    if (!mapaServicos[servico]) {
-      mapaServicos[servico] = [];
+    if (partes.length < 6) {
+      continue;
     }
 
-mapaServicos[servico].push({
-  canal: canal,
-  caService: servico,
-  vcSky: partes[3].trim(),
-  vcTvro: partes[4].trim(),
-  tipo: partes[5].trim()
-});
+    const canal = partes[0].trim();
+    const caService = partes[2].trim();
+    const tipo = partes[5].trim().toUpperCase();
 
-  });
+    if (tipo === "CANAL ABERTO") {
+      continue;
+    }
 
-}
+    const servicos = caService
+      .split(",")
+      .map(function (servico) {
+        return servico.trim();
+      })
+      .filter(function (servico) {
+        return servico !== "";
+      });
+
+    servicos.forEach(function (servico) {
+      if (!mapaServicos[servico]) {
+        mapaServicos[servico] = [];
+      }
+
+      mapaServicos[servico].push({
+        canal: canal,
+        caService: servico,
+        vcSky: partes[3].trim(),
+        vcTvro: partes[4].trim(),
+        tipo: partes[5].trim()
+      });
+    });
+  }
 
   mapaServicosCache = mapaServicos;
-
   return mapaServicos;
 }
 
 /* ===== ANALISAR STRING ===== */
 async function analisar() {
   const campoComando = document.getElementById("comando");
-  const painelResultado = document.getElementById("painelResultado");;
+  const painelResultado = document.getElementById("painelResultado");
   const campoPacote = document.getElementById("pacoteHomologado");
   const statusInfo = document.getElementById("statusInfo");
   const resultadoGrupo = document.getElementById("resultadoGrupo");
@@ -893,13 +782,19 @@ async function analisar() {
     resultadoGrupo.style.display = "block";
   }
 
-  painelResultado.innerHTML = "Analisando...";
-  statusInfo.textContent = "";
+  if (painelResultado) {
+    painelResultado.innerHTML = "Analisando...";
+  }
+
+  if (statusInfo) {
+    statusInfo.textContent = "";
+  }
 
   const pacoteSelecionado = campoPacote ? campoPacote.value : "";
-
   if (!pacoteSelecionado) {
-    painelResultado.innerHTML = "Selecione o pacote que será homologado antes de analisar.";
+    if (painelResultado) {
+      painelResultado.innerHTML = "Selecione o pacote que será homologado antes de analisar.";
+    }
     return;
   }
 
@@ -909,37 +804,41 @@ async function analisar() {
     .toUpperCase();
 
   if (texto === "") {
-    painelResultado.innerHTML = "Informe uma string para analisar.";
+    if (painelResultado) {
+      painelResultado.innerHTML = "Informe uma string para analisar.";
+    }
     return;
   }
 
   let mapaServicos = {};
-
   try {
     mapaServicos = await carregarCanais();
   } catch (erro) {
-    painelResultado.innerHTML = "Erro ao carregar os serviços." + erro.message;
+    if (painelResultado) {
+      painelResultado.innerHTML = "Erro ao carregar os serviços. " + erro.message;
+    }
     return;
   }
 
   const posAA = texto.indexOf("AA");
-
   if (posAA === -1) {
-    painelResultado.innerHTML = "Nenhuma sequência AA foi encontrada.";
+    if (painelResultado) {
+      painelResultado.innerHTML = "Nenhuma sequência AA foi encontrada.";
+    }
     return;
   }
 
   let posicao = posAA - 13;
-
   if (posicao < 0) {
-    painelResultado.innerHTML = "Não existem 13 caracteres antes da primeira sequência AA.";
+    if (painelResultado) {
+      painelResultado.innerHTML = "Não existem 13 caracteres antes da primeira sequência AA.";
+    }
     return;
   }
 
-const resultados = [];
-
-const listaHexadecimal = [];
-const listaDecimal = [];
+  const resultados = [];
+  const listaHexadecimal = [];
+  const listaDecimal = [];
 
   while (posicao + 14 <= texto.length) {
     const bloco = texto.substring(posicao, posicao + 14);
@@ -966,66 +865,53 @@ const listaDecimal = [];
 
     const decimal = parseInt(hexadecimal, 16);
     const decimalTexto = String(decimal);
-    
+
     listaHexadecimal.push(bloco);
     listaDecimal.push(decimal);
-    
+
     let nomeCanal = "Canal não encontrado";
-
-if (mapaServicos[decimalTexto]) {
-
-  nomeCanal = mapaServicos[decimalTexto]
-    .map(item => item.canal)
-    .join(" / ");
-
-}
+    if (mapaServicos[decimalTexto]) {
+      nomeCanal = mapaServicos[decimalTexto]
+        .map(function (item) {
+          return item.canal;
+        })
+        .join(" / ");
+    }
 
     resultados.push(bloco + " = " + decimal + " - " + nomeCanal);
-
     posicao = posicao + 14;
   }
 
   if (resultados.length === 0) {
-    painelResultado.innerHTML = "Nenhum bloco válido foi encontrado.";
+    if (painelResultado) {
+      painelResultado.innerHTML = "Nenhum bloco válido foi encontrado.";
+    }
     return;
   }
 
-  painelResultado.innerHTML = `
+  if (painelResultado) {
+    painelResultado.innerHTML = `
+      <div class="resultado-titulo">Resultado da Homologação</div>
 
-<div class="resultado-titulo">
-Resultado da Homologação
-</div>
+      <div class="resultado-subtitulo">String de serviços em hexadecimal</div>
+      <div class="resultado-box">${listaHexadecimal.join("")}</div>
 
-<div class="resultado-subtitulo">
-String de serviços em hexadecimal
-</div>
+      <div class="resultado-subtitulo">String de serviços em decimal</div>
+      <div class="resultado-box">${listaDecimal.join(", ")}</div>
 
-<div class="resultado-box">
-${listaHexadecimal.join("")}
-</div>
+      <div class="resultado-subtitulo">Resumo da análise entre pacote e string</div>
+    `;
+  }
 
-<div class="resultado-subtitulo">
-String de serviços em decimal
-</div>
-
-<div class="resultado-box">
-${listaDecimal.join(", ")}
-</div>
-
-<div class="resultado-subtitulo">
-Resumo da análise entre pacote e string
-</div>
-
-`;
-
-  statusInfo.textContent = "Análise concluída para o pacote: " + pacoteSelecionado + ".";
+  if (statusInfo) {
+    statusInfo.textContent = "Análise concluída para o pacote: " + pacoteSelecionado + ".";
+  }
 }
 
 /* ===== LIMPAR CAMPOS ===== */
 function limparCampos() {
   const campoComando = document.getElementById("comando");
-  const painelResultado =
-document.getElementById("painelResultado");
+  const painelResultado = document.getElementById("painelResultado");
   const statusInfo = document.getElementById("statusInfo");
   const resultadoGrupo = document.getElementById("resultadoGrupo");
 
@@ -1033,9 +919,9 @@ document.getElementById("painelResultado");
     campoComando.value = "";
   }
 
-if (painelResultado) {
-  painelResultado.innerHTML = "";
-}
+  if (painelResultado) {
+    painelResultado.innerHTML = "";
+  }
 
   if (statusInfo) {
     statusInfo.textContent = "";
