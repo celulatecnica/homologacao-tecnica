@@ -964,6 +964,7 @@ for (const canalPacote of canaisPacote) {
   const totalCanais = homologacao.length;
   const canaisEncontradosQtd = homologacao.filter(item => item.presente).length;
   const canaisAusentesQtd = homologacao.filter(item => !item.presente).length;
+  const totalCanaisString = resultados.length;
 
   if (painelResultado) {
     painelResultado.innerHTML = `
@@ -980,6 +981,7 @@ for (const canalPacote of canaisPacote) {
       <div class="resultado-subtitulo">Resumo da análise entre pacote e string</div>
       <div class="resultado-box">
         Total de canais do pacote: ${totalCanais}<br>
+        Total de canais da string: ${totalCanaisString}<br>
         Canais encontrados na string: ${canaisEncontradosQtd}<br>
         Canais ausentes na string: ${canaisAusentesQtd}
       </div>
