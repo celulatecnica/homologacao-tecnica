@@ -335,7 +335,11 @@ button:active {
   font-size: 14px;
   color: #8e8e93;
 }
-
+/* ===== RESULTADO OCULTO INICIALMENTE ===== */
+#resultadoGrupo {
+  display:*none;
+}
+  
 /* ===== ESPAÇO FINAL E RODAPÉ IGUAL AO BASE ===== */
 .fake-content {
   height: 280px;
@@ -432,6 +436,7 @@ button:active {
     width: 100%;
   }
 }
+  
 </style>
 </head>
 
@@ -501,15 +506,15 @@ button:active {
       <button type="button" class="botao-secundario" onclick="limparCampos()">Limpar</button>
     </div>
 
-    <div class="campo-grupo">
-      <label class="campo-label" for="resultado">
-        Resultado:
-      </label>
+   <div class="campo-grupo" id="resultadoGrupo">
+  <label class="campo-label" for="resultado">
+    Resultado:
+  </label>
 
-      <textarea id="resultado" readonly placeholder="O resultado aparecerá aqui..."></textarea>
+  <textarea id="resultado" readonly placeholder="O resultado aparecerá aqui..."></textarea>
 
-      <div class="status-info" id="statusInfo"></div>
-    </div>
+  <div class="status-info" id="statusInfo"></div>
+</div>
 
   </div>
 
@@ -707,7 +712,12 @@ async function analisar() {
   const campoResultado = document.getElementById("resultado");
   const campoPacote = document.getElementById("pacoteHomologado");
   const statusInfo = document.getElementById("statusInfo");
+  const resultadoGrupo = document.getElementById("resultadoGrupo");
 
+  if (resultadoGrupo) {
+  resultadoGrupo.style.display = "block";
+}
+  
   campoResultado.value = "Analisando...";
   statusInfo.textContent = "";
 
@@ -811,6 +821,7 @@ function limparCampos() {
   const campoComando = document.getElementById("comando");
   const campoResultado = document.getElementById("resultado");
   const statusInfo = document.getElementById("statusInfo");
+  const resultadoGrupo = document.getElementById("resultadoGrupo");
 
   if (campoComando) {
     campoComando.value = "";
@@ -822,6 +833,10 @@ function limparCampos() {
 
   if (statusInfo) {
     statusInfo.textContent = "";
+  }
+
+  if (resultadoGrupo) {
+    resultadoGrupo.style.display = "none";
   }
 }
 
