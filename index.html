@@ -507,27 +507,35 @@ button:active {
 
 <!-- ===== BARRA 1 ===== -->
 <div class="top-bar top-bar-main" id="topbarMain">
-    <div class="blur-layer"></div>
-<div class="top-bar-inner">
-   <img src="arquivos/icon_gpt_branco.png" class="logo">
-</div>
+  <div class="blur-layer"></div>
+
+  <div class="top-bar-inner">
+    arquivos/icon_gpt_branco.png
+  </div>
 </div>
 
 <!-- ===== BARRA 2 ===== -->
 <div class="top-bar top-bar-sub" id="topbarSub">
   <div class="top-bar-inner">
-    <div class="titulo-pequeno">Homologação Técnica</div>
+
+    <div class="titulo-pequeno">
+      Homologação Técnica
+    </div>
 
     <div class="menu-header">
       <a href="index.html" class="menu-item ativo">String</a>
       <a href="canales.html" class="menu-item">Canais Abertos</a>
     </div>
+
   </div>
 </div>
 
 <!-- ===== BANNER ===== -->
-<img id="banner" src="arquivos/banner.png" alt="Banner">
+arquivos/banner.png
 
+<!-- ======================================================= -->
+<!-- FORMULÁRIO -->
+<!-- ======================================================= -->
 
 <div class="container">
 
@@ -540,73 +548,117 @@ button:active {
   <div class="form-card">
 
     <div class="campo-grupo">
+
       <label class="campo-label" for="pacoteHomologado">
         Selecione o pacote que será homologado:
       </label>
 
       <select id="pacoteHomologado">
-        <option value="" disabled selected>Selecione o pacote</option>
+        <option value="" disabled selected>
+          Selecione o pacote
+        </option>
       </select>
 
       <div class="campo-ajuda">
-  Para cadastrar um novo pacote,
-  <a
-    href="https://github.com/celulatecnica/homologacao-tecnica/upload/main/pacotes"
-    target="_blank"
-    rel="noopener noreferrer"
-    class="link-upload"
-  >
-    clique aqui</a> e carregue um arquivo CSV.
-</div>
+        Para cadastrar um novo pacote,
+        <a
+          href="https://github.com/celulatecnica/homologacao-tecnica/upload/main/pacotes"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="link-upload">
+          clique aqui
+        </a>
+        e carregue um arquivo CSV.
+      </div>
+
     </div>
 
     <div class="campo-grupo">
+
       <label class="campo-label" for="comando">
         String para análise:
       </label>
 
-      <textarea id="comando" placeholder="Cole a string aqui..."></textarea>
+      <textarea
+        id="comando"
+        placeholder="Cole a string aqui...">
+      </textarea>
+
     </div>
 
     <div class="acoes">
-      <button type="button" onclick="analisar()">Analisar</button>
-      <button type="button" class="botao-secundario" onclick="limparCampos()">Limpar</button>
+      <button type="button" onclick="analisar()">
+        Analisar
+      </button>
+
+      <button
+        type="button"
+        class="botao-secundario"
+        onclick="limparCampos()">
+        Limpar
+      </button>
     </div>
 
-    <div id="resultadoGrupo" style="display:none;">
-
-  <div id="painelResultado" class="painel-resultado">
-
-  </div>
-
-  <div class="status-info" id="statusInfo"></div>
-
-</div>
-
   </div>
 
 </div>
+
+<!-- ======================================================= -->
+<!-- RESULTADO -->
+<!-- ======================================================= -->
+
+<div id="resultadoGrupo">
+
+  <div class="resultado-wrapper">
+
+    <div
+      id="painelResultado"
+      class="painel-resultado">
+    </div>
+
+    <div
+      class="status-info"
+      id="statusInfo">
+    </div>
+
+  </div>
+
+</div>
+
+<!-- ======================================================= -->
+<!-- RODAPÉ -->
+<!-- ======================================================= -->
 
 <div class="fake-content">
+
   <footer class="footer-faixa">
+
     <div class="footer-inner">
 
       <p class="footer-text">
         Esta ferramenta foi desenvolvida pela Célula Técnica com o objetivo de otimizar a análise e homologação técnica de strings de comando.
-        Em caso de erros, comunique-se com nosso time
-        <span class="footer-nowrap">
-          através de
-          <a href="mailto:celulatecnica@sky.com.br">celulatecnica@directvla.com.co</a>
-        </span>.
+
+        Em caso de erros, comunique-se com nosso time através de
+
+        <a href="mailto:celulatecnica@sky.com.br">
+          celulatecnica@sky.com.br
+        </a>.
       </p>
 
       <div class="footer-divider"></div>
 
       <p class="footer-copy">
-        Homologação Técnica © 2026 Célula Técnica, Engenharia WAIKEN. Todos os direitos reservados.
+        Homologação Técnica © 2026 Célula Técnica, Engenharia WAIKEN.
+        Todos os direitos reservados.
       </p>
 
     </div>
+
+  </footer>
+
+</div>
+
+</body>
   </footer>
 </div>
 
