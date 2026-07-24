@@ -604,10 +604,15 @@ async function carregarPacotesHomologacao() {
 
         option.value = item.name;
 
-        option.textContent = item.name
-          .replace(/\.csv$/i, "")
-          .replace(/_/g, " ")
-          .replace(/\b\w/g, letra => letra.toUpperCase());
+option.textContent = item.name
+  .replace(/\.csv$/i, "")
+  .replace(/_/g, " ")
+  .replace(/\b\w/g, letra => letra.toUpperCase())
+  .replace(/\bHd\b/g, "HD")
+  .replace(/\bSd\b/g, "SD")
+  .replace(/\b4k\b/gi, "4K")
+  .replace(/\bUhd\b/g, "UHD")
+  .replace(/\bHdr\b/g, "HDR");
 
         select.appendChild(option);
 
