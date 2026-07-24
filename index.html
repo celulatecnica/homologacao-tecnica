@@ -891,6 +891,32 @@ const canaisIgnorados = [
   "SBT",
   "SBT HD"
 ].map(normalizarNomeCanal);
+
+const servicosEncontrados = [...new Set(listaDecimal.map(String))];
+
+const canaisLiberadosNaStringMap = new Map();
+
+for (const chave in mapaServicos) {
+  const registros = mapaServicos[chave];
+
+  for (const item of registros) {
+    const vcSkyItem = String(item.vcSky).trim();
+
+    if (servicosEncontrados.includes(vcSkyItem)) {
+      const nomeCanalNormalizado = normalizarNomeCanal(item.canal);
+
+      if (!canaisLiberadosNaStringMap.has(nomeCanalNormalizado)) {
+        canaisLiberadosNaStringMap.set(nomeCanalNormalizado, {
+          canal: item.canal,
+          vcSky: item.vcSky,
+          tipo: item.tipo
+        });
+      }
+    }
+  }
+}
+
+const canaisLiberadosNaString = [...canaisLiberadosNaStringMap.values()];
   
 for (const canalPacote of canaisPacote) {
   const nomePacoteNormalizado = normalizarNomeCanal(canalPacote.canal);
@@ -910,23 +936,28 @@ for (const canalPacote of canaisPacote) {
     }
   }
 
-  if (!registro) {
-    homologacao.push({
-      canal: canalPacote.canal,
-      vcSky: canalPacote.vcSky,
-      tipo: "NAO ENCONTRADO",
-      presente: false
-    });
-    continue;
-  }
-
-  const presente = String(registro.vcSky).trim() === String(canalPacote.vcSky).trim();
+ if (!registro) {
   homologacao.push({
-    canal: registro.canal,
-    vcSky: registro.vcSky,
-    tipo: registro.tipo,
-    presente
+    canal: canalPacote.canal,
+    vcSky: canalPacote.vcSky,
+    tipo: "NAO ENCONTRADO",
+    presente: false
   });
+  continue;
+}
+
+const nomePacoteNormalizado = normalizarNomeCanal(canalPacote.canal);
+
+const presente = canaisLiberadosNaString.some(item =>
+  normalizarNomeCanal(item.canal) === nomePacoteNormalizado
+);
+
+homologacao.push({
+  canal: registro.canal,
+  vcSky: registro.vcSky,
+  tipo: registro.tipo,
+  presente
+});
 }
 
   const canaisVideo = homologacao
@@ -962,9 +993,9 @@ for (const canalPacote of canaisPacote) {
   }
 
   const totalCanais = homologacao.length;
-  const canaisEncontradosQtd = homologacao.filter(item => item.presente).length;
-  const canaisAusentesQtd = homologacao.filter(item => !item.presente).length;
-  const totalCanaisString = resultados.length;
+const canaisEncontradosQtd = homologacao.filter(item => item.presente).length;
+const canaisAusentesQtd = homologacao.filter(item => !item.presente).length;
+const totalCanaisString = canaisLiberadosNaString.length;
 
   if (painelResultado) {
     painelResultado.innerHTML = `
