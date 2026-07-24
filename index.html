@@ -24,7 +24,7 @@ body {
   color: #f5f5f7;
 }
 
-/* ===== TOP BAR BASE ===== */
+/* ===== BASE TOP BAR ===== */
 .top-bar {
   position: fixed;
   left: 0;
@@ -51,58 +51,32 @@ body {
   z-index: 2;
 }
 
-/* ===== BARRA 1 ===== */
+/* ===== BARRA 1 - LOGO ===== */
 .top-bar-main {
+  position: fixed;
   top: 0;
+  width: 100%;
   height: 45px;
 }
 
+/* Camada de blur separada igual ao código base */
 .blur-layer {
   position: absolute;
   inset: 0;
 
-  background: rgba(15,15,15,0.55);
-
   backdrop-filter: blur(30px);
   -webkit-backdrop-filter: blur(30px);
 
+  background: rgba(15,15,15,0.55);
   z-index: 1;
 }
 
-/* ===== BARRA 2 ===== */
+/* ===== BARRA 2 - TÍTULO / MENU ===== */
 .top-bar-sub {
   top: 45px;
   height: 55px;
   background: rgba(0,0,0,0.20);
   border-bottom: 1px solid #4D4D4D;
-}
-
-/* ===== HEADER AO SCROLL ===== */
-.top-bar.scrolled {
-  background: rgba(255,255,255,0.60);
-  backdrop-filter: blur(30px);
-  -webkit-backdrop-filter: blur(30px);
-  border-bottom: 1px solid rgba(0,0,0,0.08);
-}
-
-.top-bar.scrolled .blur-layer {
-  background: rgba(255,255,255,0.40);
-}
-
-.top-bar.scrolled .titulo-pequeno {
-  color: #1d1d1f;
-}
-
-.top-bar.scrolled .menu-item {
-  color: #6e6e73;
-}
-
-.top-bar.scrolled .menu-item.ativo {
-  color: #000000;
-}
-
-.top-bar.scrolled .menu-item.ativo::after {
-  background: #000000;
 }
 
 /* ===== LOGO ===== */
@@ -111,7 +85,7 @@ body {
   display: block;
 }
 
-/* ===== TITULO HEADER ===== */
+/* ===== TÍTULO HEADER ===== */
 .titulo-pequeno {
   font-size: 21px;
   font-weight: 600;
@@ -150,9 +124,38 @@ body {
   background: #ffffff;
 }
 
-/* ===== HERO / ESPAÇO SUPERIOR ===== */
-.hero-space {
-  height: 100px;
+/* ===== HEADER CLARO AO SCROLL ===== */
+.top-bar.scrolled {
+  background: rgba(255,255,255,0.60);
+  backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(30px);
+  border-bottom: 1px solid rgba(0,0,0,0.08);
+}
+
+.top-bar.scrolled .blur-layer {
+  background: rgba(255,255,255,0.40);
+}
+
+.top-bar.scrolled .titulo-pequeno {
+  color: #1d1d1f;
+}
+
+.top-bar.scrolled .menu-item {
+  color: #6e6e73;
+}
+
+.top-bar.scrolled .menu-item.ativo {
+  color: #000000;
+}
+
+.top-bar.scrolled .menu-item.ativo::after {
+  background: #000000;
+}
+
+/* ===== BANNER IGUAL AO CÓDIGO BASE ===== */
+#banner {
+  width: 100%;
+  display: block;
 }
 
 /* ===== CONTAINER ===== */
@@ -160,11 +163,12 @@ body {
   width: 950px;
   max-width: calc(100% - 32px);
   margin: auto;
+  text-align: center;
   padding-left: 16px;
   padding-right: 16px;
-  text-align: center;
 }
 
+/* ===== TÍTULO PRINCIPAL ===== */
 .titulo-principal {
   font-size: 32px;
   margin-top: 47px;
@@ -187,7 +191,7 @@ body {
   margin-bottom: 47px;
 }
 
-/* ===== FORM ===== */
+/* ===== FORM CARD ===== */
 .form-card {
   width: 100%;
   background: #171717;
@@ -332,9 +336,9 @@ button:active {
   color: #8e8e93;
 }
 
-/* ===== RODAPÉ ===== */
+/* ===== ESPAÇO FINAL E RODAPÉ IGUAL AO BASE ===== */
 .fake-content {
-  min-height: 280px;
+  height: 280px;
   background: #0F0F0F;
   width: 100%;
 
@@ -453,11 +457,14 @@ button:active {
   </div>
 </div>
 
-<div class="hero-space"></div>
+<!-- ===== BANNER IGUAL AO CÓDIGO BASE ===== -->
+<img id="banner" src="banner.png" alt="Banner Homologação Técnica">
 
 <div class="container">
 
-  <h1 class="titulo-principal">Analisador de String</h1>
+  <h1 class="titulo-principal">
+    Analisador de String
+  </h1>
 
   <p class="subtitulo-principal">
     Cole a string de comando, selecione o pacote que será homologado e execute a análise para identificar os serviços e canais correspondentes.
@@ -482,7 +489,9 @@ button:active {
     </div>
 
     <div class="campo-grupo">
-      <label class="campo-label" for="comando">String para análise:</label>
+      <label class="campo-label" for="comando">
+        String para análise:
+      </label>
 
       <textarea id="comando" placeholder="Cole a string aqui..."></textarea>
     </div>
@@ -493,7 +502,9 @@ button:active {
     </div>
 
     <div class="campo-grupo">
-      <label class="campo-label" for="resultado">Resultado:</label>
+      <label class="campo-label" for="resultado">
+        Resultado:
+      </label>
 
       <textarea id="resultado" readonly placeholder="O resultado aparecerá aqui..."></textarea>
 
@@ -546,6 +557,11 @@ const pacotesHomologacao = [
   "Pacote HD",
   "Pacote 4K"
 ];
+
+/* ===== NORMALIZAR TEXTO ===== */
+function normalizarTexto(valor) {
+  return String(valor || "").trim();
+}
 
 /* ===== CARREGAR SELECT DE PACOTES ===== */
 function carregarPacotesHomologacao() {
@@ -603,9 +619,8 @@ window.addEventListener("scroll", function() {
   const movimento = -50 * progresso;
 
   /*
-    Igual à lógica do código base:
-    a primeira barra sobe e some ao descer a página.
-    A segunda barra acompanha o movimento.
+    Mesmo comportamento do código base:
+    a barra superior com a logo sobe e some ao descer a página.
   */
   if (topMain) {
     topMain.style.transform = "translateY(" + movimento + "px)";
