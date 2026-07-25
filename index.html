@@ -881,17 +881,6 @@ async function analisar() {
 
   const homologacao = [];
 
-const canaisIgnorados = [
-  "BAND",
-  "BAND HD",
-  "GLOBO",
-  "GLOBO HD",
-  "RECORD",
-  "RECORD HD",
-  "SBT",
-  "SBT HD"
-].map(normalizarNomeCanal);
-
 const servicosEncontrados = new Set(listaDecimal.map(String));
 
 const canaisLiberadosNaStringMap = new Map();
@@ -908,17 +897,22 @@ for (const chave in mapaServicos) {
       servicosEncontrados.has(String(servico).trim())
     );
 
-    if (bateComString) {
-      const nomeCanalNormalizado = normalizarNomeCanal(item.canal);
+if (bateComString) {
 
-      if (!canaisLiberadosNaStringMap.has(nomeCanalNormalizado)) {
-        canaisLiberadosNaStringMap.set(nomeCanalNormalizado, {
-          canal: item.canal,
-          vcSky: item.vcSky,
-          tipo: item.tipo
-        });
-      }
-    }
+  if (String(item.tipo).trim().toUpperCase() === "CANAL ABERTO") {
+    continue;
+  }
+
+  const nomeCanalNormalizado = normalizarNomeCanal(item.canal);
+
+  if (!canaisLiberadosNaStringMap.has(nomeCanalNormalizado)) {
+    canaisLiberadosNaStringMap.set(nomeCanalNormalizado, {
+      canal: item.canal,
+      vcSky: item.vcSky,
+      tipo: item.tipo
+    });
+  }
+}
   }
 }
 const canaisLiberadosNaString = [...canaisLiberadosNaStringMap.values()];
@@ -932,10 +926,7 @@ const canaisLiberadosNaStringNomes = new Set(
 for (const canalPacote of canaisPacote) {
   const nomePacoteNormalizado = normalizarNomeCanal(canalPacote.canal);
 
-  if (canaisIgnorados.includes(nomePacoteNormalizado)) {
-    continue;
-  }
-
+  
   let registro = null;
   for (const chave in mapaServicos) {
     const encontrado = mapaServicos[chave].find(item =>
@@ -956,7 +947,9 @@ if (!registro) {
   });
   continue;
 }
-
+if (String(registro.tipo).trim().toUpperCase() === "CANAL ABERTO") {
+  continue;
+}
 const presente = canaisLiberadosNaStringNomes.has(nomePacoteNormalizado);
 
 homologacao.push({
@@ -1000,19 +993,23 @@ homologacao.push({
   }
 
   const canaisPacoteUnicos = [...new Set(
-  canaisPacote
-    .filter(item => !canaisIgnorados.includes(normalizarNomeCanal(item.canal)))
-    .map(item => normalizarNomeCanal(item.canal))
+  homologacao.map(item =>
+    normalizarNomeCanal(item.canal)
+  )
 )];
 
 const totalCanais = canaisPacoteUnicos.length;
 
 const canaisEncontradosQtd = canaisPacoteUnicos.filter(nome =>
-  canaisLiberadosNaString.some(item => normalizarNomeCanal(item.canal) === nome)
+  canaisLiberadosNaString.some(item =>
+    normalizarNomeCanal(item.canal) === nome
+  )
 ).length;
 
 const canaisAusentesQtd = canaisPacoteUnicos.filter(nome =>
-  !canaisLiberadosNaString.some(item => normalizarNomeCanal(item.canal) === nome)
+  !canaisLiberadosNaString.some(item =>
+    normalizarNomeCanal(item.canal) === nome
+  )
 ).length;
 const totalCanaisString = canaisLiberadosNaString.length;
 
