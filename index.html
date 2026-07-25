@@ -624,6 +624,24 @@ function extrairCamposCSV(linha, separador = ";") {
   return linha.split(separador).map(campo => campo.trim());
 }
 
+const canaisIgnorados = [
+  "BAND",
+  "BAND HD",
+  "GLOBO",
+  "GLOBO HD",
+  "RECORD",
+  "RECORD HD",
+  "SBT",
+  "SBT HD"
+].map(normalizarNomeCanal);
+
+function deveIgnorarCanal(canal, tipo) {
+  return (
+    canaisIgnorados.includes(normalizarNomeCanal(canal)) ||
+    String(tipo || "").trim().toUpperCase() === "CANAL ABERTO"
+  );
+}
+
 /* =========================
    LISTA DE PACOTES
 ========================= */
@@ -899,7 +917,7 @@ for (const chave in mapaServicos) {
 
 if (bateComString) {
 
-  if (String(item.tipo).trim().toUpperCase() === "CANAL ABERTO") {
+  if (deveIgnorarCanal(item.canal, item.tipo)) {
     continue;
   }
 
@@ -947,7 +965,7 @@ if (!registro) {
   });
   continue;
 }
-if (String(registro.tipo).trim().toUpperCase() === "CANAL ABERTO") {
+if (deveIgnorarCanal(registro.canal, registro.tipo)) {
   continue;
 }
 const presente = canaisLiberadosNaStringNomes.has(nomePacoteNormalizado);
