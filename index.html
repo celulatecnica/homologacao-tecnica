@@ -954,7 +954,10 @@ const canaisLiberadosNaStringNomes = new Set(
 for (const canalPacote of canaisPacote) {
   const nomePacoteNormalizado = normalizarNomeCanal(canalPacote.canal);
 
-  
+  if (deveIgnorarCanal(canalPacote.canal, "")) {
+    continue;
+  }
+
   let registro = null;
   for (const chave in mapaServicos) {
     const encontrado = mapaServicos[chave].find(item =>
