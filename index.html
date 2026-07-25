@@ -634,9 +634,10 @@ async function carregarPacotesHomologacao() {
   try {
     select.innerHTML = '<option value="">Carregando...</option>';
 
-    const resposta = await fetch(
-      "https://api.github.com/repos/celulatecnica/homologacao-tecnica/contents/pacotes"
-    );
+const resposta = await fetch(
+  "https://api.github.com/repos/celulatecnica/homologacao-tecnica/contents/pacotes"
+);
+    
 
     if (!resposta.ok) {
       throw new Error("Erro ao consultar GitHub");
@@ -922,7 +923,11 @@ for (const chave in mapaServicos) {
 }
 const canaisLiberadosNaString = [...canaisLiberadosNaStringMap.values()];
 
-  
+const canaisLiberadosNaStringNomes = new Set(
+  canaisLiberadosNaString.map(item =>
+    normalizarNomeCanal(item.canal)
+  )
+);  
   
 for (const canalPacote of canaisPacote) {
   const nomePacoteNormalizado = normalizarNomeCanal(canalPacote.canal);
