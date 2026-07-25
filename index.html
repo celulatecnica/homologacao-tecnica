@@ -1044,6 +1044,11 @@ const canaisAusentesQtd = canaisPacoteUnicos.filter(nome =>
   )
 ).length;
 const totalCanaisString = canaisLiberadosNaString.length;
+const canaisExcedentesQtd = canaisLiberadosNaString.filter(item =>
+  !canaisPacoteUnicos.includes(
+    normalizarNomeCanal(item.canal)
+  )
+).length;
 
   if (painelResultado) {
     painelResultado.innerHTML = `
@@ -1058,12 +1063,13 @@ const totalCanaisString = canaisLiberadosNaString.length;
       </div>
 
       <div class="resultado-subtitulo">Resumo da análise entre pacote e string</div>
-      <div class="resultado-box">
-        Total de canais do pacote: ${totalCanais}<br>
-        Total de canais da string: ${totalCanaisString}<br>
-        Canais encontrados na string: ${canaisEncontradosQtd}<br>
-        Canais ausentes na string: ${canaisAusentesQtd}
-      </div>
+     <div class="resultado-box">
+  Total de canais do pacote: ${totalCanais}<br>
+  Total de canais da string: ${totalCanaisString}<br>
+  Canais encontrados na string: ${canaisEncontradosQtd}<br>
+  Canais ausentes na string: ${canaisAusentesQtd}<br>
+  Canais excedentes na string: ${canaisExcedentesQtd}
+</div>
 
       <div class="resultado-subtitulo">▼ Canais de vídeo</div>
       <div class="resultado-lista">
