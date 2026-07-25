@@ -636,9 +636,18 @@ const canaisIgnorados = [
 ].map(normalizarNomeCanal);
 
 function deveIgnorarCanal(canal, tipo) {
+
+  if (String(tipo || "").trim().toUpperCase() === "CANAL ABERTO") {
+    return true;
+  }
+
+  const nome = normalizarNomeCanal(canal);
+
   return (
-    canaisIgnorados.includes(normalizarNomeCanal(canal)) ||
-    String(tipo || "").trim().toUpperCase() === "CANAL ABERTO"
+    nome.includes("GLOBO") ||
+    nome.includes("BAND") ||
+    nome.includes("RECORD") ||
+    nome.includes("SBT")
   );
 }
 
@@ -934,7 +943,8 @@ if (bateComString) {
   }
 }
 const canaisLiberadosNaString = [...canaisLiberadosNaStringMap.values()];
-
+console.log("CANAIS LIBERADOS");
+console.table(canaisLiberadosNaString);
 const canaisLiberadosNaStringNomes = new Set(
   canaisLiberadosNaString.map(item =>
     normalizarNomeCanal(item.canal)
@@ -977,7 +987,8 @@ homologacao.push({
   presente
 });
 }
-
+console.log("HOMOLOGACAO");
+console.table(homologacao);
   const canaisVideo = homologacao
     .filter(item => String(item.tipo).toUpperCase() === "PACOTE")
     .sort((a, b) => Number(a.vcSky) - Number(b.vcSky));
