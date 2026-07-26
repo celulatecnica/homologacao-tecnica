@@ -1168,8 +1168,8 @@ const nomesCanaisString = canaisLiberadosNaString
       );
 
 const emoji = estaNoPacote
-  ? "🟢 "
-  : "🟡 ";
+  ? ""
+  : "";
 
 return `${emoji}${item.canal}, ${item.caServiceEncontrado} (vc${item.vcSky})`;
 
@@ -1201,11 +1201,11 @@ const canaisExcedentesQtd = canaisLiberadosNaString.filter(item =>
   )
 ).length;
 const canaisPacoteNaString = nomesCanaisString.filter(item =>
-  item.startsWith("🟢")
+  item.startsWith("")
 );
 
 const canaisExcedentes = nomesCanaisString.filter(item =>
-  item.startsWith("🟡")
+  item.startsWith("")
 );
 
 const canaisAusentes = homologacao
@@ -1216,7 +1216,7 @@ const canaisAusentes = homologacao
     })
   )
   .map(item =>
-    `🔴 ${item.canal} (vc${item.vcSky})`
+    `${item.canal}, ${item.caService} (vc${item.vcSky})`
   );
   if (painelResultado) {
     painelResultado.innerHTML = `
