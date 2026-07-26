@@ -631,6 +631,19 @@ button:active {
 
     <div class="form-card">
       <div class="campo-grupo">
+  <label class="campo-label" for="caSelecionado">
+    Seleciona um CA:
+  </label>
+
+  <select id="caSelecionado">
+    <option value="" disabled selected>Selecione o CA</option>
+    <option value="nagra">Nagra</option>
+    <option value="sinamedia">Synamedia</option>
+    <option value="verimatrix">Verimatrix</option>
+
+  </select>
+</div>
+      <div class="campo-grupo">
         <label class="campo-label" for="pacoteHomologado">
           Selecione o pacote que será homologado:
         </label>
@@ -799,7 +812,14 @@ const resposta = await fetch(
     select.innerHTML = '<option value="">Erro ao carregar pacotes</option>';
   }
 }
+function inicializarCampoCA() {
+  const selectCA = document.getElementById("caSelecionado");
+  if (!selectCA) return;
 
+  selectCA.addEventListener("change", function () {
+    this.classList.toggle("ativo", this.value !== "");
+  });
+}
 /* =========================
    CARREGAR CA_SERVICES.CSV
    Estrutura esperada:
@@ -901,7 +921,7 @@ async function carregarPacote(nomeArquivo) {
 /* =========================
    ANÁLISE DA STRING
 ========================= */
-async function analisar() {
+async function analisarSinamedia() {
   const campoComando = document.getElementById("comando");
   const painelResultado = document.getElementById("painelResultado");
   const campoPacote = document.getElementById("pacoteHomologado");
@@ -1285,16 +1305,70 @@ const totalCanaisString =
   atualizarEstadoInicial();
 }
 
+async function analisar() {
+  const campoCA = document.getElementById("caSelecionado");
+  const painelResultado = document.getElementById("painelResultado");
+  const resultadoGrupo = document.getElementById("resultadoGrupo");
+  const statusInfo = document.getElementById("statusInfo");
+
+  const caSelecionado = campoCA ? campoCA.value : "";
+
+  if (resultadoGrupo) resultadoGrupo.style.display = "block";
+  if (statusInfo) statusInfo.textContent = "";
+
+  if (!caSelecionado) {
+    if (painelResultado) {
+      painelResultado.innerHTML = "Selecione o CA antes de analisar.";
+    }
+    return;
+  }
+
+  if (caSelecionado === "sinamedia") {
+    await analisarSinamedia();
+    return;
+  }
+
+  if (caSelecionado === "verimatrix") {
+    if (painelResultado) {
+      painelResultado.innerHTML = `
+        <div class="resultado-titulo">Verimatrix</div>
+        <div class="resultado-box">
+          Modelo de cálculo para Verimatrix ainda será implementado.
+        </div>
+      `;
+    }
+    atualizarEstadoInicial();
+    return;
+  }
+
+  if (caSelecionado === "nagra") {
+    if (painelResultado) {
+      painelResultado.innerHTML = `
+        <div class="resultado-titulo">Nagra</div>
+        <div class="resultado-box">
+          Modelo de cálculo para Nagra ainda será implementado.
+        </div>
+      `;
+    }
+    atualizarEstadoInicial();
+    return;
+  }
+} 
 /* =========================
    LIMPAR CAMPOS
 ========================= */
 function limparCampos() {
   const campoComando = document.getElementById("comando");
+  const campoCA = document.getElementById("caSelecionado");
   const painelResultado = document.getElementById("painelResultado");
   const statusInfo = document.getElementById("statusInfo");
   const resultadoGrupo = document.getElementById("resultadoGrupo");
 
   if (campoComando) campoComando.value = "";
+  if (campoCA) {
+  campoCA.value = "";
+  campoCA.classList.remove("ativo");
+}
   if (painelResultado) painelResultado.innerHTML = "";
   if (statusInfo) statusInfo.textContent = "";
   if (resultadoGrupo) resultadoGrupo.style.display = "none";
@@ -1370,6 +1444,7 @@ window.addEventListener('load', atualizarEstadoInicial);
 window.addEventListener('resize', atualizarEstadoInicial);
 
 // continua carregando os pacotes normalmente
+inicializarCampoCA();
 carregarPacotesHomologacao();
 </script>
 
