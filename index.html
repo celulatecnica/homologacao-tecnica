@@ -1077,13 +1077,19 @@ for (const canalPacote of canaisPacote) {
   }
 
 if (!registro) {
+
+  const registroPorVc = Object.values(mapaServicos)
+    .flat()
+    .find(item => String(item.vcSky) === String(canalPacote.vcSky));
+
   homologacao.push({
-    canal: canalPacote.canal,
+    canal: registroPorVc ? registroPorVc.canal : canalPacote.canal,
     vcSky: canalPacote.vcSky,
     tipo: "NAO ENCONTRADO",
-    caService: "-",
+    caService: registroPorVc ? registroPorVc.caService : "-",
     presente: false
   });
+
   continue;
 }
 if (deveIgnorarCanal(registro.canal, registro.tipo)) {
