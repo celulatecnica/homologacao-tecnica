@@ -215,11 +215,7 @@ textarea:focus {
   line-height: 1.6;
 }
 
-@media (max-width: 1200px) {
-  .lista-canais-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
+
 
 @media (max-width: 900px) {
   .lista-canais-grid {
@@ -1103,16 +1099,34 @@ console.table(homologacao);
       </div>
     `).join("");
   }
-
 function renderizarGridCanais(lista) {
 
   if (!lista.length) {
     return "Nenhum canal encontrado";
   }
 
+  const colunas = 2;
+
+  const linhas = Math.ceil(lista.length / colunas);
+
+  const listaReorganizada = [];
+
+  for (let linha = 0; linha < linhas; linha++) {
+
+    for (let coluna = 0; coluna < colunas; coluna++) {
+
+      const indice = coluna * linhas + linha;
+
+      if (indice < lista.length) {
+        listaReorganizada.push(lista[indice]);
+      }
+
+    }
+  }
+
   return `
     <div class="lista-canais-grid">
-      ${lista.map(canal => `
+      ${listaReorganizada.map(canal => `
         <div class="canal-grid-item">
           ${canal}
         </div>
