@@ -1095,7 +1095,9 @@ if (!registro) {
 if (deveIgnorarCanal(registro.canal, registro.tipo)) {
   continue;
 }
-const presente = canaisLiberadosNaStringNomes.has(nomePacoteNormalizado);
+const presente = canaisLiberadosNaStringNomes.has(
+  normalizarNomeCanal(registro.canal)
+);
 
 homologacao.push({
   canal: registro.canal,
@@ -1209,18 +1211,12 @@ const percentualEncontrados =
   totalCanais > 0
     ? Math.round((canaisEncontradosQtd / totalCanais) * 100)
     : 0;
-
-
 const totalCanaisString =
   canaisLiberadosNaString.filter(
     item => !deveIgnorarCanal(item.canal, item.tipo)
   ).length;
 
-const canaisExcedentesQtd = canaisLiberadosNaString.filter(item =>
-  !canaisPacoteUnicos.includes(
-    normalizarNomeCanal(item.canal)
-  )
-).length;
+const canaisExcedentesQtd = canaisExcedentes.length;
 
 const canaisAusentes = [
   ...new Map(
@@ -1242,28 +1238,6 @@ const canaisAusentes = [
 );
 
 const canaisAusentesQtd = canaisAusentes.length;
-
-const canaisAusentes = [
-  ...new Map(
-    homologacao
-      .filter(item => !item.presente)
-      .map(item => [
-        normalizarNomeCanal(item.canal),
-        item
-      ])
-  ).values()
-]
-.sort((a, b) =>
-  a.canal.localeCompare(b.canal, "pt-BR", {
-    sensitivity: "base"
-  })
-)
-.map(item =>
-  `${item.canal}, ${item.caService} (vc${item.vcSky})`
-);
-
-const canaisAusentesQtd = canaisAusentes.length;
-  
   if (painelResultado) {
     painelResultado.innerHTML = `
       <div class="resultado-titulo">Resultado da Homologação</div>
