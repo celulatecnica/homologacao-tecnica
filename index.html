@@ -1360,15 +1360,23 @@ async function analisar() {
 function limparCampos() {
   const campoComando = document.getElementById("comando");
   const campoCA = document.getElementById("caSelecionado");
+  const campoPacote = document.getElementById("pacoteHomologado");
   const painelResultado = document.getElementById("painelResultado");
   const statusInfo = document.getElementById("statusInfo");
   const resultadoGrupo = document.getElementById("resultadoGrupo");
 
   if (campoComando) campoComando.value = "";
+
   if (campoCA) {
-  campoCA.value = "";
-  campoCA.classList.remove("ativo");
-}
+    campoCA.value = "";
+    campoCA.classList.remove("ativo");
+  }
+
+  if (campoPacote) {
+    campoPacote.value = "";
+    campoPacote.classList.remove("ativo");
+  }
+
   if (painelResultado) painelResultado.innerHTML = "";
   if (statusInfo) statusInfo.textContent = "";
   if (resultadoGrupo) resultadoGrupo.style.display = "none";
