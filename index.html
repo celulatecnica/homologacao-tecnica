@@ -669,11 +669,27 @@ const canaisIgnorados = [
 ].map(normalizarNomeCanal);
 
 function deveIgnorarCanal(canal, tipo) {
-  return (
+
+  if (
     String(tipo || "")
       .trim()
       .toUpperCase() === "CANAL ABERTO"
-  );
+  ) {
+    return true;
+  }
+
+  const nome = normalizarNomeCanal(canal);
+
+  return [
+    "BAND",
+    "BANDHD",
+    "GLOBO",
+    "GLOBOHD",
+    "RECORD",
+    "RECORDHD",
+    "SBT",
+    "SBTHD"
+  ].includes(nome);
 }
 
 /* =========================
@@ -1050,19 +1066,23 @@ console.table(homologacao);
   }
 
   const canaisPacoteUnicos = [...new Set(
-  homologacao.map(item =>
-    normalizarNomeCanal(item.canal)
-  )
+  homologacao
+    .filter(item => !deveIgnorarCanal(item.canal, item.tipo))
+    .map(item =>
+      normalizarNomeCanal(item.canal)
+    )
 )];
 
 const totalCanais = canaisPacoteUnicos.length;
 
 const nomesCanaisPacote = homologacao
+  .filter(item => !deveIgnorarCanal(item.canal, item.tipo))
   .map(item => item.canal)
   .filter(Boolean)
   .sort((a, b) => a.localeCompare(b, "pt-BR"));
 
 const nomesCanaisString = canaisLiberadosNaString
+  .filter(item => !deveIgnorarCanal(item.canal, item.tipo))
   .map(item => item.canal)
   .filter(Boolean)
   .sort((a, b) => a.localeCompare(b, "pt-BR"));
@@ -1078,7 +1098,10 @@ const canaisAusentesQtd = canaisPacoteUnicos.filter(nome =>
     normalizarNomeCanal(item.canal) === nome
   )
 ).length;
-const totalCanaisString = canaisLiberadosNaString.length;
+const totalCanaisString =
+  canaisLiberadosNaString.filter(
+    item => !deveIgnorarCanal(item.canal, item.tipo)
+  ).length;
 const canaisExcedentesQtd = canaisLiberadosNaString.filter(item =>
   !canaisPacoteUnicos.includes(
     normalizarNomeCanal(item.canal)
