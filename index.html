@@ -202,6 +202,39 @@ textarea:focus {
   font-size: 16px;
 }
 
+  .lista-canais-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px 20px;
+  margin-top: 10px;
+}
+
+.canal-grid-item {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+@media (max-width: 1200px) {
+  .lista-canais-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 900px) {
+  .lista-canais-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .lista-canais-grid {
+    grid-template-columns: 1fr;
+  }
+}
+  
 .resultado-lista {
   display: flex;
   flex-wrap: wrap;
@@ -1065,6 +1098,23 @@ console.table(homologacao);
     `).join("");
   }
 
+  function renderizarGridCanais(lista) {
+
+  if (!lista.length) {
+    return "Nenhum canal encontrado";
+  }
+
+  return `
+    <div class="lista-canais-grid">
+      ${lista.map(canal => `
+        <div class="canal-grid-item">
+          ${canal}
+        </div>
+      `).join("")}
+    </div>
+  `;
+}
+  
   const canaisPacoteUnicos = [...new Set(
   homologacao
     .filter(item => !deveIgnorarCanal(item.canal, item.tipo))
@@ -1085,7 +1135,11 @@ const nomesCanaisString = canaisLiberadosNaString
   .filter(item => !deveIgnorarCanal(item.canal, item.tipo))
   .map(item => item.canal)
   .filter(Boolean)
-  .sort((a, b) => a.localeCompare(b, "pt-BR"));
+  .sort((a, b) =>
+  a.localeCompare(b, "pt-BR", {
+    sensitivity: "base"
+  })
+);
 
 const canaisEncontradosQtd = canaisPacoteUnicos.filter(nome =>
   canaisLiberadosNaString.some(item =>
@@ -1123,13 +1177,16 @@ const canaisExcedentesQtd = canaisLiberadosNaString.filter(item =>
       <div class="resultado-subtitulo">Resumo da análise entre pacote e string <br> (sem Band, Globo, Record TV e SBT)</div>
 
       <div class="resultado-box">
-        Total de canais da string: ${totalCanaisString}<br><br>
-        ${nomesCanaisString.join(", ")}<br><br>
+        Total de canais da string: ${totalCanaisString}
+
+${renderizarGridCanais(nomesCanaisString)}
+
+<br>
         
         Total de canais do pacote: ${totalCanais}<br><br>
-        - Canais do pacote encontrados na string: ${canaisEncontradosQtd}<br>
-        - Canais do pacote ausentes na string: ${canaisAusentesQtd}<br>
-        - Canais do pacote excedentes na string: ${canaisExcedentesQtd}<br><br>
+        🟢 Canais do pacote na string: ${canaisEncontradosQtd}<br>
+        🟡 Canais do pacote excedentes na string: ${canaisExcedentesQtd}<br><br>
+        🔴 Canais do pacote ausentes na string: ${canaisAusentesQtd}<br>
         ${nomesCanaisPacote.join(", ")}<br><br>
 
 
