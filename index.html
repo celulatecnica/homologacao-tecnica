@@ -1186,6 +1186,11 @@ const canaisEncontradosQtd = canaisPacoteUnicos.filter(nome =>
   )
 ).length;
 
+const percentualEncontrados =
+  totalCanais > 0
+    ? Math.round((canaisEncontradosQtd / totalCanais) * 100)
+    : 0;
+
 const canaisAusentesQtd = canaisPacoteUnicos.filter(nome =>
   !canaisLiberadosNaString.some(item =>
     normalizarNomeCanal(item.canal) === nome
@@ -1219,8 +1224,8 @@ const canaisExcedentesQtd = canaisLiberadosNaString.filter(item =>
       
         Total de canais da string: ${totalCanaisString}<br>
         Total de canais do pacote: ${totalCanais}<br><br>
-        🟢 Canais do pacote na string: ${canaisEncontradosQtd}<br>
-        🟡 Canais do pacote excedentes na string: ${canaisExcedentesQtd}<br>
+        🟢 Canais do pacote na string: ${canaisEncontradosQtd} (${percentualEncontrados}%)<br>
+        🟡 Canais excedentes na string: ${canaisExcedentesQtd}<br>
         🔴 Canais do pacote ausentes na string: ${canaisAusentesQtd}<br><br>
         
         ${renderizarGridCanais(nomesCanaisString)}
