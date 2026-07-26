@@ -159,7 +159,15 @@ textarea:focus {
   background: #FFFFFF;
   padding: 47px 0;
 }
-
+  
+.resultado-observacao {
+  margin-top: -6px;
+  margin-bottom: 12px;
+  font-size: 12px;
+  color: #8e8e93;
+  font-style: italic;
+}
+  
 .resultado-wrapper {
   width: 950px;
   max-width: calc(100% - 32px);
@@ -1230,7 +1238,13 @@ const canaisAusentes = homologacao
         ${[...new Set(listaDecimal)].sort((a, b) => a - b).join(", ")}
       </div>
 
-      <div class="resultado-subtitulo">Resumo da análise entre pacote e string <br> (sem Band, Globo, Record TV e SBT)</div>
+<div class="resultado-subtitulo">
+  Resumo da análise entre pacote e string
+</div>
+
+<div class="resultado-observacao">
+  (sem Band, Globo, Record TV e SBT)
+</div>
 
       <div class="resultado-box">
       
