@@ -211,10 +211,8 @@ textarea:focus {
 
 .canal-grid-item {
   white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
   font-size: 14px;
-  line-height: 1.5;
+  line-height: 1.6;
 }
 
 @media (max-width: 1200px) {
@@ -1098,15 +1096,34 @@ console.table(homologacao);
     `).join("");
   }
 
-  function renderizarGridCanais(lista) {
+function renderizarGridCanais(lista) {
 
   if (!lista.length) {
     return "Nenhum canal encontrado";
   }
 
+  const colunas = 4;
+
+  const linhas = Math.ceil(lista.length / colunas);
+
+  const listaReorganizada = [];
+
+  for (let linha = 0; linha < linhas; linha++) {
+
+    for (let coluna = 0; coluna < colunas; coluna++) {
+
+      const indice = coluna * linhas + linha;
+
+      if (indice < lista.length) {
+        listaReorganizada.push(lista[indice]);
+      }
+
+    }
+  }
+
   return `
     <div class="lista-canais-grid">
-      ${lista.map(canal => `
+      ${listaReorganizada.map(canal => `
         <div class="canal-grid-item">
           ${canal}
         </div>
