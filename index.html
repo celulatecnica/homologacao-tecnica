@@ -1130,11 +1130,19 @@ function atualizarEstadoCabecalho() {
   const topMain = document.getElementById("topbarMain");
   const topSub = document.getElementById("topbarSub");
 
+  const resultadoGrupo = document.getElementById("resultadoGrupo");
+
   if (!topMain || !topSub) return;
+
+  let trigger = 999999;
+
+  if (resultadoGrupo && resultadoGrupo.style.display !== "none") {
+    trigger = resultadoGrupo.offsetTop - 100;
+  }
 
   const y = window.scrollY;
 
-  if (y > 100) {
+  if (y >= trigger) {
     topMain.classList.add("scrolled");
     topSub.classList.add("scrolled");
   } else {
