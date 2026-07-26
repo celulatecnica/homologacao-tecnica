@@ -1194,17 +1194,18 @@ const canaisExcedentesQtd = canaisLiberadosNaString.filter(item =>
       <div class="resultado-subtitulo">Resumo da análise entre pacote e string <br> (sem Band, Globo, Record TV e SBT)</div>
 
       <div class="resultado-box">
-        Total de canais da string: ${totalCanaisString}
-
-${renderizarGridCanais(nomesCanaisString)}
+      
+        Total de canais da string: ${totalCanaisString}<br><br>
+        Total de canais do pacote: ${totalCanais}<br>
+        🟢 Canais do pacote na string: ${canaisEncontradosQtd}<br>
+        🟡 Canais do pacote excedentes na string: ${canaisExcedentesQtd}<br>
+        🔴 Canais do pacote ausentes na string: ${canaisAusentesQtd}<br><br>
+        
+        ${renderizarGridCanais(nomesCanaisString)}
 
 <br>
         
-        Total de canais do pacote: ${totalCanais}<br><br>
-        🟢 Canais do pacote na string: ${canaisEncontradosQtd}<br>
-        🟡 Canais do pacote excedentes na string: ${canaisExcedentesQtd}<br><br>
-        🔴 Canais do pacote ausentes na string: ${canaisAusentesQtd}<br>
-        ${nomesCanaisPacote.join(", ")}<br><br>
+
 
 
       </div>
