@@ -1240,6 +1240,9 @@ const canaisAusentes = [
 .map(item =>
   `${item.canal}, ${item.caService} (vc${item.vcSky})`
 );
+
+const canaisAusentesQtd = canaisAusentes.length;
+  
   if (painelResultado) {
     painelResultado.innerHTML = `
       <div class="resultado-titulo">Resultado da Homologação</div>
