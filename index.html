@@ -508,7 +508,31 @@ button:active {
 .titulo-pequeno, .menu-item {
   transition: color 0.3s ease;
 }
-  
+
+.bloco-expandivel {
+  margin-top: 12px;
+}
+
+.bloco-expandivel summary {
+  list-style: none;
+  cursor: pointer;
+  font-weight: 600;
+  user-select: none;
+}
+
+.bloco-expandivel summary::-webkit-details-marker {
+  display: none;
+}
+
+.bloco-expandivel summary::before {
+  content: "+ ";
+  font-weight: bold;
+}
+
+.bloco-expandivel[open] summary::before {
+  content: "- ";
+}
+
 /* ===== RESPONSIVO ===== */
 @media (max-width: 720px) {
   .top-bar-inner {
@@ -1224,11 +1248,29 @@ const canaisExcedentesQtd = canaisLiberadosNaString.filter(item =>
       
         Total de canais da string: ${totalCanaisString}<br>
         Total de canais do pacote: ${totalCanais}<br><br>
-        🟢 Canais do pacote na string: ${canaisEncontradosQtd} (${percentualEncontrados}%)<br>
-        🟡 Canais excedentes na string: ${canaisExcedentesQtd}<br>
-        🔴 Canais do pacote ausentes na string: ${canaisAusentesQtd}<br><br>
-        
-        ${renderizarGridCanais(nomesCanaisString)}
+<details class="bloco-expandivel">
+  <summary>
+    🟢 Canais do pacote na string: ${canaisEncontradosQtd} (${percentualEncontrados}%)
+  </summary>
+
+  ${renderizarGridCanais(canaisPacoteNaString)}
+</details>
+
+<details class="bloco-expandivel">
+  <summary>
+    🟡 Canais excedentes na string: ${canaisExcedentesQtd}
+  </summary>
+
+  ${renderizarGridCanais(canaisExcedentes)}
+</details>
+
+<details class="bloco-expandivel">
+  <summary>
+    🔴 Canais do pacote ausentes na string: ${canaisAusentesQtd}
+  </summary>
+
+  ${renderizarGridCanais(canaisAusentes)}
+</details>
 
 <br>
         
@@ -1249,6 +1291,24 @@ const canaisExcedentesQtd = canaisLiberadosNaString.filter(item =>
 ========================= */
 function limparCampos() {
   const campoComando = document.getElementById("comando");
+  const canaisPacoteNaString = nomesCanaisString.filter(item =>
+  item.startsWith("🟢")
+);
+
+const canaisExcedentes = nomesCanaisString.filter(item =>
+  item.startsWith("🟡")
+);
+
+const canaisAusentes = homologacao
+  .filter(item => !item.presente)
+  .sort((a, b) =>
+    a.canal.localeCompare(b.canal, "pt-BR", {
+      sensitivity: "base"
+    })
+  )
+  .map(item =>
+    `🔴 ${item.canal} (vc${item.vcSky})`
+  );
   const painelResultado = document.getElementById("painelResultado");
   const statusInfo = document.getElementById("statusInfo");
   const resultadoGrupo = document.getElementById("resultadoGrupo");
