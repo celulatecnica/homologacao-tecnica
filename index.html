@@ -669,18 +669,10 @@ const canaisIgnorados = [
 ].map(normalizarNomeCanal);
 
 function deveIgnorarCanal(canal, tipo) {
-
-  if (String(tipo || "").trim().toUpperCase() === "CANAL ABERTO") {
-    return true;
-  }
-
-  const nome = normalizarNomeCanal(canal);
-
   return (
-    nome.includes("GLOBO") ||
-    nome.includes("BAND") ||
-    nome.includes("RECORD") ||
-    nome.includes("SBT")
+    String(tipo || "")
+      .trim()
+      .toUpperCase() === "CANAL ABERTO"
   );
 }
 
