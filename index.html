@@ -1065,6 +1065,16 @@ console.table(homologacao);
 
 const totalCanais = canaisPacoteUnicos.length;
 
+const nomesCanaisPacote = homologacao
+  .map(item => item.canal)
+  .filter(Boolean)
+  .sort((a, b) => a.localeCompare(b, "pt-BR"));
+
+const nomesCanaisString = canaisLiberadosNaString
+  .map(item => item.canal)
+  .filter(Boolean)
+  .sort((a, b) => a.localeCompare(b, "pt-BR"));
+
 const canaisEncontradosQtd = canaisPacoteUnicos.filter(nome =>
   canaisLiberadosNaString.some(item =>
     normalizarNomeCanal(item.canal) === nome
@@ -1096,13 +1106,22 @@ const canaisExcedentesQtd = canaisLiberadosNaString.filter(item =>
       </div>
 
       <div class="resultado-subtitulo">Resumo da análise entre pacote e string</div>
-     <div class="resultado-box">
-  Total de canais do pacote: ${totalCanais}<br>
-  Total de canais da string: ${totalCanaisString}<br>
-  Canais encontrados na string: ${canaisEncontradosQtd}<br>
-  Canais ausentes na string: ${canaisAusentesQtd}<br>
-  Canais excedentes na string: ${canaisExcedentesQtd}
-</div>
+
+      <div class="resultado-box">
+        Total de canais do pacote: ${totalCanais}<br><br>
+
+        Canais do pacote:<br>
+        ${nomesCanaisPacote.join(", ")}<br><br>
+
+        Total de canais da string: ${totalCanaisString}<br><br>
+
+        Canais da string:<br>
+        ${nomesCanaisString.join(", ")}<br><br>
+
+        Canais encontrados na string: ${canaisEncontradosQtd}<br>
+        Canais ausentes na string: ${canaisAusentesQtd}<br>
+        Canais excedentes na string: ${canaisExcedentesQtd}
+      </div>
 
       <div class="resultado-subtitulo">▼ Canais de vídeo</div>
       <div class="resultado-lista">
