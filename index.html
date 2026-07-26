@@ -1044,12 +1044,12 @@ for (const canalPacote of canaisPacote) {
 
 if (!registro) {
   homologacao.push({
-  canal: registro.canal,
-  vcSky: registro.vcSky,
-  tipo: registro.tipo,
-  caService: registro.caService,
-  presente
-});
+    canal: canalPacote.canal,
+    vcSky: canalPacote.vcSky,
+    tipo: "NAO ENCONTRADO",
+    caService: "-",
+    presente: false
+  });
   continue;
 }
 if (deveIgnorarCanal(registro.canal, registro.tipo)) {
@@ -1061,12 +1061,9 @@ homologacao.push({
   canal: registro.canal,
   vcSky: registro.vcSky,
   tipo: registro.tipo,
+  caService: registro.caService,
   presente
 });
-
-  .map(item =>
-  `${item.canal}, ${item.caService} (vc${item.vcSky})`
-);
   
 }
 console.log("HOMOLOGACAO");
@@ -1147,6 +1144,8 @@ function renderizarGridCanais(lista) {
     )
 )];
 
+const canaisPacoteSet = new Set(canaisPacoteUnicos);
+const estaNoPacote =2  canaisPacoteSet.has(3    normalizarNomeCanal(item.canal)4  );
 const totalCanais = canaisPacoteUnicos.length;
 
 const nomesCanaisPacote = homologacao
@@ -1157,7 +1156,7 @@ const nomesCanaisPacote = homologacao
     })
   )
   .map(item =>
-    `${item.canal} (vc${item.vcSky})`
+    `${item.canal}, ${item.caService} (vc${item.vcSky})`
   );
 
 const nomesCanaisString = canaisLiberadosNaString
@@ -1174,9 +1173,9 @@ const nomesCanaisString = canaisLiberadosNaString
         normalizarNomeCanal(item.canal)
       );
 
-    const emoji = estaNoPacote
-      ? "🟢 "
-      : "";
+const emoji = estaNoPacote
+  ? "🟢 "
+  : "🟡 ";
 
     return `${emoji}${item.canal}, ${item.caService} (vc${item.vcSky})`;
 
