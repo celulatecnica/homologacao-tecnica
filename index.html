@@ -1092,37 +1092,8 @@ homologacao.push({
 }
 console.log("HOMOLOGACAO");
 console.table(homologacao);
-  const canaisVideo = homologacao
-    .filter(item => String(item.tipo).toUpperCase() === "PACOTE")
-    .sort((a, b) => Number(a.vcSky) - Number(b.vcSky));
 
-  const canaisAudio = homologacao
-    .filter(item => String(item.tipo).toUpperCase() === "AUDIO")
-    .sort((a, b) => Number(a.vcSky) - Number(b.vcSky));
 
-  const canaisRadio = homologacao
-    .filter(item => String(item.tipo).toUpperCase() === "RADIO")
-    .sort((a, b) => Number(a.vcSky) - Number(b.vcSky));
-
-  const canaisOutros = homologacao
-    .filter(item => {
-      const tipo = String(item.tipo).toUpperCase();
-      return tipo === "CARTELA/MOSAICO" || tipo === "SKY+" || tipo === "NAO ENCONTRADO";
-    })
-    .sort((a, b) => Number(a.vcSky) - Number(b.vcSky));
-
-  function renderizarLista(lista) {
-    if (lista.length === 0) {
-      return `<div class="resultado-item">Nenhum canal encontrado</div>`;
-    }
-
-    return lista.map(item => `
-      <div class="resultado-item">
-        <span class="${item.presente ? "bolinha-verde" : "bolinha-vermelha"}">●</span>
-        VC ${item.vcSky} - ${item.canal}
-      </div>
-    `).join("");
-  }
 function renderizarGridCanais(lista) {
 
   if (!lista.length) {
@@ -1229,7 +1200,24 @@ const canaisExcedentesQtd = canaisLiberadosNaString.filter(item =>
     normalizarNomeCanal(item.canal)
   )
 ).length;
+const canaisPacoteNaString = nomesCanaisString.filter(item =>
+  item.startsWith("🟢")
+);
 
+const canaisExcedentes = nomesCanaisString.filter(item =>
+  item.startsWith("🟡")
+);
+
+const canaisAusentes = homologacao
+  .filter(item => !item.presente)
+  .sort((a, b) =>
+    a.canal.localeCompare(b.canal, "pt-BR", {
+      sensitivity: "base"
+    })
+  )
+  .map(item =>
+    `🔴 ${item.canal} (vc${item.vcSky})`
+  );
   if (painelResultado) {
     painelResultado.innerHTML = `
       <div class="resultado-titulo">Resultado da Homologação</div>
@@ -1291,24 +1279,6 @@ const canaisExcedentesQtd = canaisLiberadosNaString.filter(item =>
 ========================= */
 function limparCampos() {
   const campoComando = document.getElementById("comando");
-  const canaisPacoteNaString = nomesCanaisString.filter(item =>
-  item.startsWith("🟢")
-);
-
-const canaisExcedentes = nomesCanaisString.filter(item =>
-  item.startsWith("🟡")
-);
-
-const canaisAusentes = homologacao
-  .filter(item => !item.presente)
-  .sort((a, b) =>
-    a.canal.localeCompare(b.canal, "pt-BR", {
-      sensitivity: "base"
-    })
-  )
-  .map(item =>
-    `🔴 ${item.canal} (vc${item.vcSky})`
-  );
   const painelResultado = document.getElementById("painelResultado");
   const statusInfo = document.getElementById("statusInfo");
   const resultadoGrupo = document.getElementById("resultadoGrupo");
