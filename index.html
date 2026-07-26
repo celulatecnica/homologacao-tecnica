@@ -1161,27 +1161,35 @@ const nomesCanaisPacote = homologacao
     `${item.canal}, ${item.caService} (vc${item.vcSky})`
   );
 
-const nomesCanaisString = canaisLiberadosNaString
-  .filter(item => !deveIgnorarCanal(item.canal, item.tipo))
+const canaisPacoteNaString = canaisLiberadosNaString
+  .filter(item =>
+    canaisPacoteUnicos.includes(
+      normalizarNomeCanal(item.canal)
+    )
+  )
   .sort((a, b) =>
     a.canal.localeCompare(b.canal, "pt-BR", {
       sensitivity: "base"
     })
   )
-  .map(item => {
+  .map(item =>
+    `${item.canal}, ${item.caServiceEncontrado} (vc${item.vcSky})`
+  );
 
-    const estaNoPacote =
-      canaisPacoteUnicos.includes(
-        normalizarNomeCanal(item.canal)
-      );
-
-const emoji = estaNoPacote
-  ? ""
-  : "";
-
-return `${emoji}${item.canal}, ${item.caServiceEncontrado} (vc${item.vcSky})`;
-
-  });
+const canaisExcedentes = canaisLiberadosNaString
+  .filter(item =>
+    !canaisPacoteUnicos.includes(
+      normalizarNomeCanal(item.canal)
+    )
+  )
+  .sort((a, b) =>
+    a.canal.localeCompare(b.canal, "pt-BR", {
+      sensitivity: "base"
+    })
+  )
+  .map(item =>
+    `${item.canal}, ${item.caServiceEncontrado} (vc${item.vcSky})`
+  );
 
 const canaisEncontradosQtd = canaisPacoteUnicos.filter(nome =>
   canaisLiberadosNaString.some(item =>
@@ -1208,13 +1216,6 @@ const canaisExcedentesQtd = canaisLiberadosNaString.filter(item =>
     normalizarNomeCanal(item.canal)
   )
 ).length;
-const canaisPacoteNaString = nomesCanaisString.filter(item =>
-  item.startsWith("")
-);
-
-const canaisExcedentes = nomesCanaisString.filter(item =>
-  item.startsWith("")
-);
 
 const canaisAusentes = homologacao
   .filter(item => !item.presente)
