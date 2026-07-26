@@ -1210,24 +1210,6 @@ const percentualEncontrados =
     ? Math.round((canaisEncontradosQtd / totalCanais) * 100)
     : 0;
 
-const canaisAusentes = [
-  ...new Map(
-    homologacao
-      .filter(item => !item.presente)
-      .map(item => [
-        normalizarNomeCanal(item.canal),
-        item
-      ])
-  ).values()
-]
-.sort((a, b) =>
-  a.canal.localeCompare(b.canal, "pt-BR", {
-    sensitivity: "base"
-  })
-)
-.map(item =>
-  `${item.canal}, ${item.caService} (vc${item.vcSky})`
-);
 
 const canaisAusentesQtd = canaisAusentes.length;
 const totalCanaisString =
