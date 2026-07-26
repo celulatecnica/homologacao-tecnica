@@ -1058,55 +1058,66 @@ const canaisLiberadosNaStringNomes = new Set(
   )
 );  
   
+const todosRegistrosServicos = Object.values(mapaServicos).flat();
+
 for (const canalPacote of canaisPacote) {
   const nomePacoteNormalizado = normalizarNomeCanal(canalPacote.canal);
+  const vcPacote = String(canalPacote.vcSky || "").trim();
 
   if (deveIgnorarCanal(canalPacote.canal, "")) {
     continue;
   }
 
-  let registro = null;
-  for (const chave in mapaServicos) {
-    const encontrado = mapaServicos[chave].find(item =>
-      normalizarNomeCanal(item.canal) === nomePacoteNormalizado
-    );
-    if (encontrado) {
-      registro = encontrado;
-      break;
-    }
+  const registroPorNome = todosRegistrosServicos.find(item =>
+    normalizarNomeCanal(item.canal) === nomePacoteNormalizado
+  );
+
+  const registroPorVc = todosRegistrosServicos.find(item =>
+    String(item.vcSky || "").trim() === vcPacote
+  );
+
+  const registro = registroPorNome || registroPorVc;
+
+  if (!registro) {
+    homologacao.push({
+      canal: canalPacote.canal,
+      vcSky: canalPacote.vcSky,
+      tipo: "NAO ENCONTRADO",
+      caService: "-",
+      caServiceEncontrado: "-",
+      presente: false
+    });
+
+    continue;
   }
 
-if (!registro) {
+  if (deveIgnorarCanal(registro.canal, registro.tipo)) {
+    continue;
+  }
 
-  const registroPorVc = Object.values(mapaServicos)
-    .flat()
-    .find(item => String(item.vcSky) === String(canalPacote.vcSky));
+  const servicosRegistro = Array.isArray(registro.servicos)
+    ? registro.servicos
+    : String(registro.caService || "")
+        .split(",")
+        .map(s => s.trim())
+        .filter(Boolean);
+
+  const caServiceEncontrado = servicosRegistro.find(servico =>
+    servicosEncontrados.has(String(servico).trim())
+  );
+
+  const presente =
+    canaisLiberadosNaStringNomes.has(normalizarNomeCanal(registro.canal)) ||
+    Boolean(caServiceEncontrado);
 
   homologacao.push({
-    canal: registroPorVc ? registroPorVc.canal : canalPacote.canal,
-    vcSky: canalPacote.vcSky,
-    tipo: "NAO ENCONTRADO",
-    caService: registroPorVc ? registroPorVc.caService : "-",
-    presente: false
+    canal: registro.canal,
+    vcSky: registro.vcSky,
+    tipo: registro.tipo,
+    caService: registro.caService,
+    caServiceEncontrado: caServiceEncontrado || "-",
+    presente
   });
-
-  continue;
-}
-if (deveIgnorarCanal(registro.canal, registro.tipo)) {
-  continue;
-}
-const presente = canaisLiberadosNaStringNomes.has(
-  normalizarNomeCanal(registro.canal)
-);
-
-homologacao.push({
-  canal: registro.canal,
-  vcSky: registro.vcSky,
-  tipo: registro.tipo,
-  caService: registro.caService,
-  presente
-});
-  
 }
 console.log("HOMOLOGACAO");
 console.table(homologacao);
@@ -1148,20 +1159,36 @@ function renderizarGridCanais(lista) {
   `;
 }
   
-  const canaisPacoteUnicos = [...new Set(
-  homologacao
-    .filter(item => !deveIgnorarCanal(item.canal, item.tipo))
-    .map(item =>
-      normalizarNomeCanal(item.canal)
-    )
-)];
+  const homologacaoUnica = [
+  ...new Map(
+    homologacao
+      .filter(item => !deveIgnorarCanal(item.canal, item.tipo))
+      .map(item => [
+        normalizarNomeCanal(item.canal),
+        item
+      ])
+  ).values()
+];
 
+const canaisPacoteUnicos = homologacaoUnica.map(item =>
+  normalizarNomeCanal(item.canal)
+);
 
-  
-const totalCanais = canaisPacoteUnicos.length;
+const totalCanais = homologacaoUnica.length;
 
-const nomesCanaisPacote = homologacao
-  .filter(item => !deveIgnorarCanal(item.canal, item.tipo))
+const canaisPacoteNaString = homologacaoUnica
+  .filter(item => item.presente)
+  .sort((a, b) =>
+    a.canal.localeCompare(b.canal, "pt-BR", {
+      sensitivity: "base"
+    })
+  )
+  .map(item =>
+    `${item.canal}, ${item.caServiceEncontrado || item.caService} (vc${item.vcSky})`
+  );
+
+const canaisAusentes = homologacaoUnica
+  .filter(item => !item.presente)
   .sort((a, b) =>
     a.canal.localeCompare(b.canal, "pt-BR", {
       sensitivity: "base"
@@ -1169,21 +1196,6 @@ const nomesCanaisPacote = homologacao
   )
   .map(item =>
     `${item.canal}, ${item.caService} (vc${item.vcSky})`
-  );
-
-const canaisPacoteNaString = canaisLiberadosNaString
-  .filter(item =>
-    canaisPacoteUnicos.includes(
-      normalizarNomeCanal(item.canal)
-    )
-  )
-  .sort((a, b) =>
-    a.canal.localeCompare(b.canal, "pt-BR", {
-      sensitivity: "base"
-    })
-  )
-  .map(item =>
-    `${item.canal}, ${item.caServiceEncontrado} (vc${item.vcSky})`
   );
 
 const canaisExcedentes = canaisLiberadosNaString
@@ -1201,43 +1213,19 @@ const canaisExcedentes = canaisLiberadosNaString
     `${item.canal}, ${item.caServiceEncontrado} (vc${item.vcSky})`
   );
 
-const canaisEncontradosQtd = canaisPacoteUnicos.filter(nome =>
-  canaisLiberadosNaString.some(item =>
-    normalizarNomeCanal(item.canal) === nome
-  )
-).length;
+const canaisEncontradosQtd = canaisPacoteNaString.length;
+const canaisAusentesQtd = canaisAusentes.length;
+const canaisExcedentesQtd = canaisExcedentes.length;
 
 const percentualEncontrados =
   totalCanais > 0
     ? Math.round((canaisEncontradosQtd / totalCanais) * 100)
     : 0;
+
 const totalCanaisString =
   canaisLiberadosNaString.filter(
     item => !deveIgnorarCanal(item.canal, item.tipo)
   ).length;
-
-const canaisExcedentesQtd = canaisExcedentes.length;
-
-const canaisAusentes = [
-  ...new Map(
-    homologacao
-      .filter(item => !item.presente)
-      .map(item => [
-        normalizarNomeCanal(item.canal),
-        item
-      ])
-  ).values()
-]
-.sort((a, b) =>
-  a.canal.localeCompare(b.canal, "pt-BR", {
-    sensitivity: "base"
-  })
-)
-.map(item =>
-  `${item.canal}, ${item.caService} (vc${item.vcSky})`
-);
-
-const canaisAusentesQtd = canaisAusentes.length;
   if (painelResultado) {
     painelResultado.innerHTML = `
       <div class="resultado-titulo">Resultado da Homologação</div>
