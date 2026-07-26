@@ -1005,11 +1005,15 @@ if (bateComString) {
   const nomeCanalNormalizado = normalizarNomeCanal(item.canal);
 
   if (!canaisLiberadosNaStringMap.has(nomeCanalNormalizado)) {
-    canaisLiberadosNaStringMap.set(nomeCanalNormalizado, {
+    const servicoEncontrado = servicosDoCanal.find(servico =>
+  servicosEncontrados.has(String(servico).trim())
+);
+
+canaisLiberadosNaStringMap.set(nomeCanalNormalizado, {
   canal: item.canal,
   vcSky: item.vcSky,
   tipo: item.tipo,
-  caService: item.caService
+  caServiceEncontrado: servicoEncontrado
 });
   }
 }
@@ -1177,7 +1181,7 @@ const emoji = estaNoPacote
   ? "🟢 "
   : "🟡 ";
 
-    return `${emoji}${item.canal}, ${item.caService} (vc${item.vcSky})`;
+return `${emoji}${item.canal}, ${item.caServiceEncontrado} (vc${item.vcSky})`;
 
   });
 
