@@ -1236,31 +1236,29 @@ const canaisAusentes = homologacao
       
         Total de canais da string: ${totalCanaisString}<br>
         Total de canais do pacote: ${totalCanais}<br><br>
-<details class="bloco-expandivel">
-  <summary>
-    🟢 Canais do pacote na string: ${canaisEncontradosQtd} (${percentualEncontrados}%)
-  </summary>
-  <br>
-  ${renderizarGridCanais(canaisPacoteNaString)}
-</details>
+      <details class="bloco-expandivel">
+      <summary>
+          🟢 Canais do pacote na string: ${canaisEncontradosQtd} (${percentualEncontrados}%)
+      </summary>
+      <br>
+        ${renderizarGridCanais(canaisPacoteNaString)}
+      </details>
 
-<details class="bloco-expandivel">
-  <summary>
-  <br>
-    🟡 Canais excedentes na string: ${canaisExcedentesQtd}
-  </summary>
-
-  ${renderizarGridCanais(canaisExcedentes)}
-</details>
-
-<details class="bloco-expandivel">
-  <summary>
-  <br>
-    🔴 Canais do pacote ausentes na string: ${canaisAusentesQtd}
-  </summary>
-
-  ${renderizarGridCanais(canaisAusentes)}
-</details>
+      <details class="bloco-expandivel">
+      <summary>
+         🟡 Canais excedentes na string: ${canaisExcedentesQtd}
+      </summary>
+      <br>
+      ${renderizarGridCanais(canaisExcedentes)}
+      </details>
+  
+      <details class="bloco-expandivel">
+      <summary>
+        🔴 Canais do pacote ausentes na string: ${canaisAusentesQtd}
+      </summary>
+      <br>
+      ${renderizarGridCanais(canaisAusentes)}
+    </details>
 
 <br>
         
