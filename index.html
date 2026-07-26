@@ -36,7 +36,7 @@ body {
   z-index: 999;
   backdrop-filter: blur(30px);
   -webkit-backdrop-filter: blur(30px);
-  transition: transform 0.3s ease, background 0.3s ease, border-color 0.3s ease;
+  transition: all 0.3s ease;
 }
 
 .top-bar-inner {
@@ -63,12 +63,13 @@ body {
 
   backdrop-filter: blur(30px);
   -webkit-backdrop-filter: blur(30px);
-
-  background: rgba(15,15,15,0.55);
-
   z-index: 1;
 }
 
+  .top-bar-main .blur-layer {
+  background: rgba(15,15,15,0.55);
+}
+  
 /* ===== BARRA 2 - TÍTULO / MENU ===== */
 .top-bar-sub {
   top: 45px;
@@ -93,6 +94,11 @@ body {
   transition: color 0.3s ease;
 }
 
+.titulo-pequeno,
+.menu-item {
+  transition: color 0.3s ease;
+}
+  
 /* ===== MENU ===== */
 .menu-header {
   display: flex;
@@ -124,19 +130,17 @@ body {
   background: #ffffff;
 }
 
-/* ===== HEADER ESCURO AO SCROLL ===== */
+/* ===== HEADER CLARO ===== */
+
 .top-bar.scrolled {
-  background: transparent;
-  border-bottom: none;
+  background: rgba(255,255,255,0.60);
+  backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(30px);
+  border-bottom: 1px solid rgba(0,0,0,0.08);
 }
 
 .top-bar.scrolled .blur-layer {
   background: rgba(255,255,255,0.40);
-}
-
-.top-bar-sub.scrolled {
-  background: rgba(0, 0, 0, 0.2);
-  border-bottom: 1px solid #4D4D4D;
 }
 
 .top-bar.scrolled .titulo-pequeno {
@@ -153,10 +157,6 @@ body {
 
 .top-bar.scrolled .menu-item.ativo::after {
   background: #000000;
-}
-
-.top-bar.scrolled .menu-item.ativo::after {
-  background: #ffffff;
 }
 
 /* ===== BANNER ===== */
@@ -1127,27 +1127,27 @@ carregarPacotesHomologacao();
 
 function atualizarEstadoCabecalho() {
 
-  const topMain = document.getElementById("topbarMain");
-  const topSub = document.getElementById("topbarSub");
-
+  const topbars = document.querySelectorAll(".top-bar");
   const resultadoGrupo = document.getElementById("resultadoGrupo");
 
-  if (!topMain || !topSub) return;
-
-  let trigger = 999999;
-
-  if (resultadoGrupo && resultadoGrupo.style.display !== "none") {
-    trigger = resultadoGrupo.offsetTop - 100;
-  }
+  if (!resultadoGrupo) return;
 
   const y = window.scrollY;
 
-  if (y >= trigger) {
-    topMain.classList.add("scrolled");
-    topSub.classList.add("scrolled");
+  if (
+    resultadoGrupo.style.display !== "none" &&
+    y >= (resultadoGrupo.offsetTop - 100)
+  ) {
+
+    topbars.forEach(el =>
+      el.classList.add("scrolled")
+    );
+
   } else {
-    topMain.classList.remove("scrolled");
-    topSub.classList.remove("scrolled");
+
+    topbars.forEach(el =>
+      el.classList.remove("scrolled")
+    );
   }
 }
 
