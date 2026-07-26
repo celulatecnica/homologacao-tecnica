@@ -1006,10 +1006,11 @@ if (bateComString) {
 
   if (!canaisLiberadosNaStringMap.has(nomeCanalNormalizado)) {
     canaisLiberadosNaStringMap.set(nomeCanalNormalizado, {
-      canal: item.canal,
-      vcSky: item.vcSky,
-      tipo: item.tipo
-    });
+  canal: item.canal,
+  vcSky: item.vcSky,
+  tipo: item.tipo,
+  caService: item.caService
+});
   }
 }
   }
@@ -1043,11 +1044,12 @@ for (const canalPacote of canaisPacote) {
 
 if (!registro) {
   homologacao.push({
-    canal: canalPacote.canal,
-    vcSky: canalPacote.vcSky,
-    tipo: "NAO ENCONTRADO",
-    presente: false
-  });
+  canal: registro.canal,
+  vcSky: registro.vcSky,
+  tipo: registro.tipo,
+  caService: registro.caService,
+  presente
+});
   continue;
 }
 if (deveIgnorarCanal(registro.canal, registro.tipo)) {
@@ -1061,6 +1063,11 @@ homologacao.push({
   tipo: registro.tipo,
   presente
 });
+
+  .map(item =>
+  `${item.canal}, ${item.caService} (vc${item.vcSky})`
+);
+  
 }
 console.log("HOMOLOGACAO");
 console.table(homologacao);
@@ -1144,19 +1151,36 @@ const totalCanais = canaisPacoteUnicos.length;
 
 const nomesCanaisPacote = homologacao
   .filter(item => !deveIgnorarCanal(item.canal, item.tipo))
-  .map(item => item.canal)
-  .filter(Boolean)
-  .sort((a, b) => a.localeCompare(b, "pt-BR"));
+  .sort((a, b) =>
+    a.canal.localeCompare(b.canal, "pt-BR", {
+      sensitivity: "base"
+    })
+  )
+  .map(item =>
+    `${item.canal} (vc${item.vcSky})`
+  );
 
 const nomesCanaisString = canaisLiberadosNaString
   .filter(item => !deveIgnorarCanal(item.canal, item.tipo))
-  .map(item => item.canal)
-  .filter(Boolean)
   .sort((a, b) =>
-  a.localeCompare(b, "pt-BR", {
-    sensitivity: "base"
-  })
-);
+    a.canal.localeCompare(b.canal, "pt-BR", {
+      sensitivity: "base"
+    })
+  )
+  .map(item => {
+
+    const estaNoPacote =
+      canaisPacoteUnicos.includes(
+        normalizarNomeCanal(item.canal)
+      );
+
+    const emoji = estaNoPacote
+      ? "🟢 "
+      : "";
+
+    return `${emoji}${item.canal}, ${item.caService} (vc${item.vcSky})`;
+
+  });
 
 const canaisEncontradosQtd = canaisPacoteUnicos.filter(nome =>
   canaisLiberadosNaString.some(item =>
