@@ -1314,7 +1314,9 @@ if (canaisRegionaisJaAdicionados.has(chaveCanal)) {
 
 canaisRegionaisJaAdicionados.add(chaveCanal);
 
-
+const servicosEncontradosCanal = servicosDoCanal.filter(servico =>
+  servicosEncontrados.has(String(servico).trim())
+);
 
 if (nome.includes("GLOBO")) {
 
