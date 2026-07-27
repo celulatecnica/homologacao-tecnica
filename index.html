@@ -1281,24 +1281,45 @@ const canaisRegionalizados = {
   SBT: null
 };
 
-for (const item of canaisLiberadosNaString) {
+for (const chave in mapaServicos) {
 
-  const nome = String(item.canal || "").toUpperCase();
+  const registros = mapaServicos[chave];
 
-  if (nome.includes("GLOBO") && !canaisRegionalizados.GLOBO) {
-    canaisRegionalizados.GLOBO = item.canal;
-  }
+  for (const item of registros) {
 
-  if (nome.includes("RECORD") && !canaisRegionalizados.RECORD) {
-    canaisRegionalizados.RECORD = item.canal;
-  }
+    const nome = String(item.canal || "").toUpperCase();
+    const tipo = String(item.tipo || "").toUpperCase().trim();
 
-  if (nome.includes("SBT") && !canaisRegionalizados.SBT) {
-    canaisRegionalizados.SBT = item.canal;
-  }
+    // somente canais classificados como CANAL ABERTO
+    if (tipo !== "CANAL ABERTO") {
+      continue;
+    }
 
-  if (nome.includes("BAND") && !canaisRegionalizados.BAND) {
-    canaisRegionalizados.BAND = item.canal;
+    const servicosDoCanal = item.servicos || [];
+
+    const presenteNaString = servicosDoCanal.some(servico =>
+      servicosEncontrados.has(String(servico).trim())
+    );
+
+    if (!presenteNaString) {
+      continue;
+    }
+
+    if (nome.includes("GLOBO") && !canaisRegionalizados.GLOBO) {
+      canaisRegionalizados.GLOBO = item.canal;
+    }
+
+    if (nome.includes("RECORD") && !canaisRegionalizados.RECORD) {
+      canaisRegionalizados.RECORD = item.canal;
+    }
+
+    if (nome.includes("SBT") && !canaisRegionalizados.SBT) {
+      canaisRegionalizados.SBT = item.canal;
+    }
+
+    if (nome.includes("BAND") && !canaisRegionalizados.BAND) {
+      canaisRegionalizados.BAND = item.canal;
+    }
   }
 }
 
