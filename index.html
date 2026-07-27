@@ -1290,7 +1290,6 @@ for (const chave in mapaServicos) {
     const nome = String(item.canal || "").toUpperCase();
     const tipo = String(item.tipo || "").toUpperCase().trim();
 
-    // somente canais classificados como CANAL ABERTO
     if (tipo !== "CANAL ABERTO") {
       continue;
     }
@@ -1305,22 +1304,44 @@ for (const chave in mapaServicos) {
       continue;
     }
 
+    const servicoEncontrado = servicosDoCanal.find(servico =>
+      servicosEncontrados.has(String(servico).trim())
+    );
+
     if (nome.includes("GLOBO") && !canaisRegionalizados.GLOBO) {
-  canaisRegionalizados.GLOBO = item;
-}
+      canaisRegionalizados.GLOBO = {
+        canal: item.canal,
+        vcSky: item.vcSky,
+        servicoEncontrado
+      };
+    }
 
-if (nome.includes("RECORD") && !canaisRegionalizados.RECORD) {
-  canaisRegionalizados.RECORD = item;
-}
+    if (nome.includes("RECORD") && !canaisRegionalizados.RECORD) {
+      canaisRegionalizados.RECORD = {
+        canal: item.canal,
+        vcSky: item.vcSky,
+        servicoEncontrado
+      };
+    }
 
-if (nome.includes("SBT") && !canaisRegionalizados.SBT) {
-  canaisRegionalizados.SBT = item;
-}
+    if (nome.includes("SBT") && !canaisRegionalizados.SBT) {
+      canaisRegionalizados.SBT = {
+        canal: item.canal,
+        vcSky: item.vcSky,
+        servicoEncontrado
+      };
+    }
 
-if (nome.includes("BAND") && !canaisRegionalizados.BAND) {
-  canaisRegionalizados.BAND = item;
-}
+    if (nome.includes("BAND") && !canaisRegionalizados.BAND) {
+      canaisRegionalizados.BAND = {
+        canal: item.canal,
+        vcSky: item.vcSky,
+        servicoEncontrado
+      };
+    }
+
   }
+
 }
 
 const htmlRegionalizados = Object.entries(canaisRegionalizados)
@@ -1346,17 +1367,16 @@ const htmlRegionalizados = Object.entries(canaisRegionalizados)
       logo = "arquivos/logo_sbt.png";
     }
 
-    const servico =
-      item.caServiceEncontrado || item.caService || "-";
+const servico = item.servicoEncontrado || "-";
 
-    return `
-      <div class="canal-regional-item">
-        ${logo}
-        <div class="canal-regional-nome">
-          ${item.canal}, ${servico} (vc${item.vcSky})
-        </div>
-      </div>
-    `;
+   return `
+  <div class="canal-regional-item">
+    }" alt="${rede}">
+    <div class="canal-regional-nome">
+      ${item.canal}, ${servico} (vc${item.vcSky})
+    </div>
+  </div>
+`;
   })
   .join("");
 
