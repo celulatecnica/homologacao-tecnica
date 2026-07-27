@@ -213,6 +213,30 @@ textarea:focus {
   overflow-wrap: break-word;
 }
 
+.canais-regionais {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.canal-regional-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.canal-regional-item img {
+  width: 42px;
+  height: 42px;
+  object-fit: contain;
+}
+
+.canal-regional-nome {
+  font-size: 16px;
+  font-weight: 500;
+  color: #1d1d1f;
+}
+  
   .lista-canais-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -1247,8 +1271,73 @@ const totalCanaisString =
   canaisLiberadosNaString.filter(
     item => !deveIgnorarCanal(item.canal, item.tipo)
   ).length;
-  if (painelResultado) {
-    painelResultado.innerHTML = `
+
+/* ADICIONAR AQUI */
+
+const canaisRegionalizados = {
+  BAND: null,
+  GLOBO: null,
+  RECORD: null,
+  SBT: null
+};
+
+for (const item of canaisLiberadosNaString) {
+
+  const nome = String(item.canal || "").toUpperCase();
+
+  if (nome.includes("GLOBO") && !canaisRegionalizados.GLOBO) {
+    canaisRegionalizados.GLOBO = item.canal;
+  }
+
+  if (nome.includes("RECORD") && !canaisRegionalizados.RECORD) {
+    canaisRegionalizados.RECORD = item.canal;
+  }
+
+  if (nome.includes("SBT") && !canaisRegionalizados.SBT) {
+    canaisRegionalizados.SBT = item.canal;
+  }
+
+  if (nome.includes("BAND") && !canaisRegionalizados.BAND) {
+    canaisRegionalizados.BAND = item.canal;
+  }
+}
+
+const htmlRegionalizados = Object.entries(canaisRegionalizados)
+  .filter(([, canal]) => canal)
+  .sort((a, b) => a[0].localeCompare(b[0]))
+  .map(([rede, canal]) => {
+
+    let logo = "";
+
+    if (rede === "BAND") {
+      logo = "arquivos/logo_band.png";
+    }
+
+    if (rede === "GLOBO") {
+      logo = "arquivos/logo_globo.png";
+    }
+
+    if (rede === "RECORD") {
+      logo = "arquivos/logo_record.png";
+    }
+
+    if (rede === "SBT") {
+      logo = "arquivos/logo_sbt.png";
+    }
+
+    return `
+      <div class="canal-regional-item">
+        ${logo}
+        <div class="canal-regional-nome">${canal}</div>
+      </div>
+    `;
+  })
+  .join("");
+
+/* FIM DA ADIÇÃO */
+
+if (painelResultado) {
+  painelResultado.innerHTML = `
       <div class="resultado-titulo">Resultado da Homologação</div>
 
       <div class="resultado-subtitulo">String de serviços em hexadecimal</div>
@@ -1296,7 +1385,17 @@ const totalCanaisString =
     </details>
 
 <br>
-        
+
+      </div>
+
+      <div class="resultado-subtitulo">
+        Resumo da análise dos canais regionalizados
+      </div>
+
+      <div class="resultado-box">
+        <div class="canais-regionais">
+          ${htmlRegionalizados}
+        </div>
       </div>
 
     `;
