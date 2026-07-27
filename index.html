@@ -1406,9 +1406,10 @@ if (painelResultado) {
       
         Total de canais da string: ${totalCanaisString}<br>
         Total de canais do pacote: ${totalCanais}<br><br>
+        
       <details class="bloco-expandivel">
       <summary>
-          🟢 Canais do pacote na string: ${canaisEncontradosQtd} (${percentualEncontrados}%)
+         🟢 Canais do pacote na string: ${canaisEncontradosQtd} (${percentualEncontrados}%)
       </summary>
       <br>
         ${renderizarGridCanais(canaisPacoteNaString)}
@@ -1421,15 +1422,17 @@ if (painelResultado) {
       </summary>
       <br>
       ${renderizarGridCanais(canaisExcedentes)}
+      <br>
       </details>
   
       <details class="bloco-expandivel">
       <summary>
-        🔴 Canais do pacote ausentes na string: ${canaisAusentesQtd}
+         🔴 Canais do pacote ausentes na string: ${canaisAusentesQtd}
       </summary>
       <br>
       ${renderizarGridCanais(canaisAusentes)}
-    </details>
+      <br>
+      </details>
 
 <br>
 
