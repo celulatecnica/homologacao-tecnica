@@ -1280,7 +1280,9 @@ const canaisRegionalizados = {
   RECORD: [],
   SBT: []
 };
-
+  
+const canaisRegionaisJaAdicionados = new Set();
+  
 for (const chave in mapaServicos) {
 
   const registros = mapaServicos[chave];
@@ -1301,18 +1303,20 @@ for (const chave in mapaServicos) {
     );
 
     if (!presenteNaString) {
-      continue;
-    }
+  continue;
+}
 
-    const servicosEncontradosCanal = servicosDoCanal.filter(servico =>
-  servicosEncontrados.has(String(servico).trim())
-);
+const chaveCanal = normalizarNomeCanal(item.canal);
+
+if (canaisRegionaisJaAdicionados.has(chaveCanal)) {
+  continue;
+}
+
+canaisRegionaisJaAdicionados.add(chaveCanal);
+
+
 
 if (nome.includes("GLOBO")) {
-
-  const servicosEncontradosCanal = servicosDoCanal.filter(servico =>
-    servicosEncontrados.has(String(servico).trim())
-  );
 
   if (servicosEncontradosCanal.length) {
     canaisRegionalizados.GLOBO.push({
@@ -1321,13 +1325,10 @@ if (nome.includes("GLOBO")) {
       servicosEncontrados: servicosEncontradosCanal
     });
   }
+
 }
 
 if (nome.includes("RECORD")) {
-
-  const servicosEncontradosCanal = servicosDoCanal.filter(servico =>
-    servicosEncontrados.has(String(servico).trim())
-  );
 
   if (servicosEncontradosCanal.length) {
     canaisRegionalizados.RECORD.push({
@@ -1336,13 +1337,10 @@ if (nome.includes("RECORD")) {
       servicosEncontrados: servicosEncontradosCanal
     });
   }
+
 }
 
-    if (nome.includes("SBT")) {
-
-  const servicosEncontradosCanal = servicosDoCanal.filter(servico =>
-    servicosEncontrados.has(String(servico).trim())
-  );
+if (nome.includes("SBT")) {
 
   if (servicosEncontradosCanal.length) {
     canaisRegionalizados.SBT.push({
@@ -1351,13 +1349,10 @@ if (nome.includes("RECORD")) {
       servicosEncontrados: servicosEncontradosCanal
     });
   }
+
 }
 
 if (nome.includes("BAND")) {
-
-  const servicosEncontradosCanal = servicosDoCanal.filter(servico =>
-    servicosEncontrados.has(String(servico).trim())
-  );
 
   if (servicosEncontradosCanal.length) {
     canaisRegionalizados.BAND.push({
@@ -1366,6 +1361,7 @@ if (nome.includes("BAND")) {
       servicosEncontrados: servicosEncontradosCanal
     });
   }
+
 }
 
   }
@@ -1374,11 +1370,8 @@ if (nome.includes("BAND")) {
 
 const htmlRegionalizados = Object.entries(canaisRegionalizados)
   .flatMap(([rede, itens]) =>
-
     itens.map(item => {
-
       let logo = "";
-
       if (rede === "BAND") logo = "arquivos/logo_band.png";
       if (rede === "GLOBO") logo = "arquivos/logo_globo.png";
       if (rede === "RECORD") logo = "arquivos/logo_record.png";
@@ -1386,14 +1379,13 @@ const htmlRegionalizados = Object.entries(canaisRegionalizados)
 
       return `
         <div class="canal-regional-item">
-          ${logo}
+          <img src="${logo}" alt="${rede}" class="canal-regional-logo" />
           <div class="canal-regional-nome">
             ${item.canal}, ${item.servicosEncontrados.join(", ")} (vc${item.vcSky})
           </div>
         </div>
       `;
     })
-
   )
   .join("");
 
