@@ -1306,27 +1306,27 @@ for (const chave in mapaServicos) {
     }
 
     if (nome.includes("GLOBO") && !canaisRegionalizados.GLOBO) {
-      canaisRegionalizados.GLOBO = item.canal;
-    }
+  canaisRegionalizados.GLOBO = item;
+}
 
-    if (nome.includes("RECORD") && !canaisRegionalizados.RECORD) {
-      canaisRegionalizados.RECORD = item.canal;
-    }
+if (nome.includes("RECORD") && !canaisRegionalizados.RECORD) {
+  canaisRegionalizados.RECORD = item;
+}
 
-    if (nome.includes("SBT") && !canaisRegionalizados.SBT) {
-      canaisRegionalizados.SBT = item.canal;
-    }
+if (nome.includes("SBT") && !canaisRegionalizados.SBT) {
+  canaisRegionalizados.SBT = item;
+}
 
-    if (nome.includes("BAND") && !canaisRegionalizados.BAND) {
-      canaisRegionalizados.BAND = item.canal;
-    }
+if (nome.includes("BAND") && !canaisRegionalizados.BAND) {
+  canaisRegionalizados.BAND = item;
+}
   }
 }
 
 const htmlRegionalizados = Object.entries(canaisRegionalizados)
-  .filter(([, canal]) => canal)
+  .filter(([, item]) => item)
   .sort((a, b) => a[0].localeCompare(b[0]))
-  .map(([rede, canal]) => {
+  .map(([rede, item]) => {
 
     let logo = "";
 
@@ -1346,12 +1346,17 @@ const htmlRegionalizados = Object.entries(canaisRegionalizados)
       logo = "arquivos/logo_sbt.png";
     }
 
-   return `
-  <div class="canal-regional-item">
-    <img src="${logo}" alt="${rede}">
-    <div class="canal-regional-nome">${canal}</div>
-  </div>
-`;
+    const servico =
+      item.caServiceEncontrado || item.caService || "-";
+
+    return `
+      <div class="canal-regional-item">
+        ${logo}
+        <div class="canal-regional-nome">
+          ${item.canal}, ${servico} (vc${item.vcSky})
+        </div>
+      </div>
+    `;
   })
   .join("");
 
