@@ -870,13 +870,14 @@ async function carregarCanais() {
 
   for (let i = 1; i < linhas.length; i++) {
     const partes = extrairCamposCSV(linhas[i], ";");
-    if (partes.length < 6) continue;
+ if (partes.length < 7) continue;
 
-    const canal = partes[0];
-    const caService = partes[2];
-    const vcSky = partes[3];
-    const vcTvro = partes[4];
-    const tipo = partes[5];
+const canal = partes[0];
+const caService = partes[2];
+const caAberto = partes[3];
+const vcSky = partes[4];
+const vcTvro = partes[5];
+const tipo = partes[6];
     const servicos = String(caService)
       .split(",")
       .map(s => s.trim())
@@ -889,13 +890,14 @@ async function carregarCanais() {
       }
 
       mapaServicos[chave].push({
-        canal,
-        caService,
-        servicos,
-        vcSky,
-        vcTvro,
-        tipo
-      });
+  canal,
+  caService,
+  caAberto,
+  servicos,
+  vcSky,
+  vcTvro,
+  tipo
+});
     });
   }
 
@@ -1296,7 +1298,10 @@ for (const chave in mapaServicos) {
       continue;
     }
 
-    const servicosDoCanal = item.servicos || [];
+const servicosDoCanal = String(item.caAberto || "")
+  .split(",")
+  .map(s => s.trim())
+  .filter(Boolean);
 
     const presenteNaString = servicosDoCanal.some(servico =>
       servicosEncontrados.has(String(servico).trim())
