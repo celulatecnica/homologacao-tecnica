@@ -451,7 +451,7 @@ button:active {
   top: 100px;
   height: 80px;
 
-  background: rgba(15,15,15);
+  background: #0F0F0F;
   border-bottom: 1px solid #4D4D4D;
 
   opacity: 0;
@@ -478,31 +478,50 @@ button:active {
 }
 
 .pacote-resumo-bloco {
+  height: 100%;
+
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 
-  text-align: center;
-  gap: 6px;
+  gap: 8px;
 }
 
 .pacote-resumo {
   font-size: 18px;
   font-weight: 600;
   color: #f5f5f7;
+  line-height: 1.1;
 }
 
 .pacote-total {
   font-size: 16px;
+  font-weight: 400;
   color: #d1d1d6;
+  line-height: 1.1;
 }
 
 .pacote-resumo.vazio,
 .pacote-total.vazio {
   color: #8e8e93;
 }
-  
+
+/* ===== BARRA 3 NUNCA MUDA PARA CLARO ===== */
+
+.top-bar-pacotes.scrolled {
+  background: #0F0F0F !important;
+  border-bottom: 1px solid #4D4D4D !important;
+}
+
+.top-bar-pacotes.scrolled .pacote-resumo {
+  color: #f5f5f7 !important;
+}
+
+.top-bar-pacotes.scrolled .pacote-total {
+  color: #d1d1d6 !important;
+}
+
 /* ===== LOGO ===== */
 .logo {
   height: 20px;
