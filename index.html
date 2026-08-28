@@ -952,7 +952,7 @@ const msalConfig = {
   auth: {
     clientId: "05469246-e7cc-4830-8c7f-331e4eae3b06",
     authority: "https://login.microsoftonline.com/4abdf8c8-91c3-4c1b-9c71-6266b586ec6b",
-    redirectUri: window.location.origin + window.location.pathname
+    redirectUri: "https://celulatecnica.github.io/homologacao-tecnica/"
   },
   cache: {
     cacheLocation: "localStorage",
@@ -1048,19 +1048,30 @@ function getBestAccount() {
  * Verificar autenticação e liberar/bloquear página
  */
 async function enforceAuthAndUnlock() {
+
+  console.log("===== AUTH CHECK =====");
+  console.log("ACTIVE:", msalInstance.getActiveAccount());
+  console.log("ACCOUNTS:", msalInstance.getAllAccounts());
+
   const account = getBestAccount();
 
+  console.log("BEST ACCOUNT:", account);
+
   if (!account) {
+    console.log("SEM CONTA");
     showLoginOverlay();
     setStatus("Pronto para autenticar.");
     return;
   }
 
+  console.log("LOGIN OK:", account.username);
+
   msalInstance.setActiveAccount(account);
+
   hideLoginOverlay();
+
   setStatus("Autenticado com sucesso.");
 
-  // Inicializar componentes após autenticação
   await initializePageComponents();
 }
 
@@ -1146,7 +1157,8 @@ async function initializeMsal() {
       if (btnLogin) btnLogin.disabled = false;
       return;
     }
-
+console.log("URL ATUAL:", window.location.href);
+console.log("REDIRECT:", window.location.origin + window.location.pathname);
     msalInstance = new msal.PublicClientApplication(msalConfig);
 
     if (typeof msalInstance.initialize === "function") {
