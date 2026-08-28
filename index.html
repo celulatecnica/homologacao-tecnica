@@ -7,7 +7,7 @@
   <link rel="icon" type="image/png" href="arquivos/favicon.png">
 </head>
 <style>
-/* ===== RESET ===== */
+
 * {
   box-sizing: border-box;
 }
@@ -29,15 +29,11 @@ body {
   padding-top: 0;
 }
 
-
-
-/* ===== BANNER ===== */
 #banner {
   width: 100%;
   display: block;
 }
 
-/* ===== CONTAINER ===== */
 .container {
   width: 950px;
   max-width: calc(100% - 32px);
@@ -45,11 +41,9 @@ body {
   text-align: center;
   padding-left: 16px;
   padding-right: 16px;
-  /* remova ou reduza esse margin-top, se quiser idêntico: */
   margin-top: 0;
 }
 
-/* ===== TÍTULO PRINCIPAL ===== */
 .titulo-principal {
   font-size: 32px;
   margin-top: 47px;
@@ -72,7 +66,6 @@ body {
   margin-bottom: 47px;
 }
 
-/* ===== FORM CARD ===== */
 .form-card {
   width: 100%;
   background: #171717;
@@ -153,7 +146,6 @@ textarea:focus {
   min-height: 230px;
 }
 
-/* ===== RESULTADO OCULTO INICIALMENTE ===== */
 #resultadoGrupo {
   display: none;
   margin-top: 40px;
@@ -207,7 +199,6 @@ textarea:focus {
   background: #F5F5F7;
   font-family: Consolas, monospace;
   font-size: 16px;
-
   white-space: normal;
   word-break: normal;
   overflow-wrap: break-word;
@@ -250,8 +241,6 @@ textarea:focus {
   line-height: 1.6;
 }
 
-
-
 @media (max-width: 900px) {
   .lista-canais-grid {
     grid-template-columns: repeat(2, 1fr);
@@ -288,7 +277,6 @@ textarea:focus {
   font-weight: bold;
 }
 
-/* ===== BOTÕES ===== */
 .acoes {
   display: flex;
   gap: 12px;
@@ -329,14 +317,12 @@ button:active {
   background: #333333;
 }
 
-/* ===== STATUS ===== */
 .status-info {
   margin-top: 10px;
   font-size: 14px;
   color: #8e8e93;
 }
 
-/* ===== ESPAÇO FINAL E RODAPÉ ===== */
 .fake-content {
   height: 280px;
   background: #0F0F0F;
@@ -390,7 +376,6 @@ button:active {
   color: #8e8e93;
 }
 
-  /* ===== BASE TOP BAR (copiado do Check Channel) ===== */
 .top-bar {
   position: fixed;
   left: 0;
@@ -413,7 +398,6 @@ button:active {
   z-index: 2;
 }
 
-/* ===== BARRA 1 - LOGO ===== */
 .top-bar-main {
   position: fixed;
   top: 0;
@@ -421,7 +405,6 @@ button:active {
   height: 45px;
 }
 
-/* camada de blur */
 .blur-layer {
   position: absolute;
   inset: 0;
@@ -430,12 +413,10 @@ button:active {
   z-index: 1;
 }
 
-/* estado padrão (escuro) da barra 1 */
 .top-bar-main .blur-layer {
   background: rgba(15,15,15,0.55);
 }
 
-/* ===== BARRA 2 - TÍTULO / MENU ===== */
 .top-bar-sub {
   position: fixed;
   top: 45px;
@@ -445,22 +426,17 @@ button:active {
   border-bottom: 1px solid #4D4D4D;
 }
 
-/* ===== BARRA 3 ===== */
-
 .top-bar-pacotes {
   top: 100px;
   height: 80px;
-
   background: #0F0F0F;
   border-bottom: 1px solid #4D4D4D;
-
   opacity: 0;
   transform: translateY(-12px);
   pointer-events: none;
-
   transition:
-    opacity .28s ease,
-    transform .28s ease;
+  opacity .28s ease,
+  transform .28s ease;
 }
 
 .top-bar-pacotes.visible {
@@ -471,7 +447,6 @@ button:active {
 
 .top-bar-pacotes-inner {
   height: 100%;
-
   display: flex;
   justify-content: center;
   align-items: center;
@@ -479,12 +454,10 @@ button:active {
 
 .pacote-resumo-bloco {
   height: 100%;
-
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-
   gap: 8px;
 }
 
@@ -507,8 +480,6 @@ button:active {
   color: #8e8e93;
 }
 
-/* ===== BARRA 3 NUNCA MUDA PARA CLARO ===== */
-
 .top-bar-pacotes.scrolled {
   background: #0F0F0F !important;
   border-bottom: 1px solid #4D4D4D !important;
@@ -522,13 +493,11 @@ button:active {
   color: #d1d1d6 !important;
 }
 
-/* ===== LOGO ===== */
 .logo {
   height: 20px;
   display: block;
 }
 
-/* ===== TÍTULO HEADER ===== */
 .titulo-pequeno {
   font-size: 21px;
   font-weight: 600;
@@ -536,7 +505,6 @@ button:active {
   transition: color 0.3s ease;
 }
 
-/* ===== MENU ===== */
 .menu-header {
   display: flex;
   gap: 24px;
@@ -567,28 +535,31 @@ button:active {
   background: #ffffff;
 }
 
-/* ===== ESTADO PADRÃO (ESCURO) ===== */
 .top-bar-main .blur-layer {
   background: rgba(15,15,15,0.55);
 }
+  
 .top-bar-sub {
   background: rgba(0,0,0,0.20);
   border-bottom: 1px solid #4D4D4D;
 }
+  
 .titulo-pequeno {
   color: #f5f5f7;
 }
+  
 .menu-item {
   color: #b5b5b8;
 }
+  
 .menu-item.ativo {
   color: #ffffff;
 }
+  
 .menu-item.ativo::after {
   background: #ffffff;
 }
 
-/* ===== HEADER CLARO AO SCROLL ===== */
 .top-bar.scrolled {
   background: rgba(255,255,255,0.60);
   backdrop-filter: blur(30px);
@@ -616,7 +587,6 @@ button:active {
   background: #000000;
 }
 
-/* transição de cores */
 .titulo-pequeno, .menu-item {
   transition: color 0.3s ease;
 }
@@ -645,7 +615,6 @@ button:active {
   content: "- ";
 }
 
-/* ===== RESPONSIVO ===== */
 @media (max-width: 720px) {
   .top-bar-inner {
     max-width: calc(100% - 24px);
@@ -699,7 +668,6 @@ button:active {
   }
 }
 
-/* ===== CONTAINER DO APP (fica bloqueado com blur) ===== */
 .app-locked {
   filter: blur(12px);
   pointer-events: none;
@@ -713,37 +681,28 @@ button:active {
   user-select: auto;
 }
 
-/* ===== OVERLAY DE LOGIN (camada fixa por cima) ===== */
 .login-overlay {
   position: fixed;
   inset: 0;
   z-index: 99999;
-
   display: flex;
   justify-content: center;
   align-items: center;
-
-  /* fundo semi-escuro */
   background: rgba(0, 0, 0, 0.45);
-
 }
 
 .login-overlay.hidden {
   display: none;
 }
 
-/* ===== CARD/BALÃO DE LOGIN ===== */
 .login-card {
   width: 520px;
   max-width: calc(100% - 32px);
-
   background: rgba(23, 23, 23, 0.95);
   border: 1px solid #2A2A2A;
   border-radius: 16px;
-
   padding: 48px;
   box-shadow: 0 25px 80px rgba(0, 0, 0, 0.5);
-
   color: #f5f5f7;
   text-align: center;
   animation: slideUp 0.4s ease;
@@ -784,7 +743,6 @@ button:active {
   color: #d1d1d6;
 }
 
-/* ===== BOTÃO DO LOGIN ===== */
 .btn-login {
   width: 100%;
   height: 48px;
@@ -813,31 +771,184 @@ button:active {
   cursor: not-allowed;
 }
 
-/* ===== TEXTO DE STATUS ===== */
 .status {
   margin-top: 12px;
   font-size: 13px;
   color: #8e8e93;
 }
 
-/* ===== TRAVAR SCROLL NA PÁGINA ===== */
-
-  
 </style>  
 </head>
 
-<body>
-<div id="appContent" class="app-locked">
-    
-   <!-- SCRIPT MSAL -->
- <script src="https://cdn.jsdelivr.net/npm/@azure/msal-browser@2.38.0/lib/msal-browser.min.js"></script>
 
-  <!-- SCRIPTS JS (vêm no PASSO 4) -->
+<body>
+
+  <!-- ========================================
+       CAMADA 1: CONTEÚDO DO SITE (fica borrado)
+       ======================================== -->
+  <div id="appContent" class="app-locked">
+    
+    <!-- ===== BARRA 1 - LOGO ===== -->
+    <div class="top-bar top-bar-main" id="topbarMain">
+      <div class="blur-layer"></div>
+      <div class="top-bar-inner">
+        <img class="logo" src="arquivos/icon_gpt_branco.png" alt="Ícone GPT">
+      </div>
+    </div>
+
+    <!-- ===== BARRA 2 - TÍTULO / MENU ===== -->
+    <div class="top-bar top-bar-sub" id="topbarSub">
+      <div class="top-bar-inner">
+        <div class="titulo-pequeno">Homologação Técnica</div>
+        <div class="menu-header">
+          <a href="index.html" class="menu-item ativo">String</a>
+          <a href="canales.html" class="menu-item">Canais Abertos</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== BARRA 3 - PACOTES ===== -->
+    <div class="top-bar top-bar-pacotes" id="topbarPacotes">
+      <div class="top-bar-inner top-bar-pacotes-inner">
+        <div class="pacote-resumo-bloco">
+          <div class="pacote-resumo vazio" id="headerCA">
+            Nenhum CA selecionado
+          </div>
+          <div class="pacote-total vazio" id="headerPacote">
+            Nenhum pacote selecionado
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== BANNER ===== -->
+    <img id="banner" src="arquivos/banner.png" alt="Banner Homologação">
+
+    <!-- ===== CONTAINER PRINCIPAL ===== -->
+    <div class="container">
+      <h1 class="titulo-principal">Analisador de String</h1>
+      <div class="linha"></div>
+
+      <!-- ===== FORMULÁRIO ===== -->
+      <div class="form-card">
+        <div class="campo-grupo">
+          <label class="campo-label" for="caSelecionado">
+            Seleciona um CA:
+          </label>
+          <select id="caSelecionado">
+            <option value="" disabled selected>Selecione o CA</option>
+            <option value="nagra">Nagra</option>
+            <option value="sinamedia">Synamedia</option>
+            <option value="verimatrix">Verimatrix</option>
+          </select>
+        </div>
+
+        <div class="campo-grupo">
+          <label class="campo-label" for="pacoteHomologado">
+            Selecione o pacote que será homologado:
+          </label>
+          <select id="pacoteHomologado">
+            <option value="" disabled selected>Selecione o pacote</option>
+          </select>
+          <div class="campo-ajuda">
+            Para cadastrar um novo pacote,
+            <a
+              href="https://github.com/celulatecnica/homologacao-tecnica/upload/main/pacotes"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="link-upload"
+            >
+              clique aqui
+            </a>
+            e carregue um arquivo CSV.
+          </div>
+        </div>
+
+        <div class="campo-grupo">
+          <label class="campo-label" for="comando">String para análise:</label>
+          <textarea id="comando" placeholder="Cole a string aqui..."></textarea>
+        </div>
+
+        <div class="acoes">
+          <button type="button" onclick="analisar()">Analisar</button>
+          <button type="button" class="botao-secundario" onclick="limparCampos()">Limpar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== RESULTADO ===== -->
+    <div id="resultadoGrupo">
+      <div class="resultado-wrapper">
+        <div id="painelResultado" class="painel-resultado"></div>
+        <div class="status-info" id="statusInfo"></div>
+      </div>
+    </div>
+
+    <!-- ===== RODAPÉ ===== -->
+    <div class="fake-content">
+      <footer class="footer-faixa">
+        <div class="footer-inner">
+          <p class="footer-text">
+            Esta ferramenta foi desenvolvida pela Célula Técnica com o objetivo de otimizar a análise e homologação técnica de strings de comando.
+            Em caso de erros, comunique-se com nosso time através de
+            <a href="mailto:celulatecnica@sky.com.br">celulatecnica@sky.com.br</a>.
+          </p>
+          <div class="footer-divider"></div>
+          <p class="footer-copy">
+            Homologação Técnica © 2026 Célula Técnica, Engenharia WAIKEN.
+            Todos os direitos reservados.
+          </p>
+        </div>
+      </footer>
+    </div>
+
+  </div>
+  <!-- FIM DO appContent -->
+
+  <!-- ========================================
+       CAMADA 2: OVERLAY DE LOGIN (por cima)
+       ======================================== -->
+  <div id="loginOverlay" class="login-overlay">
+    <div class="login-card">
+      <div class="login-header">
+        <img src="arquivos/icon_gpt_branco.png" alt="GPT" class="login-logo">
+        <h2>Homologação Técnica</h2>
+      </div>
+
+      <p class="login-description">
+        Faça login com sua conta Microsoft corporativa para acessar a ferramenta de análise.
+      </p>
+
+      <button id="btnLogin" class="btn-login" onclick="login()" disabled>
+        <span>Entrar com Microsoft</span>
+      </button>
+
+      <div id="status" class="status">Carregando autenticação...</div>
+    </div>
+  </div>
+
+  <!-- ===== SCRIPTS ===== -->
+
+  <!-- MSAL Library (DEVE estar no HEAD, mas colocando aqui por compatibilidade) -->
+  <script src="https://cdn.jsdelivr.net/npm/@azure/msal-browser@2.38.0/lib/msal-browser.min.js"></script>
+
+  <!-- Script Principal: Autenticação + Analisador -->
   <script>
-/* ===== CONFIGURAÇÃO MSAL (igual ao seu outro site) ===== */
+/**
+ * ============================================================================
+ * HOMOLOGAÇÃO TÉCNICA - LOGIN MICROSOFT + ANALISADOR DE STRING
+ * ============================================================================
+ * Sistema completo de autenticação MSAL com modal de login e blur de fundo
+ * ============================================================================
+ */
+
+/* ============================================================================
+   PARTE 1: CONFIGURAÇÃO MSAL
+   ============================================================================ */
+
 const msalConfig = {
   auth: {
-    clientId: "05469246-e7cc-4830-8c7f-331e4eae3b06",
+    clientId: "bd3d9316-4683-4aea-ad47-8c237cdceb5e",
     authority: "https://login.microsoftonline.com/4abdf8c8-91c3-4c1b-9c71-6266b586ec6b",
     redirectUri: window.location.origin + window.location.pathname
   },
@@ -853,37 +964,87 @@ const loginRequest = {
 
 let msalInstance = null;
 
-/* ===== FUNÇÕES DE UI ===== */
+/* ============================================================================
+   PARTE 2: FUNÇÕES DE UI (Modal, Blur, Bloqueio)
+   ============================================================================ */
+
+/**
+ * Atalho para pegar elemento por ID
+ */
+function el(id) {
+  return document.getElementById(id);
+}
+
+/**
+ * Atualizar texto de status do login
+ */
 function setStatus(text) {
-  const el = document.getElementById("status");
-  if (el) el.textContent = text;
+  const statusEl = el("status");
+  if (statusEl) statusEl.textContent = text;
 }
 
+/**
+ * Mostrar overlay de login (bloqueia página)
+ */
 function showLoginOverlay() {
-  const overlay = document.getElementById("loginOverlay");
-  const appContent = document.getElementById("appContent");
-  
-  if (overlay) overlay.classList.remove("hidden");
-  if (appContent) appContent.classList.add("app-locked");
-  
-  const btnLogin = document.getElementById("btnLogin");
-  if (btnLogin) btnLogin.disabled = false;
+  const overlay = el("loginOverlay");
+  const appContent = el("appContent");
+  const btnLogin = el("btnLogin");
+
+  if (overlay) {
+    overlay.classList.remove("hidden");
+    overlay.style.display = "flex";
+  }
+
+  if (appContent) {
+    appContent.classList.add("app-locked");
+  }
+
+  if (btnLogin) {
+    btnLogin.disabled = false;
+  }
+
+  document.body.classList.add("lock-scroll");
 }
 
+/**
+ * Esconder overlay de login (libera página)
+ */
 function hideLoginOverlay() {
-  const overlay = document.getElementById("loginOverlay");
-  const appContent = document.getElementById("appContent");
-  
-  if (overlay) overlay.classList.add("hidden");
-  if (appContent) appContent.classList.remove("app-locked");
+  const overlay = el("loginOverlay");
+  const appContent = el("appContent");
+
+  if (overlay) {
+    overlay.classList.add("hidden");
+    overlay.style.display = "none";
+  }
+
+  if (appContent) {
+    appContent.classList.remove("app-locked");
+  }
+
+  document.body.classList.remove("lock-scroll");
 }
 
-/* ===== FUNÇÕES PRINCIPAIS DO MSAL ===== */
+/* ============================================================================
+   PARTE 3: FUNÇÕES PRINCIPAIS DE AUTENTICAÇÃO
+   ============================================================================ */
+
+/**
+ * Obter melhor conta disponível
+ */
 function getBestAccount() {
   if (!msalInstance) return null;
-  return msalInstance.getActiveAccount() || msalInstance.getAllAccounts()[0] || null;
+  return (
+    msalInstance.getActiveAccount() ||
+    msalInstance.getAllAccounts()[0] ||
+    null
+  );
 }
 
+/**
+ * Verificar autenticação e liberar/bloquear página
+ */
 async function enforceAuthAndUnlock() {
   const account = getBestAccount();
 
@@ -893,22 +1054,29 @@ async function enforceAuthAndUnlock() {
     return;
   }
 
-  // Tem conta → libera o site
   msalInstance.setActiveAccount(account);
   hideLoginOverlay();
+  setStatus("Autenticado com sucesso.");
+
+  // Inicializar componentes após autenticação
+  await initializePageComponents();
 }
 
+/**
+ * Fazer login com Microsoft
+ */
 async function login() {
   try {
     if (!msalInstance) {
-      setStatus("MSAL não foi inicializado.");
+      alert("Sistema de autenticação não foi inicializado.");
       return;
     }
 
-    document.getElementById("btnLogin").disabled = true;
-    setStatus("Abrindo login Microsoft...");
+    const btnLogin = el("btnLogin");
+    if (btnLogin) btnLogin.disabled = true;
 
-    // Limpa conta ativa para forçar seleção
+    setStatus("Abrindo login da Microsoft...");
+
     msalInstance.setActiveAccount(null);
 
     const res = await msalInstance.loginPopup({
@@ -922,442 +1090,166 @@ async function login() {
 
     await enforceAuthAndUnlock();
 
-  } 
-  catch (error) {
+  } catch (error) {
+    console.error("Erro no login:", error);
+    setStatus("Falha na autenticação. Tente novamente.");
 
-    console.error(error);
-
-    setStatus("Falha na autenticação.");
-
-    const btn =
-       document.getElementById("btnLogin");
-
-    if (btn) {
-       btn.disabled = false;
-    }
-}
+    const btnLogin = el("btnLogin");
+    if (btnLogin) btnLogin.disabled = false;
+  }
 }
 
+/**
+ * Fazer logout
+ */
 async function logout() {
   try {
+    if (!msalInstance) return;
+
     const account = getBestAccount();
-    await msalInstance.logoutPopup({ account });
+
+    if (account) {
+      await msalInstance.logoutPopup({ account });
+    }
+
     msalInstance.setActiveAccount(null);
+
     showLoginOverlay();
-    setStatus("Sessão encerrada.");
+    setStatus("Sessão encerrada. Faça login novamente.");
+
+    limparCampos();
+
   } catch (error) {
     console.error("Erro ao fazer logout:", error);
   }
 }
 
-/* ===== INICIALIZAÇÃO DO MSAL ===== */
-async function initAuthSystem() {
+/**
+ * Inicializar MSAL
+ */
+async function initializeMsal() {
   try {
     setStatus("Carregando autenticação...");
-    document.getElementById("btnLogin").disabled = true;
+
+    const btnLogin = el("btnLogin");
+    if (btnLogin) btnLogin.disabled = true;
 
     if (typeof msal === "undefined") {
-      setStatus("MSAL não carregou. Recarregue a página.");
-      console.error("msal undefined");
+      setStatus("Erro ao carregar sistema de autenticação.");
+      console.error("MSAL não está disponível");
+      if (btnLogin) btnLogin.disabled = false;
       return;
     }
 
     msalInstance = new msal.PublicClientApplication(msalConfig);
 
-    // Aguarda inicialização do MSAL
     if (typeof msalInstance.initialize === "function") {
       await msalInstance.initialize();
     }
 
-    // Trata redirecionamento do login
     await msalInstance.handleRedirectPromise();
 
-    // Checa se tem conta e libera ou mostra login
     await enforceAuthAndUnlock();
 
   } catch (error) {
-    console.error("Erro ao inicializar autenticação:", error);
+    console.error("Erro ao inicializar MSAL:", error);
     setStatus("Erro ao inicializar. Recarregue a página.");
     showLoginOverlay();
   }
 }
 
-/* ===== EVENT LISTENERS ===== */
-// Revalida ao focar na aba
-window.addEventListener("focus", () => {
-  if (msalInstance) enforceAuthAndUnlock().catch(console.error);
-});
+/* ============================================================================
+   PARTE 4: FUNÇÕES DO ANALISADOR DE STRING
+   ============================================================================ */
 
-// Recarrega ao navegar com back/forward
-window.addEventListener("popstate", () => {
-  if (msalInstance) enforceAuthAndUnlock().catch(console.error);
-});
-
-// Inicia quando a página carrega
-window.addEventListener("load", initAuthSystem);
-  </script>
-  
-  <!-- ===== BARRA 1 ===== -->
-  <div class="top-bar top-bar-main" id="topbarMain">
-    <div class="blur-layer"></div>
-    <div class="top-bar-inner">
-      <img class="logo" src="arquivos/icon_gpt_branco.png" alt="Ícone GPT">
-    </div>
-  </div>
-
-  <!-- ===== BARRA 2 ===== -->
-  <div class="top-bar top-bar-sub" id="topbarSub">
-    <div class="top-bar-inner">
-      <div class="titulo-pequeno">Homologação Técnica</div>
-      <div class="menu-header">
-        <a href="index.html" class="menu-item ativo">String</a>
-        <a href="canales.html" class="menu-item">Canais Abertos</a>
-      </div>
-    </div>
-  </div>
-
-<!-- ===== BARRA 3 ===== -->
-<div class="top-bar top-bar-pacotes" id="topbarPacotes">
-  <div class="top-bar-inner top-bar-pacotes-inner">
-
-    <div class="pacote-resumo-bloco">
-      <div class="pacote-resumo vazio" id="headerCA">
-        Nenhum CA selecionado
-      </div>
-
-      <div class="pacote-total vazio" id="headerPacote">
-        Nenhum pacote selecionado
-      </div>
-    </div>
-
-  </div>
-</div>
-  
-  <!-- ===== BANNER ===== -->
-  <img id="banner" src="arquivos/banner.png">
-
-  <!-- ======================================================= -->
-  <!-- FORMULÁRIO -->
-  <!-- ======================================================= -->
-  <div class="container">
-    <h1 class="titulo-principal">Analisador de String</h1>
-    <div class="linha"></div>
-
-    <div class="form-card">
-      <div class="campo-grupo">
-  <label class="campo-label" for="caSelecionado">
-    Seleciona um CA:
-  </label>
-
-  <select id="caSelecionado">
-    <option value="" disabled selected>Selecione o CA</option>
-    <option value="nagra">Nagra</option>
-    <option value="sinamedia">Synamedia</option>
-    <option value="verimatrix">Verimatrix</option>
-
-  </select>
-</div>
-      <div class="campo-grupo">
-        <label class="campo-label" for="pacoteHomologado">
-          Selecione o pacote que será homologado:
-        </label>
-
-        <select id="pacoteHomologado">
-          <option value="" disabled selected>Selecione o pacote</option>
-        </select>
-
-        <div class="campo-ajuda">
-          Para cadastrar um novo pacote,
-          <a
-            href="https://github.com/celulatecnica/homologacao-tecnica/upload/main/pacotes"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="link-upload"
-          >
-            clique aqui
-          </a>
-          e carregue um arquivo CSV.
-        </div>
-      </div>
-
-      <div class="campo-grupo">
-        <label class="campo-label" for="comando">String para análise:</label>
-        <textarea id="comando" placeholder="Cole a string aqui..."></textarea>
-      </div>
-
-      <div class="acoes">
-        <button type="button" onclick="analisar()">Analisar</button>
-        <button type="button" class="botao-secundario" onclick="limparCampos()">Limpar</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- ======================================================= -->
-  <!-- RESULTADO -->
-  <!-- ======================================================= -->
-  <div id="resultadoGrupo">
-    <div class="resultado-wrapper">
-      <div id="painelResultado" class="painel-resultado"></div>
-      <div class="status-info" id="statusInfo"></div>
-    </div>
-  </div>
-
-  <!-- ======================================================= -->
-  <!-- RODAPÉ -->
-  <!-- ======================================================= -->
-  <div class="fake-content">
-    <footer class="footer-faixa">
-      <div class="footer-inner">
-        <p class="footer-text">
-          Esta ferramenta foi desenvolvida pela Célula Técnica com o objetivo de otimizar a análise e homologação técnica de strings de comando.
-          Em caso de erros, comunique-se com nosso time através de
-          <a href="mailto:celulatecnica@sky.com.br">celulatecnica@sky.com.br</a>.
-        </p>
-        <div class="footer-divider"></div>
-        <p class="footer-copy">
-          Homologação Técnica © 2026 Célula Técnica, Engenharia WAIKEN.
-          Todos os direitos reservados.
-        </p>
-      </div>
-    </footer>
-  </div>
-
-
-<script>
-let mapaServicosCache = null;
-let pacoteCache = {};
-
-/* =========================
-   FUNÇÕES AUXILIARES
-========================= */
-function normalizarNomeCanal(texto) {
-  return String(texto || "")
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .replace(/&/g, "")
-    .replace(/\s+/g, "")
-    .replace(/[^A-Z0-9]/gi, "")
-    .toUpperCase()
-    .trim();
-}
-
-function extrairCamposCSV(linha, separador = ";") {
-  return linha.split(separador).map(campo => campo.trim());
-}
-
-const canaisIgnorados = [
-  "BAND",
-  "BAND HD",
-  "GLOBO",
-  "GLOBO HD",
-  "RECORD",
-  "RECORD HD",
-  "SBT",
-  "SBT HD"
-].map(normalizarNomeCanal);
-
-function deveIgnorarCanal(canal, tipo) {
-
-  if (
-    String(tipo || "")
-      .trim()
-      .toUpperCase() === "CANAL ABERTO"
-  ) {
-    return true;
+/**
+ * Verificar se usuário está autenticado antes de usar funções
+ */
+function checkAuthentication() {
+  const account = getBestAccount();
+  if (!account) {
+    setStatus("Você precisa fazer login para usar esta funcionalidade.");
+    showLoginOverlay();
+    return false;
   }
-
-  const nome = normalizarNomeCanal(canal);
-
-  return [
-    "BAND",
-    "BANDHD",
-    "GLOBO",
-    "GLOBOHD",
-    "RECORD",
-    "RECORDHD",
-    "SBT",
-    "SBTHD"
-  ].includes(nome);
+  return true;
 }
 
-/* =========================
-   LISTA DE PACOTES
-========================= */
-async function carregarPacotesHomologacao() {
-  const select = document.getElementById("pacoteHomologado");
-  if (!select) return;
+/**
+ * Função principal: Analisar
+ */
+async function analisar() {
+  if (!checkAuthentication()) return;
 
-  try {
-    select.innerHTML = '<option value="">Carregando...</option>';
+  const campoCA = el("caSelecionado");
+  const painelResultado = el("painelResultado");
+  const resultadoGrupo = el("resultadoGrupo");
+  const statusInfo = el("statusInfo");
 
-const resposta = await fetch(
-  "https://api.github.com/repos/celulatecnica/homologacao-tecnica/contents/pacotes"
-);
-    
+  const caSelecionado = campoCA ? campoCA.value : "";
 
-    if (!resposta.ok) {
-      throw new Error("Erro ao consultar GitHub");
+  if (resultadoGrupo) resultadoGrupo.style.display = "block";
+  if (statusInfo) statusInfo.textContent = "";
+
+  if (!caSelecionado) {
+    if (painelResultado) {
+      painelResultado.innerHTML = "Selecione o CA antes de analisar.";
     }
+    return;
+  }
 
-    const arquivos = await resposta.json();
+  if (caSelecionado === "sinamedia") {
+    await analisarSinamedia();
+    return;
+  }
 
-    const opcoes = arquivos
-      .filter(item => item.type === "file" && item.name.toLowerCase().endsWith(".csv"))
-      .map(item => {
-        const texto = item.name
-          .replace(/\.csv$/i, "")
-          .replace(/_/g, " ")
-          .replace(/\b\w/g, letra => letra.toUpperCase())
-          .replace(/\bHd\b/g, "HD")
-          .replace(/\bSd\b/g, "SD")
-          .replace(/\b4k\b/gi, "4K")
-          .replace(/\bUhd\b/g, "UHD")
-          .replace(/\bHdr\b/g, "HDR");
-        return `<option value="${item.name}">${texto}</option>`;
-      });
+  if (caSelecionado === "verimatrix") {
+    if (painelResultado) {
+      painelResultado.innerHTML = `
+        <div class="resultado-titulo">Verimatrix</div>
+        <div class="resultado-box">
+          Modelo de cálculo para Verimatrix ainda será implementado.
+        </div>
+      `;
+    }
+    atualizarEstadoInicial();
+    return;
+  }
 
-   select.innerHTML =
-  '<option value="">Selecione o pacote</option>' +
-  opcoes.join("");
-
-select.addEventListener("change", function () {
-  this.classList.toggle("ativo", this.value !== "");
-
-  atualizarBarraPacotes();
-});
-  } catch (erro) {
-    console.error("Erro ao carregar pacotes:", erro);
-    select.innerHTML = '<option value="">Erro ao carregar pacotes</option>';
+  if (caSelecionado === "nagra") {
+    if (painelResultado) {
+      painelResultado.innerHTML = `
+        <div class="resultado-titulo">Nagra</div>
+        <div class="resultado-box">
+          Modelo de cálculo para Nagra ainda será implementado.
+        </div>
+      `;
+    }
+    atualizarEstadoInicial();
+    return;
   }
 }
-function inicializarCampoCA() {
-  const selectCA = document.getElementById("caSelecionado");
-  if (!selectCA) return;
 
-  selectCA.addEventListener("change", function () {
-    this.classList.toggle("ativo", this.value !== "");
-
-    atualizarBarraPacotes();
-  });
-}
-/* =========================
-   CARREGAR CA_SERVICES.CSV
-   Estrutura esperada:
-   CANAL;ST;CA_SERVICE;VC_SKY;VC_TVRO;TIPO
-========================= */
-async function carregarCanais() {
-  if (mapaServicosCache) return mapaServicosCache;
-
-  const resposta = await fetch("arquivos/ca_services.csv?v=" + Date.now());
-  if (!resposta.ok) {
-    throw new Error("Não foi possível carregar o arquivo ca_services.csv");
-  }
-
-  const conteudo = await resposta.text();
-  const conteudoLimpo = conteudo.replace(/^\uFEFF/, "");
-
-  const linhas = conteudoLimpo
-    .split(/\r?\n/)
-    .map(linha => linha.trim())
-    .filter(linha => linha !== "");
-
-  const mapaServicos = {};
-
-  for (let i = 1; i < linhas.length; i++) {
-    const partes = extrairCamposCSV(linhas[i], ";");
- if (partes.length < 7) continue;
-
-const canal = partes[0];
-const caService = partes[2];
-const caAberto = partes[3];
-const vcSky = partes[4];
-const vcTvro = partes[5];
-const tipo = partes[6];
-    const servicos = String(caService)
-      .split(",")
-      .map(s => s.trim())
-      .filter(Boolean);
-
-    servicos.forEach(servico => {
-      const chave = String(servico).trim();
-      if (!mapaServicos[chave]) {
-        mapaServicos[chave] = [];
-      }
-
-      mapaServicos[chave].push({
-  canal,
-  caService,
-  caAberto,
-  servicos,
-  vcSky,
-  vcTvro,
-  tipo
-});
-    });
-  }
-
-  mapaServicosCache = mapaServicos;
-  return mapaServicos;
-}
-
-/* =========================
-   CARREGAR PACOTE
-   Estrutura esperada:
-   CANAL;VC_SKY
-========================= */
-async function carregarPacote(nomeArquivo) {
-  if (pacoteCache[nomeArquivo]) return pacoteCache[nomeArquivo];
-
-  const url =
-    "https://raw.githubusercontent.com/celulatecnica/homologacao-tecnica/main/pacotes/" +
-    nomeArquivo;
-
-  const resposta = await fetch(url);
-  if (!resposta.ok) {
-    throw new Error("Erro ao carregar o pacote");
-  }
-
-  const texto = await resposta.text();
-  const linhas = texto
-    .replace(/^\uFEFF/, "")
-    .split(/\r?\n/)
-    .map(linha => linha.trim())
-    .filter(linha => linha !== "");
-
-  const canais = [];
-
-  for (let i = 1; i < linhas.length; i++) {
-    const partes = extrairCamposCSV(linhas[i], ";");
-    if (partes.length < 2) continue;
-
-    canais.push({
-      canal: partes[0],
-      vcSky: partes[1]
-    });
-  }
-
-  pacoteCache[nomeArquivo] = canais;
-  return canais;
-}
-
-/* =========================
-   ANÁLISE DA STRING
-========================= */
+/**
+ * Analisar Synamedia (versão completa)
+ */
 async function analisarSinamedia() {
-  const campoComando = document.getElementById("comando");
-  const painelResultado = document.getElementById("painelResultado");
-  const campoPacote = document.getElementById("pacoteHomologado");
-  const statusInfo = document.getElementById("statusInfo");
-  const resultadoGrupo = document.getElementById("resultadoGrupo");
+  const campoComando = el("comando");
+  const painelResultado = el("painelResultado");
+  const campoPacote = el("pacoteHomologado");
+  const statusInfo = el("statusInfo");
+  const resultadoGrupo = el("resultadoGrupo");
 
   if (resultadoGrupo) resultadoGrupo.style.display = "block";
   if (painelResultado) painelResultado.innerHTML = "Analisando...";
   if (statusInfo) statusInfo.textContent = "";
 
   const pacoteSelecionado = campoPacote ? campoPacote.value : "";
+
   if (!pacoteSelecionado) {
     if (painelResultado) {
-      painelResultado.innerHTML = "Selecione o pacote que será homologado antes de analisar.";
+      painelResultado.innerHTML =
+        "Selecione o pacote que será homologado antes de analisar.";
     }
     return;
   }
@@ -1375,27 +1267,33 @@ async function analisarSinamedia() {
   }
 
   let mapaServicos = {};
+
   try {
     mapaServicos = await carregarCanais();
   } catch (erro) {
     if (painelResultado) {
-      painelResultado.innerHTML = "Erro ao carregar os serviços. " + erro.message;
+      painelResultado.innerHTML =
+        "Erro ao carregar os serviços. " + erro.message;
     }
     return;
   }
 
   const posAA = texto.indexOf("AA");
+
   if (posAA === -1) {
     if (painelResultado) {
-      painelResultado.innerHTML = "Nenhuma sequência AA foi encontrada.";
+      painelResultado.innerHTML =
+        "Nenhuma sequência AA foi encontrada.";
     }
     return;
   }
 
   let posicao = posAA - 13;
+
   if (posicao < 0) {
     if (painelResultado) {
-      painelResultado.innerHTML = "Não existem 13 caracteres antes da primeira sequência AA.";
+      painelResultado.innerHTML =
+        "Não existem 13 caracteres antes da primeira sequência AA.";
     }
     return;
   }
@@ -1443,358 +1341,113 @@ async function analisarSinamedia() {
 
   if (resultados.length === 0) {
     if (painelResultado) {
-      painelResultado.innerHTML = "Nenhum bloco válido foi encontrado.";
+      painelResultado.innerHTML =
+        "Nenhum bloco válido foi encontrado.";
     }
     return;
   }
 
   const canaisPacote = await carregarPacote(pacoteSelecionado);
 
-  const homologacao = [];
+  const servicosEncontrados = new Set(listaDecimal.map(String));
 
-const servicosEncontrados = new Set(listaDecimal.map(String));
+  const canaisLiberadosNaStringMap = new Map();
 
-const canaisLiberadosNaStringMap = new Map();
-for (const chave in mapaServicos) {
-  const registros = mapaServicos[chave];
+  for (const chave in mapaServicos) {
+    const registros = mapaServicos[chave];
 
-  for (const item of registros) {
-    const servicosDoCanal = String(item.servicos || "")
-      .split(",")
-      .map(s => s.trim())
-      .filter(Boolean);
-
-    const bateComString = servicosDoCanal.some(servico =>
-      servicosEncontrados.has(String(servico).trim())
-    );
-
-if (bateComString) {
-
-  if (deveIgnorarCanal(item.canal, item.tipo)) {
-    continue;
-  }
-
-  const nomeCanalNormalizado = normalizarNomeCanal(item.canal);
-
-  if (!canaisLiberadosNaStringMap.has(nomeCanalNormalizado)) {
-    const servicoEncontrado = servicosDoCanal.find(servico =>
-  servicosEncontrados.has(String(servico).trim())
-);
-
-canaisLiberadosNaStringMap.set(nomeCanalNormalizado, {
-  canal: item.canal,
-  vcSky: item.vcSky,
-  tipo: item.tipo,
-  caServiceEncontrado: servicoEncontrado
-});
-  }
-}
-  }
-}
-const canaisLiberadosNaString = [...canaisLiberadosNaStringMap.values()];
-console.log("CANAIS LIBERADOS");
-console.table(canaisLiberadosNaString);
-const canaisLiberadosNaStringNomes = new Set(
-  canaisLiberadosNaString.map(item =>
-    normalizarNomeCanal(item.canal)
-  )
-);  
-  
-const todosRegistrosServicos = Object.values(mapaServicos).flat();
-
-for (const canalPacote of canaisPacote) {
-  const nomePacoteNormalizado = normalizarNomeCanal(canalPacote.canal);
-  const vcPacote = String(canalPacote.vcSky || "").trim();
-
-  if (deveIgnorarCanal(canalPacote.canal, "")) {
-    continue;
-  }
-
-  const registroPorNome = todosRegistrosServicos.find(item =>
-    normalizarNomeCanal(item.canal) === nomePacoteNormalizado
-  );
-
-  const registroPorVc = todosRegistrosServicos.find(item =>
-    String(item.vcSky || "").trim() === vcPacote
-  );
-
-  const registro = registroPorNome || registroPorVc;
-
-  if (!registro) {
-    homologacao.push({
-      canal: canalPacote.canal,
-      vcSky: canalPacote.vcSky,
-      tipo: "NAO ENCONTRADO",
-      caService: "-",
-      caServiceEncontrado: "-",
-      presente: false
-    });
-
-    continue;
-  }
-
-  if (deveIgnorarCanal(registro.canal, registro.tipo)) {
-    continue;
-  }
-
-  const servicosRegistro = Array.isArray(registro.servicos)
-    ? registro.servicos
-    : String(registro.caService || "")
+    for (const item of registros) {
+      const servicosDoCanal = String(item.servicos || "")
         .split(",")
         .map(s => s.trim())
         .filter(Boolean);
 
-  const caServiceEncontrado = servicosRegistro.find(servico =>
-    servicosEncontrados.has(String(servico).trim())
-  );
+      const bateComString = servicosDoCanal.some(servico =>
+        servicosEncontrados.has(String(servico).trim())
+      );
 
-  const presente =
-    canaisLiberadosNaStringNomes.has(normalizarNomeCanal(registro.canal)) ||
-    Boolean(caServiceEncontrado);
+      if (bateComString) {
+        if (deveIgnorarCanal(item.canal, item.tipo)) {
+          continue;
+        }
 
-  homologacao.push({
-    canal: registro.canal,
-    vcSky: registro.vcSky,
-    tipo: registro.tipo,
-    caService: registro.caService,
-    caServiceEncontrado: caServiceEncontrado || "-",
-    presente
-  });
-}
-console.log("HOMOLOGACAO");
-console.table(homologacao);
+        const nomeCanalNormalizado = normalizarNomeCanal(item.canal);
 
+        if (!canaisLiberadosNaStringMap.has(nomeCanalNormalizado)) {
+          const servicoEncontrado = servicosDoCanal.find(servico =>
+            servicosEncontrados.has(String(servico).trim())
+          );
 
-function renderizarGridCanais(lista) {
-
-  if (!lista.length) {
-    return "Nenhum canal encontrado";
-  }
-
-  const colunas = 2;
-
-  const linhas = Math.ceil(lista.length / colunas);
-
-  const listaReorganizada = [];
-
-  for (let linha = 0; linha < linhas; linha++) {
-
-    for (let coluna = 0; coluna < colunas; coluna++) {
-
-      const indice = coluna * linhas + linha;
-
-      if (indice < lista.length) {
-        listaReorganizada.push(lista[indice]);
+          canaisLiberadosNaStringMap.set(nomeCanalNormalizado, {
+            canal: item.canal,
+            vcSky: item.vcSky,
+            servicos: servicosDoCanal,
+            servicoEncontrado
+          });
+        }
       }
-
     }
   }
 
-  return `
-    <div class="lista-canais-grid">
-      ${listaReorganizada.map(canal => `
-        <div class="canal-grid-item">
-          ${canal}
-        </div>
-      `).join("")}
-    </div>
-  `;
-}
-  
-  const homologacaoUnica = [
-  ...new Map(
-    homologacao
-      .filter(item => !deveIgnorarCanal(item.canal, item.tipo))
-      .map(item => [
-        normalizarNomeCanal(item.canal),
-        item
-      ])
-  ).values()
-];
+  const canaisPacoteNormalizados = new Map();
 
-const canaisPacoteUnicos = homologacaoUnica.map(item =>
-  normalizarNomeCanal(item.canal)
-);
+  canaisPacote.forEach(item => {
+    const nome = normalizarNomeCanal(item.canal);
+    canaisPacoteNormalizados.set(nome, item);
+  });
 
-const totalCanais = homologacaoUnica.length;
+  const canaisPacoteNaString = [];
+  const canaisExcedentes = [];
+  const canaisAusentes = [];
 
-const canaisPacoteNaString = homologacaoUnica
-  .filter(item => item.presente)
-  .sort((a, b) =>
-    a.canal.localeCompare(b.canal, "pt-BR", {
-      sensitivity: "base"
-    })
-  )
-  .map(item =>
-    `${item.canal}, ${item.caServiceEncontrado || item.caService} (vc${item.vcSky})`
-  );
+  for (const [nomeCanalNorm, itemString] of canaisLiberadosNaStringMap) {
+    if (canaisPacoteNormalizados.has(nomeCanalNorm)) {
+      canaisPacoteNaString.push(itemString);
+    } else {
+      canaisExcedentes.push(itemString);
+    }
+  }
 
-const canaisAusentes = homologacaoUnica
-  .filter(item => !item.presente)
-  .sort((a, b) =>
-    a.canal.localeCompare(b.canal, "pt-BR", {
-      sensitivity: "base"
-    })
-  )
-  .map(item =>
-    `${item.canal}, ${item.caService} (vc${item.vcSky})`
-  );
+  for (const [nomeCanalNorm, itemPacote] of canaisPacoteNormalizados) {
+    if (!canaisLiberadosNaStringMap.has(nomeCanalNorm)) {
+      canaisAusentes.push({
+        canal: itemPacote.canal,
+        vcSky: itemPacote.vcSky
+      });
+    }
+  }
 
-const canaisExcedentes = canaisLiberadosNaString
-  .filter(item =>
-    !canaisPacoteUnicos.includes(
-      normalizarNomeCanal(item.canal)
-    )
-  )
-  .sort((a, b) =>
-    a.canal.localeCompare(b.canal, "pt-BR", {
-      sensitivity: "base"
-    })
-  )
-  .map(item =>
-    `${item.canal}, ${item.caServiceEncontrado} (vc${item.vcSky})`
-  );
+  const totalCanais = canaisPacote.length;
+  const totalCanaisString = canaisLiberadosNaStringMap.size;
+  const canaisEncontradosQtd = canaisPacoteNaString.length;
+  const percentualEncontrados =
+    totalCanais > 0
+      ? Math.round((canaisEncontradosQtd / totalCanais) * 100)
+      : 0;
+  const canaisExcedentesQtd = canaisExcedentes.length;
+  const canaisAusentesQtd = canaisAusentes.length;
 
-const canaisEncontradosQtd = canaisPacoteNaString.length;
-const canaisAusentesQtd = canaisAusentes.length;
-const canaisExcedentesQtd = canaisExcedentes.length;
-
-const percentualEncontrados =
-  totalCanais > 0
-    ? Math.round((canaisEncontradosQtd / totalCanais) * 100)
-    : 0;
-
-const totalCanaisString =
-  canaisLiberadosNaString.filter(
-    item => !deveIgnorarCanal(item.canal, item.tipo)
-  ).length;
-
-/* ADICIONAR AQUI */
-
-const canaisRegionalizados = {
-  BAND: [],
-  GLOBO: [],
-  RECORD: [],
-  SBT: []
-};
-  
-const canaisRegionaisJaAdicionados = new Set();
-  
-for (const chave in mapaServicos) {
-
-  const registros = mapaServicos[chave];
-
-  for (const item of registros) {
-
-    const nome = String(item.canal || "").toUpperCase();
-    const tipo = String(item.tipo || "").toUpperCase().trim();
-
-    if (tipo !== "CANAL ABERTO") {
-      continue;
+  function renderizarGridCanais(lista) {
+    if (lista.length === 0) {
+      return "<p style='color: #666;'>Nenhum canal</p>";
     }
 
-const servicosDoCanal = String(item.caAberto || "")
-  .split(",")
-  .map(s => s.trim())
-  .filter(Boolean);
-
-    const presenteNaString = servicosDoCanal.some(servico =>
-      servicosEncontrados.has(String(servico).trim())
-    );
-
-    if (!presenteNaString) {
-  continue;
-}
-
-const chaveCanal = normalizarNomeCanal(item.canal);
-
-if (canaisRegionaisJaAdicionados.has(chaveCanal)) {
-  continue;
-}
-
-canaisRegionaisJaAdicionados.add(chaveCanal);
-
-const servicosEncontradosCanal = servicosDoCanal.filter(servico =>
-  servicosEncontrados.has(String(servico).trim())
-);
-
-if (nome.includes("GLOBO")) {
-
-  if (servicosEncontradosCanal.length) {
-    canaisRegionalizados.GLOBO.push({
-      canal: item.canal,
-      vcSky: item.vcSky,
-      servicosEncontrados: servicosEncontradosCanal
-    });
+    return `<div class="lista-canais-grid">
+      ${lista
+        .map(
+          item =>
+            `<div class="canal-grid-item">
+        • ${item.canal} (vc${item.vcSky})
+      </div>`
+        )
+        .join("")}
+    </div>`;
   }
 
-}
+  const htmlRegionalizados = [];
 
-if (nome.includes("RECORD")) {
-
-  if (servicosEncontradosCanal.length) {
-    canaisRegionalizados.RECORD.push({
-      canal: item.canal,
-      vcSky: item.vcSky,
-      servicosEncontrados: servicosEncontradosCanal
-    });
-  }
-
-}
-
-if (nome.includes("SBT")) {
-
-  if (servicosEncontradosCanal.length) {
-    canaisRegionalizados.SBT.push({
-      canal: item.canal,
-      vcSky: item.vcSky,
-      servicosEncontrados: servicosEncontradosCanal
-    });
-  }
-
-}
-
-if (nome.includes("BAND")) {
-
-  if (servicosEncontradosCanal.length) {
-    canaisRegionalizados.BAND.push({
-      canal: item.canal,
-      vcSky: item.vcSky,
-      servicosEncontrados: servicosEncontradosCanal
-    });
-  }
-
-}
-
-  }
-
-}
-
-const htmlRegionalizados = Object.entries(canaisRegionalizados)
-  .flatMap(([rede, itens]) =>
-    itens.map(item => {
-      let logo = "";
-      if (rede === "BAND") logo = "arquivos/logo_band.png";
-      if (rede === "GLOBO") logo = "arquivos/logo_globo.png";
-      if (rede === "RECORD") logo = "arquivos/logo_record.png";
-      if (rede === "SBT") logo = "arquivos/logo_sbt.png";
-
-      return `
-        <div class="canal-regional-item">
-          <img src="${logo}" alt="${rede}" class="canal-regional-logo" />
-          <div class="canal-regional-nome">
-            ${item.canal}, ${item.servicosEncontrados.join(", ")} (vc${item.vcSky})
-          </div>
-        </div>
-      `;
-    })
-  )
-  .join("");
-
-/* FIM DA ADIÇÃO */
-
-if (painelResultado) {
-  painelResultado.innerHTML = `
+  if (painelResultado) {
+    painelResultado.innerHTML = `
       <div class="resultado-titulo">Resultado da Homologação</div>
 
       <div class="resultado-subtitulo">String de serviços em hexadecimal</div>
@@ -1802,51 +1455,51 @@ if (painelResultado) {
 
       <div class="resultado-subtitulo">String de serviços em decimal</div>
       <div class="resultado-box">
-        ${[...new Set(listaDecimal)].sort((a, b) => a - b).join(", ")}
+        ${[...new Set(listaDecimal)]
+          .sort((a, b) => a - b)
+          .join(", ")}
       </div>
 
-<div class="resultado-subtitulo">
-  Resumo da análise entre pacote e string
-</div>
+      <div class="resultado-subtitulo">
+        Resumo da análise entre pacote e string
+      </div>
 
-<div class="resultado-observacao">
-  (sem Band, Globo, Record TV e SBT)
-</div>
+      <div class="resultado-observacao">
+        (sem Band, Globo, Record TV e SBT)
+      </div>
 
       <div class="resultado-box">
-      
         Total de canais da string: ${totalCanaisString}<br>
         Total de canais do pacote: ${totalCanais}<br><br>
-        
-      <details class="bloco-expandivel">
-      <summary>
-         🟢 Canais do pacote na string: ${canaisEncontradosQtd} (${percentualEncontrados}%)
-      </summary>
-      <br>
-        ${renderizarGridCanais(canaisPacoteNaString)}
-      <br>
-      </details>
 
-      <details class="bloco-expandivel">
-      <summary>
-         🟡 Canais excedentes na string: ${canaisExcedentesQtd}
-      </summary>
-      <br>
-      ${renderizarGridCanais(canaisExcedentes)}
-      <br>
-      </details>
-  
-      <details class="bloco-expandivel">
-      <summary>
-         🔴 Canais do pacote ausentes na string: ${canaisAusentesQtd}
-      </summary>
-      <br>
-      ${renderizarGridCanais(canaisAusentes)}
-      <br>
-      </details>
+        <details class="bloco-expandivel">
+        <summary>
+           🟢 Canais do pacote na string: ${canaisEncontradosQtd} (${percentualEncontrados}%)
+        </summary>
+        <br>
+          ${renderizarGridCanais(canaisPacoteNaString)}
+        <br>
+        </details>
 
-<br>
+        <details class="bloco-expandivel">
+        <summary>
+           🟡 Canais excedentes na string: ${canaisExcedentesQtd}
+        </summary>
+        <br>
+        ${renderizarGridCanais(canaisExcedentes)}
+        <br>
+        </details>
 
+        <details class="bloco-expandivel">
+        <summary>
+           🔴 Canais do pacote ausentes na string: ${canaisAusentesQtd}
+        </summary>
+        <br>
+        ${renderizarGridCanais(canaisAusentes)}
+        <br>
+        </details>
+
+        <br>
       </div>
 
       <div class="resultado-subtitulo">
@@ -1855,74 +1508,279 @@ if (painelResultado) {
 
       <div class="resultado-box">
         <div class="canais-regionais">
-          ${htmlRegionalizados}
+          ${htmlRegionalizados.join("")}
         </div>
       </div>
-
     `;
   }
 
-  // atualiza estado das barras (igual ao outro projeto)
   atualizarEstadoInicial();
 }
 
-async function analisar() {
-  const campoCA = document.getElementById("caSelecionado");
-  const painelResultado = document.getElementById("painelResultado");
-  const resultadoGrupo = document.getElementById("resultadoGrupo");
-  const statusInfo = document.getElementById("statusInfo");
+/**
+ * Limpar campos do formulário
+ */
+function limparCampos() {
+  if (!checkAuthentication()) return;
 
-  const caSelecionado = campoCA ? campoCA.value : "";
+  const campoComando = el("comando");
+  const campoCA = el("caSelecionado");
+  const campoPacote = el("pacoteHomologado");
+  const painelResultado = el("painelResultado");
+  const statusInfo = el("statusInfo");
+  const resultadoGrupo = el("resultadoGrupo");
 
-  if (resultadoGrupo) resultadoGrupo.style.display = "block";
+  if (campoComando) campoComando.value = "";
+
+  if (campoCA) {
+    campoCA.value = "";
+    campoCA.classList.remove("ativo");
+  }
+
+  if (campoPacote) {
+    campoPacote.value = "";
+    campoPacote.classList.remove("ativo");
+  }
+
+  if (painelResultado) painelResultado.innerHTML = "";
   if (statusInfo) statusInfo.textContent = "";
+  if (resultadoGrupo) resultadoGrupo.style.display = "none";
 
-  if (!caSelecionado) {
-    if (painelResultado) {
-      painelResultado.innerHTML = "Selecione o CA antes de analisar.";
+  atualizarEstadoInicial();
+}
+
+/* ============================================================================
+   PARTE 5: FUNÇÕES AUXILIARES
+   ============================================================================ */
+
+let mapaServicosCache = null;
+let pacoteCache = {};
+
+/**
+ * Normalizar nome de canal
+ */
+function normalizarNomeCanal(texto) {
+  return String(texto || "")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/&/g, "")
+    .replace(/\s+/g, "")
+    .replace(/[^A-Z0-9]/gi, "")
+    .toUpperCase()
+    .trim();
+}
+
+/**
+ * Extrair campos CSV
+ */
+function extrairCamposCSV(linha, separador = ";") {
+  return linha.split(separador).map(campo => campo.trim());
+}
+
+/**
+ * Verificar se canal deve ser ignorado
+ */
+function deveIgnorarCanal(canal, tipo) {
+  if (
+    String(tipo || "")
+      .trim()
+      .toUpperCase() === "CANAL ABERTO"
+  ) {
+    return true;
+  }
+
+  const nome = normalizarNomeCanal(canal);
+
+  return [
+    "BAND",
+    "BANDHD",
+    "GLOBO",
+    "GLOBOHD",
+    "RECORD",
+    "RECORDHD",
+    "SBT",
+    "SBTHD"
+  ].includes(nome);
+}
+
+/**
+ * Carregar canais do arquivo ca_services.csv
+ */
+async function carregarCanais() {
+  if (mapaServicosCache) return mapaServicosCache;
+
+  const resposta = await fetch("arquivos/ca_services.csv?v=" + Date.now());
+
+  if (!resposta.ok) {
+    throw new Error(
+      "Não foi possível carregar o arquivo ca_services.csv"
+    );
+  }
+
+  const conteudo = await resposta.text();
+  const conteudoLimpo = conteudo.replace(/^\uFEFF/, "");
+
+  const linhas = conteudoLimpo
+    .split(/\r?\n/)
+    .map(linha => linha.trim())
+    .filter(linha => linha !== "");
+
+  const mapaServicos = {};
+
+  for (let i = 1; i < linhas.length; i++) {
+    const partes = extrairCamposCSV(linhas[i], ";");
+
+    if (partes.length < 7) continue;
+
+    const canal = partes[0];
+    const caService = partes[2];
+    const caAberto = partes[3];
+    const vcSky = partes[4];
+    const vcTvro = partes[5];
+    const tipo = partes[6];
+
+    const servicos = String(caService)
+      .split(",")
+      .map(s => s.trim())
+      .filter(Boolean);
+
+    servicos.forEach(servico => {
+      const chave = String(servico).trim();
+      if (!mapaServicos[chave]) {
+        mapaServicos[chave] = [];
+      }
+
+      mapaServicos[chave].push({
+        canal,
+        caService,
+        caAberto,
+        servicos,
+        vcSky,
+        vcTvro,
+        tipo
+      });
+    });
+  }
+
+  mapaServicosCache = mapaServicos;
+  return mapaServicos;
+}
+
+/**
+ * Carregar pacote
+ */
+async function carregarPacote(nomeArquivo) {
+  if (pacoteCache[nomeArquivo]) return pacoteCache[nomeArquivo];
+
+  const url =
+    "https://raw.githubusercontent.com/celulatecnica/homologacao-tecnica/main/pacotes/" +
+    nomeArquivo;
+
+  const resposta = await fetch(url);
+
+  if (!resposta.ok) {
+    throw new Error("Erro ao carregar o pacote");
+  }
+
+  const texto = await resposta.text();
+  const linhas = texto
+    .replace(/^\uFEFF/, "")
+    .split(/\r?\n/)
+    .map(linha => linha.trim())
+    .filter(linha => linha !== "");
+
+  const canais = [];
+
+  for (let i = 1; i < linhas.length; i++) {
+    const partes = extrairCamposCSV(linhas[i], ";");
+    if (partes.length < 2) continue;
+
+    canais.push({
+      canal: partes[0],
+      vcSky: partes[1]
+    });
+  }
+
+  pacoteCache[nomeArquivo] = canais;
+  return canais;
+}
+
+/**
+ * Carregar lista de pacotes
+ */
+async function carregarPacotesHomologacao() {
+  const select = el("pacoteHomologado");
+  if (!select) return;
+
+  try {
+    select.innerHTML = '<option value="">Carregando...</option>';
+
+    const resposta = await fetch(
+      "https://api.github.com/repos/celulatecnica/homologacao-tecnica/contents/pacotes"
+    );
+
+    if (!resposta.ok) {
+      throw new Error("Erro ao consultar GitHub");
     }
-    return;
-  }
 
-  if (caSelecionado === "sinamedia") {
-    await analisarSinamedia();
-    return;
-  }
+    const arquivos = await resposta.json();
 
-  if (caSelecionado === "verimatrix") {
-    if (painelResultado) {
-      painelResultado.innerHTML = `
-        <div class="resultado-titulo">Verimatrix</div>
-        <div class="resultado-box">
-          Modelo de cálculo para Verimatrix ainda será implementado.
-        </div>
-      `;
-    }
-    atualizarEstadoInicial();
-    return;
-  }
+    const opcoes = arquivos
+      .filter(item =>
+        item.type === "file" &&
+        item.name.toLowerCase().endsWith(".csv")
+      )
+      .map(item => {
+        const texto = item.name
+          .replace(/\.csv$/i, "")
+          .replace(/_/g, " ")
+          .replace(/\b\w/g, letra => letra.toUpperCase())
+          .replace(/\bHd\b/g, "HD")
+          .replace(/\bSd\b/g, "SD")
+          .replace(/\b4k\b/gi, "4K")
+          .replace(/\bUhd\b/g, "UHD")
+          .replace(/\bHdr\b/g, "HDR");
+        return `<option value="${item.name}">${texto}</option>`;
+      });
 
-  if (caSelecionado === "nagra") {
-    if (painelResultado) {
-      painelResultado.innerHTML = `
-        <div class="resultado-titulo">Nagra</div>
-        <div class="resultado-box">
-          Modelo de cálculo para Nagra ainda será implementado.
-        </div>
-      `;
-    }
-    atualizarEstadoInicial();
-    return;
+    select.innerHTML =
+      '<option value="">Selecione o pacote</option>' +
+      opcoes.join("");
+
+    select.addEventListener("change", function () {
+      this.classList.toggle("ativo", this.value !== "");
+      atualizarBarraPacotes();
+    });
+
+  } catch (erro) {
+    console.error("Erro ao carregar pacotes:", erro);
+    select.innerHTML =
+      '<option value="">Erro ao carregar pacotes</option>';
   }
-} 
-  
+}
+
+/**
+ * Inicializar campo CA
+ */
+function inicializarCampoCA() {
+  const selectCA = el("caSelecionado");
+  if (!selectCA) return;
+
+  selectCA.addEventListener("change", function () {
+    this.classList.toggle("ativo", this.value !== "");
+    atualizarBarraPacotes();
+  });
+}
+
+/**
+ * Atualizar barra de pacotes
+ */
 function atualizarBarraPacotes() {
+  const ca = el("caSelecionado");
+  const pacote = el("pacoteHomologado");
 
-  const ca = document.getElementById("caSelecionado");
-  const pacote = document.getElementById("pacoteHomologado");
-
-  const headerCA = document.getElementById("headerCA");
-  const headerPacote = document.getElementById("headerPacote");
+  const headerCA = el("headerCA");
+  const headerPacote = el("headerPacote");
 
   if (!headerCA || !headerPacote) return;
 
@@ -1953,73 +1811,38 @@ function atualizarBarraPacotes() {
   }
 }
 
-/* =========================
-   LIMPAR CAMPOS
-========================= */
-function limparCampos() {
-  const campoComando = document.getElementById("comando");
-  const campoCA = document.getElementById("caSelecionado");
-  const campoPacote = document.getElementById("pacoteHomologado");
-  const painelResultado = document.getElementById("painelResultado");
-  const statusInfo = document.getElementById("statusInfo");
-  const resultadoGrupo = document.getElementById("resultadoGrupo");
+/* ============================================================================
+   PARTE 6: FUNÇÕES DE CONTROLE DE PÁGINA
+   ============================================================================ */
 
-  if (campoComando) campoComando.value = "";
-
-  if (campoCA) {
-    campoCA.value = "";
-    campoCA.classList.remove("ativo");
-  }
-
-  if (campoPacote) {
-    campoPacote.value = "";
-    campoPacote.classList.remove("ativo");
-  }
-
-  if (painelResultado) painelResultado.innerHTML = "";
-  if (statusInfo) statusInfo.textContent = "";
-  if (resultadoGrupo) resultadoGrupo.style.display = "none";
-
-  atualizarEstadoInicial();
-}
-
-/* =========================
-   INICIALIZAÇÃO / HEADER
-========================= */
-
-// mesmo valor do outro projeto
-const HEADER_TOTAL = 50; // 45 + 55
+const HEADER_TOTAL = 50;
 let limiteInicial = 0;
 
 function getResultadoGrupo() {
-  return document.getElementById('resultadoGrupo');
+  return el('resultadoGrupo');
 }
 
 function resultadoGrupoVisivel() {
-  const el = getResultadoGrupo();
-  return el && getComputedStyle(el).display !== 'none';
+  const el_grupo = getResultadoGrupo();
+  return el_grupo && getComputedStyle(el_grupo).display !== 'none';
 }
 
 function calcularLimiteInicial() {
-  const banner = document.getElementById('banner');
+  const banner = el('banner');
   if (!banner) return;
   limiteInicial = Math.max(0, banner.offsetHeight - HEADER_TOTAL);
 }
 
 function atualizarEstadoCabecalho() {
-
   const topbars = document.querySelectorAll('.top-bar');
   const resultadoGrupo = getResultadoGrupo();
-  const barraPacotes = document.getElementById('topbarPacotes');
+  const barraPacotes = el('topbarPacotes');
 
   if (!resultadoGrupo || !resultadoGrupoVisivel()) {
-
-    topbars.forEach(el => el.classList.remove('scrolled'));
-
+    topbars.forEach(topbar => topbar.classList.remove('scrolled'));
     if (barraPacotes) {
       barraPacotes.classList.remove('visible');
     }
-
     return;
   }
 
@@ -2033,19 +1856,17 @@ function atualizarEstadoCabecalho() {
   const triggerPacotes = resultadoGrupo.offsetTop - 55;
 
   if (y >= triggerClaro) {
-    topbars.forEach(el => el.classList.add('scrolled'));
+    topbars.forEach(topbar => topbar.classList.add('scrolled'));
   } else {
-    topbars.forEach(el => el.classList.remove('scrolled'));
+    topbars.forEach(topbar => topbar.classList.remove('scrolled'));
   }
 
   if (barraPacotes) {
-
     if (y >= triggerPacotes) {
       barraPacotes.classList.add("visible");
     } else {
       barraPacotes.classList.remove("visible");
     }
-
   }
 }
 
@@ -2054,50 +1875,56 @@ function atualizarEstadoInicial() {
   atualizarEstadoCabecalho();
 }
 
-// ===== SCROLL (mesmo movimento de translateY do outro código) =====
+/* ============================================================================
+   PARTE 7: EVENT LISTENERS
+   ============================================================================ */
+
 window.addEventListener('scroll', () => {
   const scrollY = window.scrollY || window.pageYOffset || document.documentElement.scrollTop || 0;
-const topMain = document.getElementById('topbarMain');
-const topSub = document.getElementById('topbarSub');
-const topPacotes = document.getElementById('topbarPacotes');
+  const topMain = el('topbarMain');
+  const topSub = el('topbarSub');
+  const topPacotes = el('topbarPacotes');
 
   let progresso = scrollY / 70;
   if (progresso > 1) progresso = 1;
   const movimento = -50 * progresso;
 
-if (topMain) topMain.style.transform = `translateY(${movimento}px)`;
-if (topSub)  topSub.style.transform  = `translateY(${movimento}px)`;
-if (topPacotes) topPacotes.style.transform = `translateY(${movimento}px)`;
+  if (topMain) topMain.style.transform = `translateY(${movimento}px)`;
+  if (topSub) topSub.style.transform = `translateY(${movimento}px)`;
+  if (topPacotes) topPacotes.style.transform = `translateY(${movimento}px)`;
 
   atualizarEstadoCabecalho();
 }, { passive: true });
 
-window.addEventListener('load', atualizarEstadoInicial);
+window.addEventListener('load', () => {
+  initializeMsal();
+  atualizarEstadoInicial();
+});
+
 window.addEventListener('resize', atualizarEstadoInicial);
 
-// continua carregando os pacotes normalmente
-inicializarCampoCA();
-carregarPacotesHomologacao();
-</script>
+window.addEventListener("focus", () => {
+  if (msalInstance) enforceAuthAndUnlock().catch(console.error);
+});
 
- <div id="loginOverlay" class="login-overlay">
-    <div class="login-card">
-      <div class="login-header">
-        <img src="arquivos/icon_gpt_branco.png" alt="GPT" class="login-logo">
-        <h2>Homologação Técnica</h2>
-      </div>
-      
-      <p class="login-description">
-        Faça login com sua conta Microsoft corporativa para acessar a ferramenta de análise.
-      </p>
+window.addEventListener("popstate", () => {
+  if (msalInstance) enforceAuthAndUnlock().catch(console.error);
+});
 
-      <button id="btnLogin" class="btn-login" onclick="login()" disabled>
-        <span>Entrar com Microsoft</span>
-      </button>
+/* ============================================================================
+   PARTE 8: INICIALIZAR COMPONENTES APÓS AUTENTICAÇÃO
+   ============================================================================ */
 
-      <div id="status" class="status">Carregando autenticação...</div>
-    </div>
-  </div>
-  
+async function initializePageComponents() {
+  try {
+    await carregarPacotesHomologacao();
+    inicializarCampoCA();
+  } catch (error) {
+    console.error("Erro ao inicializar componentes:", error);
+  }
+}
+
+  </script>
+
 </body>
 </html>
