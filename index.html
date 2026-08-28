@@ -955,7 +955,7 @@ const msalConfig = {
     redirectUri: window.location.origin + window.location.pathname
   },
   cache: {
-    cacheLocation: "sessionStorage",
+    cacheLocation: "localStorage",
     storeAuthStateInCookie: false
   }
 };
@@ -1087,8 +1087,12 @@ async function login() {
     });
 
     if (res && res.account) {
-      msalInstance.setActiveAccount(res.account);
-    }
+  console.log("Conta retornada:", res.account);
+  msalInstance.setActiveAccount(res.account);
+}
+
+console.log("Ativa:", msalInstance.getActiveAccount());
+console.log("Todas:", msalInstance.getAllAccounts());
 
     await enforceAuthAndUnlock();
 
