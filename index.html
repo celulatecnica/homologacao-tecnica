@@ -698,10 +698,343 @@ button:active {
     width: 100%;
   }
 }
+
+/* ===== CONTAINER DO APP (fica bloqueado com blur) ===== */
+.app-locked {
+  filter: blur(12px);
+  pointer-events: none;
+  user-select: none;
+  transition: filter 0.3s ease;
+}
+
+.app-unlocked {
+  filter: blur(0);
+  pointer-events: auto;
+  user-select: auto;
+}
+
+/* ===== OVERLAY DE LOGIN (camada fixa por cima) ===== */
+.login-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  /* fundo semi-escuro */
+  background: rgba(0, 0, 0, 0.45);
+
+  /* blur do que está por trás */
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+}
+
+.login-overlay.hidden {
+  display: none;
+}
+
+/* ===== CARD/BALÃO DE LOGIN ===== */
+.login-card {
+  width: 480px;
+  max-width: calc(100% - 32px);
+
+  background: rgba(23, 23, 23, 0.95);
+  border: 1px solid #2A2A2A;
+  border-radius: 16px;
+
+  padding: 40px;
+  box-shadow: 0 25px 80px rgba(0, 0, 0, 0.5);
+
+  color: #f5f5f7;
+  text-align: center;
+  animation: slideUp 0.4s ease;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.login-header {
+  margin-bottom: 20px;
+}
+
+.login-logo {
+  height: 28px;
+  margin-bottom: 12px;
+  display: block;
+}
+
+.login-card h2 {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 600;
+  color: #f5f5f7;
+}
+
+.login-description {
+  margin: 16px 0 24px 0;
+  font-size: 16px;
+  line-height: 1.6;
+  color: #d1d1d6;
+}
+
+/* ===== BOTÃO DO LOGIN ===== */
+.btn-login {
+  width: 100%;
+  height: 48px;
+  padding: 0;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  background: #0071e3;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  transition: all 0.2s ease;
+}
+
+.btn-login:hover:not(:disabled) {
+  background: #0077ED;
+  transform: translateY(-1px);
+}
+
+.btn-login:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.btn-login:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* ===== TEXTO DE STATUS ===== */
+.status {
+  margin-top: 12px;
+  font-size: 13px;
+  color: #8e8e93;
+}
+
+/* ===== TRAVAR SCROLL NA PÁGINA ===== */
+body.lock-scroll {
+  overflow: hidden;
+}
+  
 </style>  
 </head>
 
 <body>
+
+  <body>
+
+  <!-- ========================================
+       CAMADA 1: CONTEÚDO DO SITE (fica borrado)
+       ======================================== -->
+  <div id="appContent" class="app-locked">
+    
+    <!-- AQUI ENTRA TODO O SEU HTML ATUAL:
+         - top-bar top-bar-main
+         - top-bar top-bar-sub
+         - top-bar top-bar-pacotes
+         - banner
+         - container (form, resultado, rodapé)
+         - tudo que existe hoje -->
+    
+  </div>
+
+  <!-- ========================================
+       CAMADA 2: OVERLAY DE LOGIN (por cima)
+       ======================================== -->
+  <div id="loginOverlay" class="login-overlay">
+    <div class="login-card">
+      <div class="login-header">
+        <img src="arquivos/icon_gpt_branco.png" alt="GPT" class="login-logo">
+        <h2>Homologação Técnica</h2>
+      </div>
+      
+      <p class="login-description">
+        Faça login com sua conta Microsoft corporativa para acessar a ferramenta de análise.
+      </p>
+
+      <button id="btnLogin" class="btn-login" onclick="login()" disabled>
+        <span>Entrar com Microsoft</span>
+      </button>
+
+      <div id="status" class="status">Carregando autenticação...</div>
+    </div>
+  </div>
+
+  <!-- SCRIPT MSAL -->
+  <script src="https://cdn.jsdelivr.net/npm/@azure/msal-browser@2.38.0/lib/msal-browser.min.js"></script>
+
+  <!-- SCRIPTS JS (vêm no PASSO 4) -->
+  <script>
+/* ===== CONFIGURAÇÃO MSAL (igual ao seu outro site) ===== */
+const msalConfig = {
+  auth: {
+    clientId: "bd3d9316-4683-4aea-ad47-8c237cdceb5e",
+    authority: "https://login.microsoftonline.com/4abdf8c8-91c3-4c1b-9c71-6266b586ec6b",
+    redirectUri: window.location.origin + window.location.pathname
+  },
+  cache: {
+    cacheLocation: "sessionStorage",
+    storeAuthStateInCookie: false
+  }
+};
+
+const loginRequest = {
+  scopes: ["openid", "profile", "email", "User.Read"]
+};
+
+let msalInstance = null;
+
+/* ===== FUNÇÕES DE UI ===== */
+function setStatus(text) {
+  const el = document.getElementById("status");
+  if (el) el.textContent = text;
+}
+
+function showLoginOverlay() {
+  const overlay = document.getElementById("loginOverlay");
+  const appContent = document.getElementById("appContent");
+  
+  if (overlay) overlay.classList.remove("hidden");
+  if (appContent) appContent.classList.add("app-locked");
+  document.body.classList.add("lock-scroll");
+  
+  const btnLogin = document.getElementById("btnLogin");
+  if (btnLogin) btnLogin.disabled = false;
+}
+
+function hideLoginOverlay() {
+  const overlay = document.getElementById("loginOverlay");
+  const appContent = document.getElementById("appContent");
+  
+  if (overlay) overlay.classList.add("hidden");
+  if (appContent) appContent.classList.remove("app-locked");
+  document.body.classList.remove("lock-scroll");
+}
+
+/* ===== FUNÇÕES PRINCIPAIS DO MSAL ===== */
+function getBestAccount() {
+  if (!msalInstance) return null;
+  return msalInstance.getActiveAccount() || msalInstance.getAllAccounts()[0] || null;
+}
+
+async function enforceAuthAndUnlock() {
+  const account = getBestAccount();
+
+  if (!account) {
+    showLoginOverlay();
+    setStatus("Pronto para autenticar.");
+    return;
+  }
+
+  // Tem conta → libera o site
+  msalInstance.setActiveAccount(account);
+  hideLoginOverlay();
+}
+
+async function login() {
+  try {
+    if (!msalInstance) {
+      setStatus("MSAL não foi inicializado.");
+      return;
+    }
+
+    document.getElementById("btnLogin").disabled = true;
+    setStatus("Abrindo login Microsoft...");
+
+    // Limpa conta ativa para forçar seleção
+    msalInstance.setActiveAccount(null);
+
+    const res = await msalInstance.loginPopup({
+      ...loginRequest,
+      prompt: "select_account"
+    });
+
+    if (res && res.account) {
+      msalInstance.setActiveAccount(res.account);
+    }
+
+    await enforceAuthAndUnlock();
+
+  } catch (error) {
+    console.error("Erro no login:", error);
+    setStatus("Falha na autenticação. Tente novamente.");
+    document.getElementById("btnLogin").disabled = false;
+  }
+}
+
+async function logout() {
+  try {
+    const account = getBestAccount();
+    await msalInstance.logoutPopup({ account });
+    msalInstance.setActiveAccount(null);
+    showLoginOverlay();
+    setStatus("Sessão encerrada.");
+  } catch (error) {
+    console.error("Erro ao fazer logout:", error);
+  }
+}
+
+/* ===== INICIALIZAÇÃO DO MSAL ===== */
+async function initAuthSystem() {
+  try {
+    setStatus("Carregando autenticação...");
+    document.getElementById("btnLogin").disabled = true;
+
+    if (typeof msal === "undefined") {
+      setStatus("MSAL não carregou. Recarregue a página.");
+      console.error("msal undefined");
+      return;
+    }
+
+    msalInstance = new msal.PublicClientApplication(msalConfig);
+
+    // Aguarda inicialização do MSAL
+    if (typeof msalInstance.initialize === "function") {
+      await msalInstance.initialize();
+    }
+
+    // Trata redirecionamento do login
+    await msalInstance.handleRedirectPromise();
+
+    // Checa se tem conta e libera ou mostra login
+    await enforceAuthAndUnlock();
+
+  } catch (error) {
+    console.error("Erro ao inicializar autenticação:", error);
+    setStatus("Erro ao inicializar. Recarregue a página.");
+    showLoginOverlay();
+  }
+}
+
+/* ===== EVENT LISTENERS ===== */
+// Revalida ao focar na aba
+window.addEventListener("focus", () => {
+  if (msalInstance) enforceAuthAndUnlock().catch(console.error);
+});
+
+// Recarrega ao navegar com back/forward
+window.addEventListener("popstate", () => {
+  if (msalInstance) enforceAuthAndUnlock().catch(console.error);
+});
+
+// Inicia quando a página carrega
+window.addEventListener("load", initAuthSystem);
+  </script>
+
+</body>
+  
   <!-- ===== BARRA 1 ===== -->
   <div class="top-bar top-bar-main" id="topbarMain">
     <div class="blur-layer"></div>
