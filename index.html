@@ -821,9 +821,7 @@ button:active {
 }
 
 /* ===== TRAVAR SCROLL NA PÁGINA ===== */
-body.lock-scroll {
-  overflow: hidden;
-}
+
   
 </style>  
 </head>
@@ -831,27 +829,8 @@ body.lock-scroll {
 <body>
 <div id="appContent" class="app-locked">
     
-  <div id="loginOverlay" class="login-overlay">
-    <div class="login-card">
-      <div class="login-header">
-        <img src="arquivos/icon_gpt_branco.png" alt="GPT" class="login-logo">
-        <h2>Homologação Técnica</h2>
-      </div>
-      
-      <p class="login-description">
-        Faça login com sua conta Microsoft corporativa para acessar a ferramenta de análise.
-      </p>
-
-      <button id="btnLogin" class="btn-login" onclick="login()" disabled>
-        <span>Entrar com Microsoft</span>
-      </button>
-
-      <div id="status" class="status">Carregando autenticação...</div>
-    </div>
-  </div>
-
-  <!-- SCRIPT MSAL -->
-  <script src="https://cdn.jsdelivr.net/npm/@azure/msal-browser@2.38.0/lib/msal-browser.min.js"></script>
+   <!-- SCRIPT MSAL -->
+ <script src="https://cdn.jsdelivr.net/npm/@azure/msal-browser@2.38.0/lib/msal-browser.min.js"></script>
 
   <!-- SCRIPTS JS (vêm no PASSO 4) -->
   <script>
@@ -2101,5 +2080,24 @@ inicializarCampoCA();
 carregarPacotesHomologacao();
 </script>
 
+ <div id="loginOverlay" class="login-overlay">
+    <div class="login-card">
+      <div class="login-header">
+        <img src="arquivos/icon_gpt_branco.png" alt="GPT" class="login-logo">
+        <h2>Homologação Técnica</h2>
+      </div>
+      
+      <p class="login-description">
+        Faça login com sua conta Microsoft corporativa para acessar a ferramenta de análise.
+      </p>
+
+      <button id="btnLogin" class="btn-login" onclick="login()" disabled>
+        <span>Entrar com Microsoft</span>
+      </button>
+
+      <div id="status" class="status">Carregando autenticação...</div>
+    </div>
+  </div>
+  
 </body>
 </html>
