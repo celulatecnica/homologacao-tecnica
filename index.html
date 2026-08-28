@@ -726,9 +726,6 @@ button:active {
   /* fundo semi-escuro */
   background: rgba(0, 0, 0, 0.45);
 
-  /* blur do que está por trás */
-  backdrop-filter: blur(15px);
-  -webkit-backdrop-filter: blur(15px);
 }
 
 .login-overlay.hidden {
@@ -737,14 +734,14 @@ button:active {
 
 /* ===== CARD/BALÃO DE LOGIN ===== */
 .login-card {
-  width: 480px;
+  width: 520px;
   max-width: calc(100% - 32px);
 
   background: rgba(23, 23, 23, 0.95);
   border: 1px solid #2A2A2A;
   border-radius: 16px;
 
-  padding: 40px;
+  padding: 48px;
   box-shadow: 0 25px 80px rgba(0, 0, 0, 0.5);
 
   color: #f5f5f7;
@@ -832,27 +829,8 @@ body.lock-scroll {
 </head>
 
 <body>
-
-  <body>
-
-  <!-- ========================================
-       CAMADA 1: CONTEÚDO DO SITE (fica borrado)
-       ======================================== -->
-  <div id="appContent" class="app-locked">
+<div id="appContent" class="app-locked">
     
-    <!-- AQUI ENTRA TODO O SEU HTML ATUAL:
-         - top-bar top-bar-main
-         - top-bar top-bar-sub
-         - top-bar top-bar-pacotes
-         - banner
-         - container (form, resultado, rodapé)
-         - tudo que existe hoje -->
-    
-  </div>
-
-  <!-- ========================================
-       CAMADA 2: OVERLAY DE LOGIN (por cima)
-       ======================================== -->
   <div id="loginOverlay" class="login-overlay">
     <div class="login-card">
       <div class="login-header">
@@ -908,7 +886,6 @@ function showLoginOverlay() {
   
   if (overlay) overlay.classList.remove("hidden");
   if (appContent) appContent.classList.add("app-locked");
-  document.body.classList.add("lock-scroll");
   
   const btnLogin = document.getElementById("btnLogin");
   if (btnLogin) btnLogin.disabled = false;
@@ -920,7 +897,6 @@ function hideLoginOverlay() {
   
   if (overlay) overlay.classList.add("hidden");
   if (appContent) appContent.classList.remove("app-locked");
-  document.body.classList.remove("lock-scroll");
 }
 
 /* ===== FUNÇÕES PRINCIPAIS DO MSAL ===== */
@@ -967,11 +943,20 @@ async function login() {
 
     await enforceAuthAndUnlock();
 
-  } catch (error) {
-    console.error("Erro no login:", error);
-    setStatus("Falha na autenticação. Tente novamente.");
-    document.getElementById("btnLogin").disabled = false;
-  }
+  } 
+  catch (error) {
+
+    console.error(error);
+
+    setStatus("Falha na autenticação.");
+
+    const btn =
+       document.getElementById("btnLogin");
+
+    if (btn) {
+       btn.disabled = false;
+    }
+}
 }
 
 async function logout() {
@@ -1032,8 +1017,6 @@ window.addEventListener("popstate", () => {
 // Inicia quando a página carrega
 window.addEventListener("load", initAuthSystem);
   </script>
-
-</body>
   
   <!-- ===== BARRA 1 ===== -->
   <div class="top-bar top-bar-main" id="topbarMain">
@@ -1159,7 +1142,7 @@ window.addEventListener("load", initAuthSystem);
       </div>
     </footer>
   </div>
-</body>
+
 
 <script>
 let mapaServicosCache = null;
