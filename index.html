@@ -779,6 +779,42 @@ button:active {
   color: #8e8e93;
 }
 
+.user-area {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.user-email {
+  font-size: 14px;
+  color: #F5F5F7;
+}
+
+.btn-logout {
+  height: 28px;
+  padding: 0 12px;
+  border-radius: 6px;
+  border: none;
+  background: #FFFFFF;
+  color: #000000;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-logout:hover {
+  background: #F5F5F7;
+}
+
+.top-bar.scrolled .user-email {
+  color: #1D1D1F;
+}
+
+.top-bar.scrolled .btn-logout {
+  background: #1D1D1F;
+  color: #FFFFFF;
+}
+  
 </style>  
 </head>
 
@@ -791,12 +827,26 @@ button:active {
   <div id="appContent" class="app-locked">
     
     <!-- ===== BARRA 1 - LOGO ===== -->
-    <div class="top-bar top-bar-main" id="topbarMain">
-      <div class="blur-layer"></div>
-      <div class="top-bar-inner">
-        <img class="logo" src="arquivos/icon_gpt_branco.png" alt="Ícone GPT">
-      </div>
+<div class="top-bar top-bar-main" id="topbarMain">
+  <div class="blur-layer"></div>
+
+  <div class="top-bar-inner">
+
+    arquivos/icon_gpt_branco.png
+
+    <div class="user-area">
+      <span id="userEmail" class="user-email"></span>
+
+      <button
+        type="button"
+        class="btn-logout"
+        onclick="logout()">
+        Sair
+      </button>
     </div>
+
+  </div>
+</div>
 
     <!-- ===== BARRA 2 - TÍTULO / MENU ===== -->
     <div class="top-bar top-bar-sub" id="topbarSub">
@@ -1044,6 +1094,25 @@ function getBestAccount() {
   );
 }
 
+function atualizarUsuarioLogado() {
+
+  const email = document.getElementById("userEmail");
+
+  if (!email) return;
+
+  const account = getBestAccount();
+
+  if (!account) {
+    email.textContent = "";
+    return;
+  }
+
+  email.textContent =
+    account.username ||
+    account.name ||
+    "";
+}
+
 /**
  * Verificar autenticação e liberar/bloquear página
  */
@@ -1067,6 +1136,8 @@ async function enforceAuthAndUnlock() {
   console.log("LOGIN OK:", account.username);
 
   msalInstance.setActiveAccount(account);
+
+  atualizarUsuarioLogado();
 
   hideLoginOverlay();
 
@@ -1130,6 +1201,7 @@ async function logout() {
     }
 
     msalInstance.setActiveAccount(null);
+    document.getElementById("userEmail").textContent = "";
 
     showLoginOverlay();
     setStatus("Sessão encerrada. Faça login novamente.");
