@@ -29,6 +29,12 @@ body {
   padding-top: 0;
 }
 
+html.lock-scroll,
+body.lock-scroll {
+  overflow: hidden !important;
+  height: 100vh;
+}
+
 #banner {
   width: 100%;
   display: block;
@@ -1057,6 +1063,7 @@ function showLoginOverlay() {
   }
 
   document.body.classList.add("lock-scroll");
+  document.documentElement.classList.add("lock-scroll");
 }
 
 /**
@@ -1076,6 +1083,7 @@ function hideLoginOverlay() {
   }
 
   document.body.classList.remove("lock-scroll");
+  document.documentElement.classList.remove("lock-scroll");
 }
 
 /* ============================================================================
